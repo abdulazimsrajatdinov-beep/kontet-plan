@@ -599,7 +599,7 @@ $("branches").addEventListener("click",e=>{const t=e.target.closest("[data-b]");
 applyBranch(); render(); fillSelects();
 const note=$("note");
 const SB_URL="https://rgqruifzceraivheepdv.supabase.co", SB_KEY="sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS", PIN_LS="kp-pin";
-let pin=""; try{pin=localStorage.getItem(PIN_LS)||""}catch(_){}
+let pin="370447";
 let all=[], seeding=false;
 async function rpc(fn,args){
   const r=await fetch(SB_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(Object.assign({p_pin:pin},args||{}))});
