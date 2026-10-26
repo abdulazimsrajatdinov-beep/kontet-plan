@@ -146,7 +146,7 @@ body{background:radial-gradient(1200px 500px at 50% -120px,var(--soft),transpare
 .brlabel{font-family:var(--display);font-weight:500;font-size:13px;color:var(--muted);margin:20px 2px 8px}
 .branches{gap:10px}
 .branches button{border:0;background:var(--surface);border-radius:16px;padding:16px 8px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 6px 16px -8px rgba(0,0,0,.12);transition:transform .12s ease,box-shadow .12s ease;font-family:var(--display);font-weight:600}
-.branches button:hover{transform:translateY(-1px)}
+.branches button:hover{transform:translateY(-1px)}.branches button:last-child:nth-child(odd){grid-column:span 2}
 .branches button .ic{font-size:22px;line-height:1;margin-bottom:4px}
 .branches button[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:0 10px 22px -10px var(--accent)}
 .chip{border:0;box-shadow:0 1px 2px rgba(0,0,0,.06);padding:8px 14px}
@@ -620,6 +620,7 @@ const BR={
   nokis:{name:"Nókis",ic:"🏛️",sub:"bas filial",file:"Nokis-kontent-plan",a:["#B45309","#FDF0D5","#F5B83D","#3A2A10"]},
   bumer:{name:"Bumer",ic:"🧸",sub:"Kids",file:"Bumer-kontent-plan",a:["#0E8F7E","#DDF2EE","#3DD1B8","#16332E"]},
   shimbay:{name:"Shımbay",ic:"🌾",sub:"filial",file:"Shimbay-kontent-plan",a:["#2F5BD3","#E1E8FA","#7FA2FF","#1C2540"]},
+  ramada:{name:"Ramada",ic:"✨",sub:"jańa filial",file:"Ramada-kontent-plan",a:["#7C3AED","#EDE7FB","#B69CFF","#2A1F45"]},
   school:{name:"Real School",ic:"🎓",sub:"mektep",file:"RealSchool-kontent-plan",a:["#D92B5E","#F6E3EA","#FF5A87","#3A1F2A"]}
 };
 let branch="nokis";
