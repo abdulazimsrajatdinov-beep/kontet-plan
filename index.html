@@ -75,7 +75,7 @@ button{cursor:pointer}
 .hook{margin:0;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
 .hook::before{content:"Húk · ";font-weight:700;color:var(--accent)}
 .cardbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.quick{display:flex;gap:6px}.qbtn{position:relative;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 9px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer}.qbtn svg{width:15px;height:15px;flex:none}.qbtn input[type=date]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}.qbtn.del{color:#D23B3B;border-color:color-mix(in srgb,#D23B3B 40%,var(--line))}.qbtn.del.arm{background:#D23B3B;color:#fff;border-color:#D23B3B}
-.branches{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.branches button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 4px;font-weight:800;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}.branches button small{font-weight:600;font-size:11px;color:var(--muted)}.branches button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}.branches button[aria-pressed="true"] small{color:inherit;opacity:.8}
+.brlabel{margin:16px 0 6px;font-weight:800;font-size:14px}.branches{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.branches button{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 6px;font-weight:800;font-size:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}.branches button small{font-weight:600;font-size:11px;color:var(--muted)}.branches button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}.branches button[aria-pressed="true"] small{color:inherit;opacity:.8}
 .scrim.lock{align-items:center;padding:16px}
 .more{justify-self:start;background:none;border:none;padding:4px 0;color:var(--ink);font-weight:600;font-size:13.5px;text-decoration:underline;text-underline-offset:3px}
 .detail{display:grid;gap:10px;padding-top:4px}
@@ -145,6 +145,7 @@ form{display:grid;gap:14px}
     </div>
   </header>
 
+  <div class="brlabel">👇 Filialdı tańlań:</div>
   <nav class="branches" id="branches" aria-label="Filial tańlaw"></nav>
   <nav class="filters" id="filters" aria-label="Status boyınsha saylaw"></nav>
   <div class="note" id="note" hidden></div>
@@ -596,6 +597,7 @@ function applyBranch(){
   $("branches").innerHTML=Object.entries(BR).map(([k,v])=>`<button type="button" data-b="${k}" aria-pressed="${k===branch}">${esc(v.name)}<small>${esc(v.sub)}</small></button>`).join("");
 }
 $("branches").addEventListener("click",e=>{const t=e.target.closest("[data-b]");if(!t||t.dataset.b===branch)return;branch=t.dataset.b;try{localStorage.setItem("kp-branch",branch);history.replaceState(null,"","#"+branch)}catch(_){}filter="all";open.clear();applyBranch();connect()});
+window.addEventListener('hashchange',()=>{const k=location.hash.slice(1);if(BR[k]&&k!==branch){branch=k;filter='all';open.clear();applyBranch();connect()}});
 applyBranch(); render(); fillSelects();
 const note=$("note");
 const SB_URL="https://rgqruifzceraivheepdv.supabase.co", SB_KEY="sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS", PIN_LS="kp-pin";
