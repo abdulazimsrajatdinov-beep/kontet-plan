@@ -1,0 +1,645 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Real Education Kontent Plan</title><meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: single mobile column, film-slate header, cards grouped by shooting day, bottom sheet for editing */
+:root{
+  --bg:#EEF0F3; --surface:#FFFFFF; --ink:#15171C; --muted:#5E6470; --line:#D9DDE3;
+  --accent:#B45309; --accent-ink:#FFFFFF; --soft:#FDF0D5;
+  --s-idea:#7A6FF0; --s-script:#E28A12; --s-shot:#1F9D6B; --s-edit:#2E86D6; --s-posted:#6B7280;
+  --display:"Unbounded", "Arial Black", system-ui, sans-serif;
+  --body:"Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1115; --surface:#1A1D24; --ink:#ECEEF2; --muted:#9AA1AD; --line:#2B303A;
+  --accent:#F5B83D; --accent-ink:#15171C; --soft:#3A2A10;
+  --s-idea:#9C93FF; --s-script:#F3A33A; --s-shot:#3CC48F; --s-edit:#5AA9F0; --s-posted:#9AA1AD;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1115; --surface:#1A1D24; --ink:#ECEEF2; --muted:#9AA1AD; --line:#2B303A;
+  --accent:#F5B83D; --accent-ink:#15171C; --soft:#3A2A10;
+  --s-idea:#9C93FF; --s-script:#F3A33A; --s-shot:#3CC48F; --s-edit:#5AA9F0; --s-posted:#9AA1AD;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+.wrap{max-width:640px;margin:0 auto}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* slate header */
+.slate{margin-top:14px;background:var(--ink);color:var(--bg);border-radius:14px;overflow:hidden}
+.stripes{height:18px;background:repeating-linear-gradient(-45deg,var(--bg) 0 14px,var(--ink) 14px 28px);opacity:.9}
+.slate-body{padding:16px 18px 18px;display:grid;gap:12px}
+.slate h1{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.slate-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}
+.slate-row div{padding:10px 0 0;display:grid;gap:2px}
+.slate-row div+div{padding-left:12px;border-left:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}
+.lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;opacity:.65;font-weight:600}
+.big{font-family:var(--mono);font-size:22px;font-variant-numeric:tabular-nums}
+
+/* filters */
+.filters{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .n{font-family:var(--mono);font-size:12px;opacity:.7}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+.note{font-size:13px;color:var(--muted);padding:8px 0}
+
+/* groups */
+.group{margin-top:20px}
+.group h2{font-family:var(--display);font-weight:500;font-size:14px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.group h2 small{font-family:var(--body);font-size:12.5px;color:var(--muted);font-weight:500}
+.group.today h2{color:var(--accent)}
+.list{display:grid;gap:10px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:62px 1fr;overflow:hidden}
+.card.done{opacity:.7}
+.time{border-right:1px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:14px 4px;gap:4px}
+.time b{font-family:var(--mono);font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
+.time span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.main{padding:12px 14px 12px;min-width:0;display:grid;gap:6px}
+.top{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pill{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;letter-spacing:.02em}
+.fmt{background:var(--soft);color:var(--accent)}
+.st{border:1px solid currentColor;background:transparent}
+.ex{font-size:11px;color:var(--muted);border:1px dashed var(--line)}
+.main h3{margin:0;font-size:16px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+.hook{margin:0;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.hook::before{content:"Húk · ";font-weight:700;color:var(--accent)}
+.cardbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.quick{display:flex;gap:6px}.qbtn{position:relative;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 9px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer}.qbtn svg{width:15px;height:15px;flex:none}.qbtn input[type=date]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}.qbtn.del{color:#D23B3B;border-color:color-mix(in srgb,#D23B3B 40%,var(--line))}.qbtn.del.arm{background:#D23B3B;color:#fff;border-color:#D23B3B}
+.branches{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.branches button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 4px;font-weight:800;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}.branches button small{font-weight:600;font-size:11px;color:var(--muted)}.branches button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}.branches button[aria-pressed="true"] small{color:inherit;opacity:.8}
+.scrim.lock{align-items:center;padding:16px}
+.more{justify-self:start;background:none;border:none;padding:4px 0;color:var(--ink);font-weight:600;font-size:13.5px;text-decoration:underline;text-underline-offset:3px}
+.detail{display:grid;gap:10px;padding-top:4px}
+.script{white-space:pre-wrap;background:var(--bg);border-radius:8px;padding:12px;font-size:14px;overflow-wrap:anywhere;margin:0}
+.detail .lbl{opacity:1;color:var(--muted)}
+.statusbar{display:flex;gap:6px;flex-wrap:wrap}
+.statusbar button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+.statusbar button[aria-pressed="true"]{border-color:currentColor;background:var(--bg)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;font-weight:700;font-size:14px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{color:#D23B3B;border-color:color-mix(in srgb,#D23B3B 40%,var(--line))}
+
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:28px 18px;text-align:center;color:var(--muted);margin-top:20px}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+
+/* FAB */
+.fab{position:fixed;right:calc(max(16px,env(safe-area-inset-right,0px)));bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--accent);color:var(--accent-ink);border:none;border-radius:999px;padding:15px 22px;font-weight:800;font-size:15px;box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 40%,transparent);display:flex;align-items:center;gap:8px;z-index:5}
+.fab svg{width:18px;height:18px}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(10,12,16,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:640px;max-height:92%;overflow-y:auto;border-radius:18px 18px 0 0;
+  padding:8px max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:4px auto 12px}
+.sheet h2{font-family:var(--display);font-size:18px;margin:0 0 14px;font-weight:700}
+form{display:grid;gap:14px}
+.field{display:grid;gap:6px}
+.field label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:11px 12px;font-size:16px}
+.field textarea{resize:vertical;min-height:70px}
+#f-script{min-height:150px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{font-size:12px;color:var(--muted)}
+.formbar{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;margin-top:4px}
+.formbar .right{display:flex;gap:8px;margin-left:auto}
+.slate-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sharebtn{border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);background:transparent;color:var(--bg);border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
+.sharebtn svg{width:15px;height:15px}
+.sharebtn{text-decoration:none}
+.btn.tg{background:#229ED9;border-color:#229ED9;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.tg svg{width:16px;height:16px}
+.linkbox{display:flex;gap:8px;align-items:stretch}
+.linkbox input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;font-family:var(--mono);font-size:13px}
+.steps{margin:0;padding-left:20px;display:grid;gap:8px}
+.steps b{color:var(--accent)}
+.levels{display:grid;gap:8px}
+.lvl{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:2px}
+.lvl strong{font-size:14px}
+.lvl span{font-size:13px;color:var(--muted)}
+.lvl.rec{border-color:var(--accent);background:var(--soft)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font-weight:600;font-size:14px;z-index:30}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .22s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.6}}}
+</style>
+
+<div class="wrap">
+  <header class="slate">
+    <div class="stripes"></div>
+    <div class="slate-body">
+      <div class="slate-top"><div class="lbl">Real Education · Kontent Plan</div><button type="button" class="sharebtn" id="sharebtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.6 2.9 10.8c-1.3.5-1.3 1.2-.2 1.6l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5ZM9.4 14.6l8.2-7.4c.4-.3 0-.5-.5-.2L7 13.4"/></svg>Plandı jiberiw</button></div>
+      <h1 id="ptitle">Nókis<br>Kontent Plan</h1>
+      <div class="slate-row">
+        <div><span class="lbl">Búgin</span><span class="big" id="c-today">0</span></div>
+        <div><span class="lbl">Usı hápte</span><span class="big" id="c-week">0</span></div>
+        <div><span class="lbl">Túsirilmegen</span><span class="big" id="c-left">0</span></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="branches" id="branches" aria-label="Filial tańlaw"></nav>
+  <nav class="filters" id="filters" aria-label="Status boyınsha saylaw"></nav>
+  <div class="note" id="note" hidden></div>
+  <main id="board"></main>
+</div>
+
+<button class="fab" id="fab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Jańa kontent</button>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="grab"></div>
+    <h2 id="sheet-title">Jańa kontent</h2>
+    <form id="form" autocomplete="off">
+      <div class="field"><label for="f-title">Tema</label><input id="f-title" required placeholder="Mısalı: Oqıwshılardıń bir kúni"></div>
+      <div class="field"><label for="f-hook">Húk (birinshi 3 sekund)</label><textarea id="f-hook" rows="2" placeholder="Kórermendi toqtatatuǵın birinshi gáp yamasa kadr"></textarea></div>
+      <div class="field"><label for="f-script">Senariy</label><textarea id="f-script" placeholder="1-kadr: …&#10;2-kadr: …&#10;Tekst: …&#10;Muzıka: …"></textarea><span class="hint">Hár kadrdı jańa qatarǵa jazıń — mobilografqa ańsat boladı.</span></div>
+      <div class="row2">
+        <div class="field"><label for="f-date">Túsiriw kúni</label><input id="f-date" type="date"></div>
+        <div class="field"><label for="f-time">Saat</label><input id="f-time" type="time"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="f-format">Format</label><select id="f-format"></select></div>
+        <div class="field"><label for="f-status">Status</label><select id="f-status"></select></div>
+      </div>
+      <div class="field"><label for="f-notes">Mobilografqa eskertpe</label><textarea id="f-notes" rows="2" placeholder="Orın, kim qatnasadı, ne alıp keliw kerek"></textarea></div>
+      <div class="formbar">
+        <button type="button" class="btn danger" id="del" hidden>Óshiriw</button>
+        <div class="right">
+          <button type="button" class="btn" id="cancel">Biykarlaw</button>
+          <button type="submit" class="btn primary" id="save">Saqlaw</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="scrim" id="share" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="share-title">
+    <div class="grab"></div>
+    <h2 id="share-title">Basqa adamǵa ruqsat beriw</h2>
+    <div style="display:grid;gap:16px">
+      <div class="field"><label for="share-link">Plan siltemesi</label>
+        <div class="linkbox"><input id="share-link" readonly value="https://claude.ai/artifact/TBKgwNBKNvEuk75EYeQrE6"><button type="button" class="btn primary" id="copylink">Kóshiriw</button></div>
+      </div>
+      <ol class="steps">
+        <li>Ekrannıń joqarı ońındaǵı <b>Share</b> túymesin basıń (bul bettiń sırtında, Claude menyusinde).</li>
+        <li>Adamnıń <b>email</b> adresin jazıp, ruqsat dárejesin saylań.</li>
+        <li>Joqarıdaǵı siltemeni kóshirip, oǵan Telegram arqalı jiberiń.</li>
+      </ol>
+      <div class="levels">
+        <div class="lvl rec"><strong>Contributor — mobilograf ushın</strong><span>Kontent qosadı, senariydi ózgertedi, statustı belgileydi.</span></div>
+        <div class="lvl"><strong>Viewer</strong><span>Tek kóredi, hesh nárseni ózgerte almaydı.</span></div>
+      </div>
+      <p class="hint" style="margin:0">Ol adamnıń claude.ai akkauntı bolıwı kerek. Ruqsattı usı Share menyusinen qálegen waqıtta alıp taslay alasız.</p>
+      <div class="formbar"><div class="right"><button type="button" class="btn" id="shareclose">Jabıw</button></div></div>
+    </div>
+  </div>
+</div>
+<div class="scrim lock" id="lock" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="lock-title" style="border-radius:18px;margin:auto;max-width:420px">
+    <h2 id="lock-title">Real Education · Kontent Plan</h2>
+    <form id="lock-form" autocomplete="off">
+      <div class="field"><label for="lock-pin">PIN kod</label><input id="lock-pin" type="password" inputmode="numeric" required placeholder="••••••"></div>
+      <p class="hint" id="lock-err" hidden style="color:#D23B3B;margin:0">PIN qáte. Qaytadan jazıń.</p>
+      <button type="submit" class="btn primary">Kiriw</button>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const STATUSES=[
+  {id:"idea",name:"Ideya",c:"var(--s-idea)"},
+  {id:"script",name:"Senariy tayar",c:"var(--s-script)"},
+  {id:"shot",name:"Túsirildi",c:"var(--s-shot)"},
+  {id:"edit",name:"Montajda",c:"var(--s-edit)"},
+  {id:"posted",name:"Jarıyalandı",c:"var(--s-posted)"}
+];
+const FORMATS=["Reels","Post","Karusel","Stories","Post + stories","Stories + efir"];
+const MONTHS=["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentyabr","oktyabr","noyabr","dekabr"];
+const DAYS=["Ekshembi","Dúyshembi","Siyshembi","Sárshembi","Piyshembi","Juma","Shembi"];
+const S=Object.fromEntries(STATUSES.map(s=>[s.id,s]));
+const $=id=>document.getElementById(id);
+
+let posts=[]; let filter="all"; let open=new Set(); let editing=null; let canWrite=true;
+let store=null; // {save(id,data), remove(id)}
+
+// ---------- helpers
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const dayKey=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+function todayKey(){return dayKey(new Date())}
+function addDays(k,n){const d=new Date(k+"T00:00");d.setDate(d.getDate()+n);return dayKey(d)}
+function weekRange(){const d=new Date();const wd=(d.getDay()+6)%7;const s=addDays(todayKey(),-wd);return [s,addDays(s,6)]}
+function dayLabel(k){
+  const t=todayKey();
+  if(k===t)return "Búgin";
+  if(k===addDays(t,1))return "Erteń";
+  if(k===addDays(t,-1))return "Keshe";
+  const d=new Date(k+"T00:00");return d.getDate()+" "+MONTHS[d.getMonth()];
+}
+function weekday(k){return DAYS[new Date(k+"T00:00").getDay()]}
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,1800)}
+
+// ---------- render
+function counts(){
+  const t=todayKey(),[ws,we]=weekRange();
+  $("c-today").textContent=posts.filter(p=>p.date===t).length;
+  $("c-week").textContent=posts.filter(p=>p.date&&p.date>=ws&&p.date<=we).length;
+  $("c-left").textContent=posts.filter(p=>p.status==="idea"||p.status==="script").length;
+}
+function renderFilters(){
+  const items=[{id:"all",name:"Barlıǵı"}].concat(STATUSES);
+  $("filters").innerHTML=items.map(s=>{
+    const n=s.id==="all"?posts.length:posts.filter(p=>p.status===s.id).length;
+    return `<button class="chip" type="button" data-f="${s.id}" aria-pressed="${filter===s.id}">${s.c?`<span class="dot" style="background:${s.c}"></span>`:""}${esc(s.name)} <span class="n">${n}</span></button>`;
+  }).join("");
+}
+function card(p){
+  const st=S[p.status]||S.idea; const isOpen=open.has(p.id);
+  const time=p.time||"—";
+  return `<article class="card${p.status==="posted"?" done":""}">
+    <div class="time"><b>${esc(time)}</b>${p.date?`<span>${esc(weekday(p.date).slice(0,3))}</span>`:""}</div>
+    <div class="main">
+      <div class="top">
+        <span class="pill fmt">${esc(p.format||"Reels")}</span>
+        <span class="pill st" style="color:${st.c}"><span class="dot" style="background:${st.c}"></span>${esc(st.name)}</span>
+        ${p.example?`<span class="pill ex">Mısal</span>`:""}
+      </div>
+      <h3>${esc(p.title)}</h3>
+      ${p.hook?`<p class="hook">${esc(p.hook)}</p>`:""}
+      ${isOpen?`<div class="detail">
+        <div><div class="lbl">Senariy</div><pre class="script">${esc(p.script||"Senariy ele jazılmaǵan.")}</pre></div>
+        ${p.notes?`<div><div class="lbl">Mobilografqa eskertpe</div><pre class="script">${esc(p.notes)}</pre></div>`:""}
+        ${canWrite?`<div><div class="lbl">Statustı ózgertiw</div><div class="statusbar">${STATUSES.map(s=>`<button type="button" data-st="${s.id}" data-id="${p.id}" style="color:${s.c}" aria-pressed="${p.status===s.id}"><span class="dot" style="background:${s.c}"></span><span style="color:var(--ink)">${esc(s.name)}</span></button>`).join("")}</div></div>`:""}
+        <div class="actions">
+          <button type="button" class="btn tg" data-img="${p.id}"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.6 2.9 10.8c-1.3.5-1.3 1.2-.2 1.6l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5Z"/></svg>Jiberiw</button>
+          <button type="button" class="btn" data-copy="${p.id}">Tekstti kóshiriw</button>
+          ${canWrite?`<button type="button" class="btn" data-edit="${p.id}">Ózgertiw</button>`:""}
+        </div>
+      </div>`:""}
+      <div class="cardbar"><button type="button" class="more" data-toggle="${p.id}">${isOpen?"Jabıw":"Senariydi kóriw"}</button>${canWrite?`<div class="quick"><label class="qbtn" title="Sánesin ózgertiw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Sánesi</span><input type="date" data-date="${p.id}" value="${esc(p.date||"")}" aria-label="Sánesin ózgertiw"></label><button type="button" class="qbtn del" data-delete="${p.id}" title="Óshiriw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg><span>Óshiriw</span></button></div>`:""}</div>
+    </div>
+  </article>`;
+}
+function postText(p){
+  return `🎬 ${p.title}\n📅 ${p.date?dayLabel(p.date)+" ("+weekday(p.date)+")":"waqıt belgilenbegen"}${p.time?", saat "+p.time:""} · ${p.format||"Reels"}\n\n⚡ HÚK:\n${p.hook||"-"}\n\n📝 SENARIY:\n${p.script||"-"}${p.notes?"\n\n📌 ESKERTPE:\n"+p.notes:""}`;
+}
+function tgLink(text){return "https://t.me/share/url?url="+encodeURIComponent(text)}
+function weekText(){
+  const t=todayKey(),end=addDays(t,6);
+  const items=posts.filter(p=>p.date&&p.date>=t&&p.date<=end&&p.status!=="posted").sort((a,b)=>(a.date+(a.time||"99")).localeCompare(b.date+(b.time||"99")));
+  if(!items.length)return "📅 Keyingi 7 kúnge túsiriw joq.";
+  let out="📅 TÚSIRIW KESTESI (7 kún)\n",last="";
+  items.forEach(p=>{if(p.date!==last){out+=`\n▪️ ${dayLabel(p.date)}, ${weekday(p.date)}\n`;last=p.date}out+=`   ${p.time||"--:--"} — ${p.title} (${p.format||"Reels"})\n`;});
+  return out.trim();
+}
+function weekItems(){
+  const t=todayKey(),end=addDays(t,6);
+  return posts.filter(p=>p.date&&p.date>=t&&p.date<=end&&p.status!=="posted").sort((a,b)=>(a.date+(a.time||"99")).localeCompare(b.date+(b.time||"99")));
+}
+
+// ---------- plan as an image (PNG) for Telegram
+const IMG={bg:"#EEF0F3",card:"#FFFFFF",ink:"#15171C",muted:"#5E6470",line:"#D9DDE3",accent:"#B45309",soft:"#FDF0D5"};
+const ST_HEX={idea:"#7A6FF0",script:"#E28A12",shot:"#1F9D6B",edit:"#2E86D6",posted:"#6B7280"};
+const FD='"Unbounded","Arial Black",sans-serif', FB='"Manrope","Segoe UI",Arial,sans-serif', FM='"JetBrains Mono",Menlo,monospace';
+function wrapLines(ctx,text,maxW){
+  const out=[];
+  String(text||"").split("\n").forEach(par=>{
+    if(!par.trim()){out.push("");return}
+    let line="";
+    par.split(/\s+/).forEach(w=>{
+      const test=line?line+" "+w:w;
+      if(ctx.measureText(test).width>maxW&&line){out.push(line);line=w}else line=test;
+    });
+    out.push(line);
+  });
+  return out;
+}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function pill(ctx,x,y,text,fg,bg,border){
+  ctx.font=`700 24px ${FB}`;const w=ctx.measureText(text).width+28;
+  rr(ctx,x,y,w,40,10);
+  if(bg){ctx.fillStyle=bg;ctx.fill()}
+  if(border){ctx.strokeStyle=border;ctx.lineWidth=2;ctx.stroke()}
+  ctx.fillStyle=fg;ctx.textBaseline="middle";ctx.fillText(text,x+14,y+21);ctx.textBaseline="alphabetic";
+  return w;
+}
+function slate(ctx,W,P,y,label,title,sub,draw){
+  ctx.font=`700 58px ${FD}`;
+  const tl=wrapLines(ctx,title,W-P*2-64);
+  const h=28+40+40+tl.length*70+(sub?54:0)+34;
+  if(draw){
+    rr(ctx,P,y,W-P*2,h,26);ctx.save();ctx.clip();
+    ctx.fillStyle=IMG.ink;ctx.fillRect(P,y,W-P*2,h);
+    for(let x=P-40;x<W;x+=48){ctx.fillStyle=IMG.bg;ctx.beginPath();ctx.moveTo(x,y+28);ctx.lineTo(x+24,y+28);ctx.lineTo(x+52,y);ctx.lineTo(x+28,y);ctx.closePath();ctx.fill()}
+    ctx.restore();
+    let yy=y+28+50;
+    ctx.fillStyle="#A9AEB8";ctx.font=`700 22px ${FB}`;ctx.fillText(label.toUpperCase(),P+32,yy);
+    yy+=30;ctx.fillStyle=IMG.bg;ctx.font=`700 58px ${FD}`;
+    tl.forEach(l=>{yy+=66;ctx.fillText(l,P+32,yy)});
+    if(sub){yy+=50;ctx.font=`600 28px ${FB}`;ctx.fillStyle="#D5D8DE";ctx.fillText(sub,P+32,yy)}
+  }
+  return h;
+}
+function shortDate(k){const d=new Date(k+"T00:00");return d.getDate()+" "+MONTHS[d.getMonth()].slice(0,3)}
+function drawWeek(ctx,draw){
+  const W=1080,P=48,items=weekItems();let y=P;
+  const t=todayKey();
+  y+=slate(ctx,W,P,y,"Real Education · Nókis · Bas filial","Nókis Kontent Plan",`${shortDate(t)} – ${shortDate(addDays(t,6))} · ${items.length} kontent`,draw)+20;
+  if(!items.length){
+    y+=40;if(draw){ctx.font=`600 32px ${FB}`;ctx.fillStyle=IMG.muted;ctx.fillText("Keyingi 7 kúnge túsiriw joq.",P,y)}y+=40;
+  }
+  let last="";
+  items.forEach(p=>{
+    if(p.date!==last){
+      y+=44;
+      if(draw){ctx.font=`500 32px ${FD}`;ctx.fillStyle=p.date===t?IMG.accent:IMG.ink;ctx.fillText(dayLabel(p.date),P,y);
+        const lw=ctx.measureText(dayLabel(p.date)).width;ctx.font=`600 26px ${FB}`;ctx.fillStyle=IMG.muted;ctx.fillText("· "+weekday(p.date),P+lw+14,y)}
+      y+=20;last=p.date;
+    }
+    const cx=P+150,cw=W-P-cx-28;
+    ctx.font=`700 34px ${FB}`;const tl=wrapLines(ctx,p.title,cw);
+    ctx.font=`500 27px ${FB}`;const hl=p.hook?wrapLines(ctx,"Húk · "+p.hook,cw).slice(0,4):[];
+    const h=24+40+16+tl.length*44+(hl.length?10+hl.length*38:0)+26;
+    if(draw){
+      rr(ctx,P,y,W-P*2,h,20);ctx.fillStyle=IMG.card;ctx.fill();ctx.strokeStyle=IMG.line;ctx.lineWidth=2;ctx.stroke();
+      ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(P+130,y+14);ctx.lineTo(P+130,y+h-14);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle=IMG.ink;ctx.font=`500 34px ${FM}`;ctx.textAlign="center";ctx.fillText(p.time||"—",P+65,y+58);
+      ctx.font=`700 20px ${FB}`;ctx.fillStyle=IMG.muted;ctx.fillText(weekday(p.date).slice(0,3).toUpperCase(),P+65,y+90);ctx.textAlign="left";
+      let yy=y+24;const st=S[p.status]||S.idea;
+      const w1=pill(ctx,cx,yy,p.format||"Reels",IMG.accent,IMG.soft);
+      pill(ctx,cx+w1+10,yy,st.name,ST_HEX[st.id],null,ST_HEX[st.id]);
+      yy+=40+16;ctx.fillStyle=IMG.ink;ctx.font=`700 34px ${FB}`;
+      tl.forEach(l=>{yy+=40;ctx.fillText(l,cx,yy);yy+=4});
+      if(hl.length){yy+=10;ctx.font=`500 27px ${FB}`;ctx.fillStyle=IMG.muted;hl.forEach(l=>{yy+=34;ctx.fillText(l,cx,yy);yy+=4})}
+    }
+    y+=h+14;
+  });
+  y+=30;
+  if(draw){ctx.font=`600 22px ${FB}`;ctx.fillStyle=IMG.muted;ctx.fillText(BR[branch].name+" Kontent Plan · "+new Date().toLocaleDateString("ru-RU"),P,y)}
+  return y+P;
+}
+function drawPost(ctx,p,draw){
+  const W=1080,P=48;let y=P;
+  const when=(p.date?dayLabel(p.date)+", "+weekday(p.date):"Waqıtı belgilenbegen")+(p.time?" · saat "+p.time:"")+" · "+(p.format||"Reels");
+  y+=slate(ctx,W,P,y,"Instagram · túsiriw tapsırması",p.title,when,draw)+24;
+  const sec=(label,text,mono)=>{
+    if(!text)return;
+    ctx.font=`${mono?"500":"500"} 29px ${FB}`;const ls=wrapLines(ctx,text,W-P*2-64);
+    const h=30+30+16+ls.length*42+30;
+    if(draw){
+      rr(ctx,P,y,W-P*2,h,20);ctx.fillStyle=IMG.card;ctx.fill();ctx.strokeStyle=IMG.line;ctx.lineWidth=2;ctx.stroke();
+      ctx.fillStyle=IMG.accent;ctx.font=`800 22px ${FB}`;ctx.fillText(label,P+32,y+30+22);
+      let yy=y+30+30+16;ctx.fillStyle=IMG.ink;ctx.font=`500 29px ${FB}`;
+      ls.forEach(l=>{yy+=36;ctx.fillText(l,P+32,yy);yy+=6});
+    }
+    y+=h+16;
+  };
+  sec("HÚK · BIRINSHI 3 SEKUND",p.hook);
+  sec("SENARIY",p.script||"Senariy ele jazılmaǵan.");
+  sec("MOBILOGRAFQA ESKERTPE",p.notes);
+  y+=20;
+  if(draw){const st=S[p.status]||S.idea;ctx.font=`600 22px ${FB}`;ctx.fillStyle=IMG.muted;ctx.fillText("Status: "+st.name+" · "+BR[branch].name+" Kontent Plan",P,y)}
+  return y+P;
+}
+function makeCanvas(drawFn){
+  const c=document.createElement("canvas");c.width=1080;c.height=10;
+  let ctx=c.getContext("2d");const h=drawFn(ctx,false);
+  c.height=Math.min(Math.ceil(h),14000);ctx=c.getContext("2d");
+  ctx.fillStyle=IMG.bg;ctx.fillRect(0,0,c.width,c.height);
+  drawFn(ctx,true);return c;
+}
+async function makePdf(drawFns){
+  try{await document.fonts.ready}catch(_){}
+  const J=window.jspdf&&window.jspdf.jsPDF;if(!J)throw new Error("nolib");
+  let pdf=null;
+  drawFns.forEach(fn=>{
+    const c=makeCanvas(fn);const w=c.width/2,h=c.height/2;
+    if(!pdf)pdf=new J({unit:"pt",format:[w,h],orientation:"portrait",compress:true});
+    else pdf.addPage([w,h],"portrait");
+    pdf.addImage(c.toDataURL("image/jpeg",0.9),"JPEG",0,0,w,h);
+  });
+  return pdf.output("blob");
+}
+let sharing=false;
+async function sharePdf(drawFns,name,caption){
+  if(sharing)return;sharing=true;toast("PDF tayarlanbaqta…");
+  try{
+    const blob=await makePdf(drawFns);
+    const file=new File([blob],name,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],text:caption});toast("Jiberildi");return}
+      catch(e){if(e&&e.name==="AbortError")return}
+    }
+    const dl=window.claude?await window.claude.use("downloads"):null;
+    if(dl){
+      try{const r=await dl.save({filename:name,data:blob});if(r&&r.status==="saved")toast("PDF saqlandı — Telegramda 📎 arqalı jiberiń");}
+      catch(e){if(e&&e.code!=="declined")toast("PDF saqlanbadı")}
+      return;
+    }
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("PDF júklendi — Telegramda 📎 arqalı jiberiń");
+  }catch(e){toast(e&&e.message==="nolib"?"Internet baylanısın tekserip, qayta basıń":"PDF jasalmadı")}
+  finally{sharing=false}
+}
+function slug(s){return String(s||"kontent").toLowerCase().replace(/[^a-z0-9áǵıńóúçşğ]+/gi,"-").replace(/^-|-$/g,"").slice(0,40)||"kontent"}
+// ---------- plan as a standalone HTML file (opens without Claude)
+function planHtml(list,title){
+  const e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const sorted=list.slice().sort((a,b)=>((a.date||"9")+(a.time||"99")).localeCompare((b.date||"9")+(b.time||"99")));
+  let last=null,body="";
+  sorted.forEach(p=>{
+    const k=p.date||"";
+    if(k!==last){body+=`<h2>${k?e(new Date(k+"T00:00").getDate()+" "+MONTHS[new Date(k+"T00:00").getMonth()]+" · "+weekday(k)):"Waqıtı belgilenbegen"}</h2>`;last=k}
+    const st=S[p.status]||S.idea;
+    body+=`<details class="c"><summary><div class="tg"><span class="f">${e(p.format||"Reels")}</span><span class="s" style="color:${ST_HEX[st.id]}">${e(st.name)}</span>${p.time?`<span class="t">${e(p.time)}</span>`:""}</div><h3>${e(p.title)}</h3>${p.hook?`<p class="h"><b>Húk · </b>${e(p.hook)}</p>`:""}<span class="m">Senariydi ashıw ▾</span></summary>`+
+      `<div class="l">Senariy</div><pre>${e(p.script||"Senariy ele jazılmaǵan.")}</pre>`+
+      (p.notes?`<div class="l">Mobilografqa eskertpe</div><pre>${e(p.notes)}</pre>`:"")+`</details>`;
+  });
+  if(!sorted.length)body="<p>Plan bos.</p>";
+  const css=`*{box-sizing:border-box}body{margin:0;background:#EEF0F3;color:#15171C;font:15px/1.45 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:0 16px 40px}.w{max-width:640px;margin:0 auto}header{background:#15171C;color:#EEF0F3;border-radius:14px;padding:18px;margin-top:14px}header small{opacity:.65;text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:700}header h1{margin:6px 0 4px;font-size:24px;line-height:1.1}header p{margin:0;opacity:.8;font-size:13px}h2{font-size:15px;margin:22px 0 8px}.c{background:#fff;border:1px solid #D9DDE3;border-radius:12px;padding:12px 14px;margin-bottom:10px}summary{list-style:none;cursor:pointer}summary::-webkit-details-marker{display:none}.tg{display:flex;gap:6px;flex-wrap:wrap}.tg span{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:6px}.f{background:${IMG.soft};color:${IMG.accent}}.s{border:1px solid currentColor}.t{background:#EEF0F3}h3{margin:8px 0 4px;font-size:16px}.h{margin:0;color:#5E6470;font-size:14px}.h b{color:${IMG.accent}}.m{display:inline-block;margin-top:8px;font-weight:700;font-size:13px;text-decoration:underline}details[open] .m{display:none}.l{margin-top:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#5E6470}pre{white-space:pre-wrap;font:inherit;font-size:14px;background:#EEF0F3;border-radius:8px;padding:12px;margin:6px 0 0;overflow-wrap:anywhere}`;
+  return `<!doctype html><html lang="kaa"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${e(title)}</title><style>${css}</style></head><body><div class="w"><header><small>Instagram · túsiriw kestesi</small><h1>${e(title)}</h1><p>${sorted.length} kontent · ${new Date().toLocaleDateString("ru-RU")} jaǵdayında</p></header>${body}</div></body></html>`;
+}
+async function shareHtml(list,title,name){
+  const blob=new Blob([planHtml(list,title)],{type:"text/html"});
+  const file=new File([blob],name,{type:"text/html"});
+  try{
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title});toast("Jiberildi");return}
+  }catch(e){if(e&&e.name==="AbortError")return}
+  const dl=window.claude?await window.claude.use("downloads"):null;
+  if(dl){try{const r=await dl.save({filename:name,data:blob});if(r&&r.status==="saved")toast("Fayl saqlandı — Telegramda 📎 arqalı jiberiń")}catch(e){if(e&&e.code!=="declined")toast("Saqlanbadı")}return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("Fayl júklendi — Telegramda 📎 arqalı jiberiń");
+}
+$("sharebtn").onclick=()=>shareHtml(posts,BR[branch].name+" Kontent Plan",BR[branch].file+".html");
+
+function render(){
+  counts(); renderFilters();
+  const list=posts.filter(p=>filter==="all"||p.status===filter);
+  if(!list.length){
+    $("board").innerHTML=`<div class="empty"><b>${posts.length?"Bul statusta kontent joq":"Plan ele bos"}</b>${posts.length?"Basqa statustı saylań.":"«Jańa kontent» túymesin basıp birinshi temanı qosıń: tema, húk, senariy hám túsiriw waqtı."}</div>`;
+    return;
+  }
+  const groups={};
+  list.forEach(p=>{const k=p.date||"none";(groups[k]=groups[k]||[]).push(p)});
+  const t=todayKey();
+  const keys=Object.keys(groups).filter(k=>k!=="none").sort();
+  const upcoming=keys.filter(k=>k>=t), past=keys.filter(k=>k<t).reverse();
+  const order=upcoming.concat(groups.none?["none"]:[],past);
+  $("board").innerHTML=order.map(k=>{
+    const items=groups[k].sort((a,b)=>(a.time||"99").localeCompare(b.time||"99"));
+    const title=k==="none"?"Waqıtı belgilenbegen":dayLabel(k);
+    const sub=k==="none"?"":weekday(k)+(k<t?" · ótken":"");
+    return `<section class="group${k===t?" today":""}"><h2><span>${esc(title)}</span><small>${esc(sub)} · ${items.length}</small></h2><div class="list">${items.map(card).join("")}</div></section>`;
+  }).join("");
+}
+
+// ---------- sheet
+function fillSelects(){
+  $("f-format").innerHTML=FORMATS.map(f=>`<option>${f}</option>`).join("");
+  $("f-status").innerHTML=STATUSES.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+}
+function openSheet(p){
+  editing=p?p.id:null;
+  $("sheet-title").textContent=p?"Kontentti ózgertiw":"Jańa kontent";
+  $("f-title").value=p?.title||""; $("f-hook").value=p?.hook||""; $("f-script").value=p?.script||"";
+  $("f-date").value=p?.date||todayKey(); $("f-time").value=p?.time||"";
+  $("f-format").value=p?.format||"Reels"; $("f-status").value=p?.status||"idea"; $("f-notes").value=p?.notes||"";
+  const del=$("del"); del.hidden=!p; del.textContent="Óshiriw"; del.dataset.arm="";
+  $("scrim").hidden=false; setTimeout(()=>$("f-title").focus(),50);
+}
+function closeSheet(){$("scrim").hidden=true;editing=null}
+
+$("fab").onclick=()=>openSheet(null);
+$("cancel").onclick=closeSheet;
+$("scrim").addEventListener("click",e=>{if(e.target===$("scrim"))closeSheet()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("scrim").hidden)closeSheet()});
+$("del").onclick=async()=>{
+  const b=$("del");
+  if(!b.dataset.arm){b.dataset.arm="1";b.textContent="Anıq óshiremiz be?";return}
+  const id=editing; closeSheet();
+  try{await store.remove(id);toast("Óshirildi")}catch(e){toast("Óshirilmedi: "+(e.message||e.code))}
+};
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const prev=posts.find(p=>p.id===editing);
+  const data={title:$("f-title").value.trim(),hook:$("f-hook").value.trim(),script:$("f-script").value,
+    date:$("f-date").value,time:$("f-time").value,format:$("f-format").value,status:$("f-status").value,
+    notes:$("f-notes").value.trim(),example:false,createdAt:prev?.createdAt||Date.now(),updatedAt:Date.now()};
+  if(!data.title){$("f-title").focus();return}
+  const id=editing||("p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6));
+  closeSheet();
+  try{await store.save(id,data);toast(prev?"Saqlandı":"Qosıldı")}catch(err){toast("Saqlanbadı: "+(err.message||err.code))}
+});
+
+// ---------- board events
+$("filters").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(!b)return;filter=b.dataset.f;render()});
+$("board").addEventListener("change",async e=>{
+  const i=e.target.closest("input[data-date]");if(!i||!i.value)return;
+  const p=posts.find(x=>x.id===i.dataset.date);if(!p||p.date===i.value)return;
+  const {id,...rest}=p;
+  try{await store.save(id,{...rest,date:i.value,updatedAt:Date.now()});toast("Sánesi ózgerdi: "+dayLabel(i.value))}catch(err){toast("Saqlanbadı")}
+});
+$("board").addEventListener("click",e=>{const l=e.target.closest(".qbtn input[type=date]");if(l&&l.showPicker){try{l.showPicker()}catch(_){}}});
+$("board").addEventListener("click",async e=>{
+  const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.delete){
+    if(!t.classList.contains("arm")){t.classList.add("arm");t.querySelector("span").textContent="Anıq pa?";setTimeout(()=>{if(t.isConnected){t.classList.remove("arm");t.querySelector("span").textContent="Óshiriw"}},3000);return}
+    try{await store.remove(t.dataset.delete);toast("Óshirildi")}catch(err){toast("Óshirilmedi")}
+    return;
+  }
+  if(t.dataset.toggle){const id=t.dataset.toggle;open.has(id)?open.delete(id):open.add(id);render();return}
+  if(t.dataset.edit){openSheet(posts.find(p=>p.id===t.dataset.edit));return}
+  if(t.dataset.img){
+    const p=posts.find(x=>x.id===t.dataset.img);if(!p)return;
+    shareHtml([p],p.title,slug(p.title)+".html");
+    return;
+  }
+  if(t.dataset.copy){
+    const p=posts.find(x=>x.id===t.dataset.copy);
+    const txt=postText(p);
+    try{await navigator.clipboard.writeText(txt);toast("Kóshirildi")}
+    catch(_){const pre=t.closest(".detail").querySelector(".script");const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Tekst belgilendi — kóshirip alıń")}
+    return;
+  }
+  if(t.dataset.st){
+    const p=posts.find(x=>x.id===t.dataset.id);if(!p||p.status===t.dataset.st)return;
+    const {id,...rest}=p;
+    try{await store.save(id,{...rest,status:t.dataset.st,updatedAt:Date.now()});toast(S[t.dataset.st].name)}catch(err){toast("Saqlanbadı")}
+  }
+});
+
+// ---------- storage: shared db, fallback to this browser
+const SNAPSHOT={"nokis": [{"createdAt": 1793016931859, "date": "2026-11-01", "example": false, "format": "Post", "hook": "«Noyabr baslandı. Sizdiń bul aydaǵı maqsetińiz qanday? 🎯»", "notes": "Rubrika: Motivaciya", "script": "Foto: oqıw orayınıń ishi, tańǵı jaqtılıqta.\nÚstindegi jazıw: «NOYABR · JAŃA MAQSET»\n\nCAPTION: Jańa ay, jańa múmkinshilik! Bul ay ushın bir maqsetińizdi kommentariyge jazıń, biz sizdi qollap-quwatlaymız 💪\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Noyabr: jańa ay, jańa maqset", "updatedAt": 1793016931859, "id": "nks-2026-11-01"}, {"createdAt": 1793016931860, "date": "2026-11-02", "example": false, "format": "Karusel", "hook": "«Real Education komandasında kim kim? Tabıp kóriń 😄»", "notes": "Rubrika: TREND · Kollektiv\nTitullardı aldınnan xızmetkerlerdiń ózinen sorap alıń, hesh kimdi renjitpesin. Bir fon, bir stil.", "script": "Fotolardan turatuǵın trend-karusel:\n1-slayd: pútkil kollektiv birge (keń kadr)\n2–8-slaydlar: hár slaydta bir xızmetker hám kúlkili «titul»: «Eń kóp kofe ishetuǵın», «Hámmeden erte keletuǵın», «Eń kóp kúletuǵın», «Barlıq sorawǵa juwabı bar»…\n9-slayd: «Siz qaysı ustazdı tanıysız? 👇»\n\nCAPTION: Bizdiń komanda usınday 😄 Siz qaysı ustazdan sabaq alǵansız? Belgileń 👇", "status": "idea", "time": "", "title": "TREND: Kollektiv «Kim kim?»", "updatedAt": 1793016931860, "id": "nks-2026-11-02"}, {"createdAt": 1793016931865, "date": "2026-11-07", "example": false, "format": "Karusel", "hook": "«SAT tek «aqıllılar» ushın ba? 5 ańızdı buzamız 👉»", "notes": "Rubrika: Paydalı · Karusel\nShınlıqlardı SAT ustazı tastıyıqlasın.", "script": "1-slayd: húk\n2–6-slaydlar: ańız ❌ → shınlıq ✅\n7-slayd: «SAT toparı · Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1»", "status": "idea", "time": "", "title": "SAT haqqında 5 ańız", "updatedAt": 1793017717986, "id": "nks-2026-11-07"}, {"createdAt": 1793016931866, "date": "2026-11-08", "example": false, "format": "Reels", "hook": "«Ol SAT-tan [ball] alǵan. Endi sizge úyretedi 👀»", "notes": "Rubrika: Ustazlar\n[Maǵlıwmatlardı ustazdan alıw.]", "script": "Uzınlıǵı: 30–40 sek\n1-kadr: Ustaz doskaǵa óz SAT ballın jazadı. Húk teksti.\n2-kadr: Kameraǵa: atı, tájiriybesi (10 sek).\n3-kadr: Sabaqtan kadr: oqıwshılarǵa másele túsindirip tur.\n4-kadr: Kameraǵa: «Abiturientlerge bir keńesim: …»\nTekst: «SAT · [atı]»\n\nCAPTION: Tanısıń, [atı] 👋 SAT toparına: Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Ustaz benen tanısıw: SAT ustazı", "updatedAt": 1793017717986, "id": "nks-2026-11-08"}, {"createdAt": 1793016931867, "date": "2026-11-09", "example": false, "format": "Reels", "hook": "«Ustazlarımız mektepte qanday bolǵan eken? 😂»", "notes": "Rubrika: TREND · Muǵallimler\nEski fotolardı ustazlardan alıń, qálemegenin májbúrlemeń.", "script": "Uzınlıǵı: 20–30 sek · trend muzıkası\nHár ustaz ushın 2 kadr: eski mektep fotosı (ekranda 1 sek) → házir sol pozada kameraǵa túsedi + kúlkili jazıw: «Matematikadan 3 alǵan… házir matematika ustazı 😄»\n5–6 ustaz.\nAqırǵı kadr: hámmesi birge.\n\nCAPTION: Qaysı ustazdı tanımadıńız? 😂 👇", "status": "idea", "time": "", "title": "TREND: Muǵallimler «Oqıwshı waqtımda vs Házir»", "updatedAt": 1793017717986, "id": "nks-2026-11-09"}, {"createdAt": 1793016931868, "date": "2026-11-10", "example": false, "format": "Reels", "hook": "«10 sekundta 3 koreys sózin úyrenesiz 🇰🇷»", "notes": "Rubrika: Xızmetler · Paydalı\n[Topar waqtın tastıyıqlaw.]", "script": "Uzınlıǵı: 20–30 sek\n1-kadr: Ustaz: «Annyeonghaseyo!» Tekst: húk\n2–4-kadrlar: 3 kúndelikli sóz: ustaz aytadı, oqıwshılar qaytalaydı, ekranda jazıwı hám mánisi.\n5-kadr: «Taǵı úyreniwdi qáleyseń be? Koreys tili toparı ashıq.»\n\nCAPTION: Qaysı sózdi bilgen edińiz? 🇰🇷\nKoreys tili toparı: [waqıtları]\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Koreys tili: 3 sózdi úyreniń", "updatedAt": 1793017717986, "id": "nks-2026-11-10"}, {"createdAt": 1793016931869, "date": "2026-11-11", "example": false, "format": "Reels", "hook": "«Milliy sertifikat haqqında eń kóp beriletuǵın 3 soraw ❓»", "notes": "Rubrika: Paydalı\n[Juwaplardı ustaz tastıyıqlasın.]", "script": "Uzınlıǵı: 30–45 sek\nFormat: oqıwshı soraw beredi, ustaz qısqa juwap beredi (hár biri 10 sek).\nEkranda hár sorawdıń teksti.\nAqırında ustaz: «Basqa sorawıńız bolsa, kommentariyge jazıń.»\n\nCAPTION: Milliy sertifikatqa tayarlıq · Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Milliy sertifikat: 3 soraw, 3 juwap", "updatedAt": 1793017717986, "id": "nks-2026-11-11"}, {"createdAt": 1793016931870, "date": "2026-11-12", "example": false, "format": "Reels", "hook": "«Nókis jaslarınan soradıq: qaysı tildi úyreniwdi qáleyseń? 🎤»", "notes": "Rubrika: Interv'yu\nEń kúshli formatıńız (264 mıń kóriw) usı. Ruqsat alıń.", "script": "Uzınlıǵı: 30–45 sek · mikrofon menen\nOray aldında yamasa kóshede 5–6 jasqa bir soraw: «Qaysı tildi úyreniwdi qáleyseń hám nege?»\nKúlkili hám qızıqlı juwaplar, tez montaj.\nAqırında: «Al biz hámmesin úyretemiz 😉»\n\nCAPTION: Siz qaysı tildi tańlar edińiz? 👇\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Kóshe interv'yu: «Qaysı tildi úyrenbekshisiz?»", "updatedAt": 1793017717986, "id": "nks-2026-11-12"}, {"createdAt": 1793016931871, "date": "2026-11-13", "example": false, "format": "Reels", "hook": "«08:00 den 20:00 ge shekem. Bir kún bizde 30 sekundta ⏱»", "notes": "Rubrika: Oray turmısı\nKadrǵa túsetuǵın oqıwshılardan (kámeletke tolmaǵanlardıń ata-anasınan) ruqsat alıń.", "script": "Uzınlıǵı: 30 sek · tez montaj, saat kórsetkishi ekranda\n08:00 esikler ashıldı → 09:00 abiturientler → 12:00 tánepis → 14:30 IELTS → 17:00 koreys tili → 20:00 esik jabıldı.\nAqırǵı tekst: «Erteń taǵı kútemiz!»", "status": "idea", "time": "", "title": "Bir kún Real Education-da", "updatedAt": 1793017717986, "id": "nks-2026-11-13"}, {"createdAt": 1793016931872, "date": "2026-11-14", "example": false, "format": "Reels", "hook": "«IELTS Speaking-te ball joǵaltıwdıń eń kóp tarqalǵan sebebi 🎤»", "notes": "Rubrika: Muǵallim · Sultanbek\nOnıń ázil stilinde túsiriń, ssenariydi ózi menen birge pisiklep alıń.", "script": "Uzınlıǵı: 40–50 sek · Collab: @real_education_nks + @teachersultanbek\n1-kadr: Sultanbek kameraǵa óz stilinde: húk.\n2-kadr (kúlkili): Ol «qorqqan oqıwshı» rolinde: «Yes. No. I don't know.» 😅\n3-kadr: «Durısı mınaday»: sol sorawǵa 2–3 gáp penen juwap, «because…», «for example…» sózleri menen.\n4-kadr: Kameraǵa: «Qátelikten qorqpań, pikirińizdi dawam ettiriń.»\nTekst: «IELTS, but without the boring stuff 🔥»\n\nCAPTION: Teacher Sultanbek túsindiredi ✅\nSultanbek muǵallimniń IELTS toparına: Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Sultanbek muǵallim: IELTS-tıń 1 sırı", "updatedAt": 1793017717986, "id": "nks-2026-11-14"}, {"createdAt": 1793016931873, "date": "2026-11-15", "example": false, "format": "Reels", "hook": "«SAT-tan [ball]. Bul nátiyjege qalay jetti? 👇»", "notes": "Rubrika: Nátiyje\nKadrǵa túsetuǵın oqıwshılardan (kámeletke tolmaǵanlardıń ata-anasınan) ruqsat alıń. [Haqıyqıy nátiyje menen toltırıń.]", "script": "Uzınlıǵı: 30–40 sek · mikrofon menen interv'yu\n1-kadr: Oqıwshı telefondaǵı nátiyjesin kórsetedi. Húk teksti.\n2–4-kadrlar: Sorawlar: «Qansha waqıt tayarlandıń?», «Eń qıyını ne boldı?», «Basqalarǵa 1 keńes?»\n5-kadr: Ustazı menen birge.\n\nCAPTION: [Atı] SAT-tan [ball] aldı 🎉\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Oqıwshı nátiyjesi: SAT", "updatedAt": 1793017717986, "id": "nks-2026-11-15"}, {"createdAt": 1793016931874, "date": "2026-11-16", "example": false, "format": "Reels", "hook": "«Real Education-da hár kúni bolatuǵın nárseler 😂»", "notes": "Rubrika: TREND · Kollektiv\n«Registraciya» videosınday ázil formatı (45,8 mıń kóriw).", "script": "Uzınlıǵı: 20–30 sek · skech\nHár sahna 3–4 sek:\n• Administrator 100-ret: «Qaysı toparǵa?»\n• Tánepiste kofe ushın gezek\n• «Wi-Fi paroli qanday?»\n• Keshki toparǵa juwırıp kelgen oqıwshı\n• Ustaz: «Úy tapsırması qayda?» — oqıwshı: «…» 😅\n\nCAPTION: Siz qaysısın kórdińiz? 😂 👇", "status": "idea", "time": "", "title": "TREND: Kollektiv «Bizde hár kúni…»", "updatedAt": 1793017717986, "id": "nks-2026-11-16"}, {"createdAt": 1793016931875, "date": "2026-11-17", "example": false, "format": "Reels", "hook": "«Koreys tilin kim úyretedi? Tanısıń 🇰🇷»", "notes": "Rubrika: Ustazlar\n[Maǵlıwmatlardı ustazdan alıw.]", "script": "Uzınlıǵı: 30 sek\n1-kadr: Ustaz koreysshe sálemlesedi.\n2-kadr: Atı, tájiriybesi, sertifikatı (TOPIK).\n3-kadr: Sabaqtan kadr.\n4-kadr: «Koreysshe sóylewdi qáleseńiz, kútemen!»\n\nCAPTION: Tanısıń, [atı] 🇰🇷\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Ustaz benen tanısıw: Koreys tili", "updatedAt": 1793017717986, "id": "nks-2026-11-17"}, {"createdAt": 1793016931876, "date": "2026-11-18", "example": false, "format": "Reels", "hook": "«Bul ibaralardı bilmeseńiz, dúkanda da qıynalasız 😅»", "notes": "Rubrika: Paydalı", "script": "Uzınlıǵı: 30 sek · skech\nHár ibara ushın kishkene sahna: dúkanda, avtobusta, telefonda. Oqıwshı qátesin aytadı ❌, ustaz durısın kórsetedi ✅.\nAqırında: «Rus tili kursı ashıq.»\n\nCAPTION: Qaysı ibaranı bilmey júr edińiz? 👇\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Rus tili: kúnde kerek 3 ibara", "updatedAt": 1793017717986, "id": "nks-2026-11-18"}, {"createdAt": 1793016931877, "date": "2026-11-19", "example": false, "format": "Reels", "hook": "«Real Education maǵan neni úyretti? Oqıwshılar aytadı 💬»", "notes": "Rubrika: TREND · Oqıwshılar\nKadrǵa túsetuǵın oqıwshılardan (kámeletke tolmaǵanlardıń ata-anasınan) ruqsat alıń. Gáplerdi oqıwshılar ózleri jazsın.", "script": "Uzınlıǵı: 30 sek · jumsaq trend muzıkası\nHár oqıwshı qolındaǵı qaǵazdı kameraǵa buradı: «Bul jerde men … úyrendim» (qorqpay sóylewdi, waqıttı basqarıwdı, ózime isenimdi…)\n6–7 oqıwshı, hár biri 3 sek.\nAqırǵı kadr: hámmesi birge kúlip.\n\nCAPTION: Siz neni úyrendińiz? 👇", "status": "idea", "time": "", "title": "TREND: Oqıwshılar «Real Education maǵan neni úyretti?»", "updatedAt": 1793017717986, "id": "nks-2026-11-19"}, {"createdAt": 1793016931878, "date": "2026-11-20", "example": false, "format": "Reels", "hook": "«Qıdırniyaz aǵa oqıwshılarǵa bir gáp ayttı. Bul gáp sizge de tiyisli 💫»", "notes": "Rubrika: Ilham · Qıdırniyaz\nUshırasıw kúnin aldınnan kelisiń. Sózin ózi aytsın, tekst jattatpań.", "script": "Uzınlıǵı: 45–60 sek · Collab: @real_education_nks + @qidirniyaz.babaniyazov\n1-kadr: Qıdırniyaz aǵa klasqa kiredi, oqıwshılar qol shapalaqlaydı.\n2-kadr: Ol oqıwshılarǵa soraw beredi: «Nege oqıp atırsızlar?» — 2–3 oqıwshınıń juwabı.\n3-kadr: Onıń bilim haqqındaǵı ilhamlandıratuǵın sózi (20–30 sek), jumsaq muzıka astında.\n4-kadr: Kameraǵa: juwmaqlawshı bir gáp.\nTekst: «Real Education · Bilim — keleshek»\n\nCAPTION: Qıdırniyaz Babaniyazov Real Education oqıwshıları menen ushırastı 💫\nSiz bul gápke qosılasız ba? 👇", "status": "idea", "time": "", "title": "Qıdırniyaz aǵa oqıwshılar menen", "updatedAt": 1793017717986, "id": "nks-2026-11-20"}, {"createdAt": 1793016931879, "date": "2026-11-21", "example": false, "format": "Reels", "hook": "«Balańız haqıyqatında alǵa ketip atır ma? 3 belgi 👀»", "notes": "Rubrika: Ata-analar ushın\n[Esabat tártibin tastıyıqlaw.]", "script": "Uzınlıǵı: 30–40 sek\nUstaz kameraǵa 3 belgini aytadı, hár birine sabaqtan bir kadr.\nAqırında: «Bizde hár ay ata-anaǵa esabat beriledi.»\n\nCAPTION: Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Ata-anaǵa: balańızdıń ósimin qalay kóriw kerek?", "updatedAt": 1793017717986, "id": "nks-2026-11-21"}, {"createdAt": 1793016931880, "date": "2026-11-22", "example": false, "format": "Reels", "hook": "«Milliy sertifikat qolında. Onıń birinshi reakciyası 😍»", "notes": "Rubrika: Nátiyje\nKadrǵa túsetuǵın oqıwshılardan (kámeletke tolmaǵanlardıń ata-anasınan) ruqsat alıń.", "script": "Uzınlıǵı: 20–30 sek\n1-kadr: Oqıwshı nátiyjeni ashadı (shın reakciya).\n2-kadr: Ustazı hám klasstaslar qutlıqlaydı.\n3-kadr: Oqıwshı kameraǵa: «Bul nátiyje ushın … raxmet!»\n\nCAPTION: Qutlıqlaymız! [Atı] Milliy sertifikattan [nátiyje] aldı 🎉\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Oqıwshı nátiyjesi: Milliy sertifikat", "updatedAt": 1793017717986, "id": "nks-2026-11-22"}, {"createdAt": 1793016931881, "date": "2026-11-23", "example": false, "format": "Reels", "hook": "«Hár ustazdıń óz «sóz-dúrdanası» bar 😂»", "notes": "Rubrika: TREND · Muǵallimler\nGáplerdi oqıwshılardan sorap jıynań.", "script": "Uzınlıǵı: 20–30 sek · skech\nHár ustaz kameraǵa sabaqta eń kóp aytatuǵın gápin aytadı: «Telefonlar sumkaǵa!», «Úy tapsırması qayda?», «Bul imtixanda túsedi!»…\nOqıwshılardıń reakciyası.\n\nCAPTION: Ustazıńızdıń sózin kommentariyge jazıń 👇😂", "status": "idea", "time": "", "title": "TREND: Muǵallimler «Ustazlarımız ne dep aytadı?»", "updatedAt": 1793017717986, "id": "nks-2026-11-23"}, {"createdAt": 1793016931882, "date": "2026-11-24", "example": false, "format": "Reels", "hook": "«Sınaq sabaqqa keldim. Mine ne boldı 👀»", "notes": "Rubrika: Jazılıw", "script": "Uzınlıǵı: 30–40 sek · POV formatı\nJańa oqıwshı sıpatında: esikten kiriw → administrator kútip aladı → dárejeni anıqlaw testi → ustaz benen sáwbet → sabaqqa qatnasıw.\nAqırǵı tekst: «Sınaq sabaq — biypul 🎁»\n\nCAPTION: Dárejeńizdi biypul anıqlaymız ✅\nJazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Biypul sınaq sabaq: qalay ótedi?", "updatedAt": 1793017717986, "id": "nks-2026-11-24"}, {"createdAt": 1793016931883, "date": "2026-11-25", "example": false, "format": "Karusel", "hook": "«Writing ballıńızdı kóteretuǵın 5 sóz ✍️👉»", "notes": "Rubrika: Paydalı · Karusel\nSózlerdi IELTS ustazı saylasın.", "script": "1-slayd: húk\n2–6-slaydlar: sóz + mánisi + mısal gáp\n7-slayd: «IELTS toparı · Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1»", "status": "idea", "time": "", "title": "IELTS Writing: 5 paydalı baylanıstırıwshı sóz", "updatedAt": 1793017717986, "id": "nks-2026-11-25"}, {"createdAt": 1793016931884, "date": "2026-11-26", "example": false, "format": "Reels", "hook": "«Real Education komandası: aldın hám házir 😍»", "notes": "Rubrika: TREND · Kollektiv\n[Oraydıń ashılǵan jılı boyınsha jıldı qoyıń.]", "script": "Uzınlıǵı: 15–20 sek · trend muzıkası\nKollektivtiń eski fotosı → muzıkanıń bitinde sol jerde, sol pozada jańa video.\nBir neshe jup.\nAqırǵı tekst: «Bizge isengenińiz ushın raxmet ❤️»", "status": "idea", "time": "", "title": "TREND: Kollektiv «Aldın hám házir»", "updatedAt": 1793017717986, "id": "nks-2026-11-26"}, {"createdAt": 1793016931885, "date": "2026-11-27", "example": false, "format": "Reels", "hook": "«Nege balamdı Real Education-ǵa berdim? Ana aytadı 💬»", "notes": "Rubrika: Isenim\nTekst jattatpań, shın sóylesin.", "script": "Uzınlıǵı: 30 sek\nAta-ana kameraǵa: balası qashannan beri oqıydı, ne ózgerdi, nesi unaydı.\nAqırında balası menen birge kadrda.\n\nCAPTION: Pikirińiz ushın raxmet ❤️", "status": "idea", "time": "", "title": "Ata-ana pikiri", "updatedAt": 1793017717986, "id": "nks-2026-11-27"}, {"createdAt": 1793016931886, "date": "2026-11-28", "example": false, "format": "Reels", "hook": "«Noyabrde bizde ne boldı? 1 ay 30 sekundta 📸»", "notes": "Rubrika: Juwmaq", "script": "Uzınlıǵı: 30 sek · tez montaj\nAy ishindegi eń jaqsı kadrlar: sabaqlar, nátiyjeler, trendler, Qıdırniyaz aǵa menen ushırasıw.\nAqırǵı tekst: «Dekabrde taǵı da kóp jańalıq 🔥»", "status": "idea", "time": "", "title": "Noyabrdiń eń jaqsı sátleri", "updatedAt": 1793017717986, "id": "nks-2026-11-28"}, {"createdAt": 1793016931887, "date": "2026-11-29", "example": false, "format": "Reels", "hook": "«Dekabr toparlarına orınlar sheklengen ⏳»", "notes": "Rubrika: Jazılıw\n[Sánelerdi hám orın sanın administratordan alıw.]", "script": "Uzınlıǵı: 20 sek\nAdministrator kameraǵa: qaysı toparlar ashılıp atır, qashan baslanadı (ekranda dizim).\nSońınan klasslardan kadrlar.\nAqırǵı tekst: telefon / DM.\n\nCAPTION: Jańa toparlar 1-dekabrden! Jazılıw: DM-ge «Kurs» dep jazıń yamasa Telegram: t.me/real_education_nks1", "status": "idea", "time": "", "title": "Dekabr toparlarına jazılıw", "updatedAt": 1793017717986, "id": "nks-2026-11-29"}, {"createdAt": 1793016931888, "date": "2026-11-30", "example": false, "format": "Reels", "hook": "«Noyabr tamamlandı. Raxmet ❤️»", "notes": "Rubrika: Juwmaq\n[Sanın haqıyqıy maǵlıwmat penen toltırıń.]", "script": "Uzınlıǵı: 15–20 sek\nPútkil kollektiv birge kameraǵa: «Raxmet!» dep qol bulǵaydı. Astında: «Bir ayda [...] oqıwshı jańa nátiyjege jetti».\n\nCAPTION: Dekabrde de birgemiz! 💛", "status": "idea", "time": "", "title": "Noyabrge raxmet", "updatedAt": 1793017717986, "id": "nks-2026-11-30"}], "bumer": [{"createdAt": 1793012129961, "date": "2026-10-27", "example": false, "format": "Reels", "hook": "«7 jaslı balalar inglisshe ózin tanıstıradı. Tıńlap kóriń 😍»", "notes": "Rubrika: Balalar kadrda\nKadrǵa túsetuǵın balalardıń ata-anasınan ruqsat alıń. Gáplerdi yadlatpań, ápiwayı bolsın. Qáte aytsa da kesip taslamań, ol tábiyiy kórinedi.", "script": "Uzınlıǵı: 30–40 sek\n1-kadr: Ustaz kameraǵa: «Bizdiń kishkene oqıwshılarımız ózin inglisshe tanıstıradı.»\n2–6-kadrlar: 4–5 bala kezek penen: «My name is... I am ... years old. I like...» (hár biri 5 sek)\n7-kadr: Hámmesi birge: «Welcome to Real Education!»\nTekst: «Real Education Kids · Inglis tili»\n\nCAPTION: Balalarımız inglisshe sóylep atır 🇬🇧 Siziń balańız da usılay sóylesin desez, sınaq sabaqqa jazılıń: +998 (90) 708-00-15", "status": "idea", "time": "", "title": "Balalar inglisshe tanısadı", "updatedAt": 1793012129961, "id": "kids-2026-10-27"}, {"createdAt": 1793012129962, "date": "2026-10-28", "example": false, "format": "Karusel", "hook": "«Balańız ushın 3 baǵdar. Qaysısı kerek? 👉»", "notes": "Rubrika: Xızmetler\n[Jas toparları, sabaq kúnleri hám bahalardı filialdan alıw.]", "script": "1-slayd: «Real Education Kids · Bumer filialı»\n2-slayd: Inglis tili, neshe jastan, háptesine neshe ret\n3-slayd: Rus tili\n4-slayd: Matematika\n5-slayd: «Biypul sınaq sabaq · +998 (90) 708-00-15»\n\nCAPTION: Balańızdıń jasına hám dárejesine qaray topar tańlaymız. Qaysı kurs qızıqtıradı? Kommentariyge jazıń 👇", "status": "idea", "time": "", "title": "Bumer filialında qanday kurslar bar?", "updatedAt": 1793012129962, "id": "kids-2026-10-28"}, {"createdAt": 1793012129970, "date": "2026-11-06", "example": false, "format": "Reels", "hook": "«Balalardan soradıq: «Úlken bolǵanda kim bolasań?» 😄»", "notes": "Rubrika: Balalar kadrda\nKadrǵa túsetuǵın balalardıń ata-anasınan ruqsat alıń. Eń kóp tarqalatuǵın format.", "script": "4–5 balaǵa bir soraw, inglisshe yamasa rusha juwap beredi: «I want to be a doctor!»\nKúlkili hám jaqsı juwaplar.\nTekst: «Bizdiń keleshek 💫»", "status": "idea", "time": "", "title": "Balalardan soraw: Ne bolıwdı qáleyseń?", "updatedAt": 1793012129970, "id": "kids-2026-11-06"}, {"createdAt": 1793012129973, "date": "2026-11-11", "example": false, "format": "Reels", "hook": "«Balańız bunı bilse, klasta eń tez esaplaytuǵın boladı 🤯»", "notes": "Rubrika: Paydalı sabaq", "script": "Bala yamasa ustaz doskada kórsetedi: 11 × 23 → 2_(2+3)_3 = 253.\nEki mısal, keyin kórermenge soraw: «11 × 45 = ? 👇»", "status": "idea", "time": "", "title": "Matematika tryugi: 11-ge kóbeytiw", "updatedAt": 1793012129973, "id": "kids-2026-11-11"}, {"createdAt": 1793012129976, "date": "2026-11-16", "example": false, "format": "Reels", "hook": "«1-sentyabrde hám búgin: ayırmashılıqtı kóriń 😮»", "notes": "Rubrika: Oqıwshı tabısı\n[Haqıyqıy burınǵı video bolsa ǵana túsiriń.] Kadrǵa túsetuǵın balalardıń ata-anasınan ruqsat alıń.", "script": "Bir balanıń birinshi sabaqtaǵı videosı (uyalıp tur) hám búgingi videosı (erkin sóylep tur). Eki kadrdı salıstırıw.\nTekst: «2 ay · Real Education Kids»", "status": "idea", "time": "", "title": "Aldın hám keyin", "updatedAt": 1793012129976, "id": "kids-2026-11-16"}, {"createdAt": 1793012129979, "date": "2026-11-19", "example": false, "format": "Post", "hook": "«Balańız qaysı toparǵa tuwra keledi? Biypul anıqlaymız 🎁»", "notes": "Rubrika: Jazılıw", "script": "Dizayn: «BIYPUL SINAQ SABAQ» + balalar fotosı.\n\nCAPTION: Sınaq sabaqta:\n✅ Balańızdıń dárejesin anıqlaymız\n✅ Ustaz benen tanısasız\n✅ Tuwra kelgen toparǵa jazamız\nJazılıw: +998 (90) 708-00-15", "status": "idea", "time": "", "title": "Biypul sınaq sabaqqa shaqırıw", "updatedAt": 1793012129979, "id": "kids-2026-11-19"}], "shimbay": [{"createdAt": 1792999309748, "date": "2026-10-27", "example": false, "format": "Karusel", "hook": "«Shımbayda 8 pánnen tayarlıq. Balańızǵa qaysısı kerek? 👉»", "notes": "Rubrika: Xızmetler\nDizayn: hár slaydta bir reń, úlken jazıw, pán ikonkası. Real Education sarı reńi.", "script": "1-slayd: «Shımbay filialında 8 pán» + filial fotosı\n2-slayd: Matematika · Fizika\n3-slayd: Ximiya · Biologiya\n4-slayd: Inglis tili · Rus tili\n5-slayd: Túrk tili · Qaraqalpaq tili\n6-slayd: «Sabaqlar qaraqalpaq tilinde túsindiriledi»\n7-slayd: «Sınaq sabaqqa jazılıw: +998 (94) 443-11-33 · +998 (93) 558-22-11»\n\nCAPTION: Shımbay filialımızda 8 pánnen tayarlıq bar. Qaysı pán sizge kerek? Kommentariyge jazıń 👇", "status": "idea", "time": "", "title": "Shımbay filialında qanday pánler bar?", "updatedAt": 1792999309748, "id": "sh-2026-10-27"}, {"createdAt": 1792999309750, "date": "2026-10-30", "example": false, "format": "Karusel", "hook": "«Shımbaylı ata-analar nege bizdi tańlap atır? 5 sebep 👉»", "notes": "Rubrika: Brend\nSaqlaw (save) kóp bolatuǵın format.", "script": "1-slayd: húk\n2-slayd: Úyińizge jaqın: jolǵa waqıt hám pul ketpeydi\n3-slayd: Sabaqlar qaraqalpaq tilinde\n4-slayd: 8 pán + sertifikat tayarlıǵı bir jerde\n5-slayd: Real Education sapası: Nókistegidey programma\n6-slayd: Biypul sınaq sabaq\n7-slayd: Baylanıs: +998 (94) 443-11-33 · +998 (93) 558-22-11", "status": "idea", "time": "", "title": "Shımbay filialın tańlawdıń 5 sebebi", "updatedAt": 1792999309750, "id": "sh-2026-10-30"}, {"createdAt": 1792999309751, "date": "2026-10-31", "example": false, "format": "Post", "hook": "«Balańız 9 ay boyı biypul oqıy aladı. Shártleri ápiwayı.»", "notes": "Rubrika: Sociallıq juwapkershilik\nFotoda hesh qanday balanıń betin kórsetpeń. Tek dizayn yamasa filial fotosı. Shártlerin filialdan anıq tastıyıqlaw.", "script": "Ápiwayı, tınısh dizayn: «9 AY BIYPUL BILIM» úlken jazıw, astında qısqa túsindirme.\n\nCAPTION: Kambaǵallıq reestrine kiritilgen shańaraqlardıń perzentleri Real Education Shımbay filialında 9 ay dawamında biypul bilim ala aladı ✅\nQalay jazılıw kerek? Bizge qońıraw etiń: +998 (94) 443-11-33 · +998 (93) 558-22-11", "status": "idea", "time": "", "title": "9 ay biypul bilim", "updatedAt": 1792999309751, "id": "sh-2026-10-31"}, {"createdAt": 1792999309755, "date": "2026-11-07", "example": false, "format": "Karusel", "hook": "«Shımbay filialında bir kún qalay ótedi? Kórip shıǵıń 👉»", "notes": "Rubrika: Filial kúndeligi\nBir kún ishinde fotolardı túsirip alıw. Oqıwshılardıń ata-anasınan ruqsat.", "script": "6–8 foto, hár birinde qısqa jazıw:\n«08:00 · Esikler ashıldı» → «Matematika sabaǵı» → «Tánepis» → «14:30 · IELTS toparı» → «Keshki toparlar» → «Erteń taǵı kútemiz!»", "status": "idea", "time": "", "title": "Bir kún Shımbay filialında (fotolar)", "updatedAt": 1792999309755, "id": "sh-2026-11-07"}, {"createdAt": 1792999309757, "date": "2026-11-11", "example": false, "format": "Karusel", "hook": "«Testte balldı joǵaltatuǵın 5 qáte. Abiturient, saqlap qoy 📌»", "notes": "Rubrika: Abiturientler\nKeńeslerdi abiturient ustazı tastıyıqlasın.", "script": "1-slayd: húk\n2-slayd: Waqıttı bólistiriw\n3-slayd: Qıyın sorawda toqtap qalmaw\n4-slayd: Hár kúni test islew ádeti\n5-slayd: Qátelerdi analiz qılıw\n6-slayd: Uyqı hám dem alıw\n7-slayd: «Abiturientler ushın toparlar: +998 (94) 443-11-33 · +998 (93) 558-22-11»", "status": "idea", "time": "", "title": "Abiturientler: test tapsırıwǵa 5 keńes", "updatedAt": 1792999309757, "id": "sh-2026-11-11"}, {"createdAt": 1792999309759, "date": "2026-11-14", "example": false, "format": "Post", "hook": "«Inglis, rus pa yamasa túrk tili me? Dawıs beriń 👇»", "notes": "Rubrika: Interaktiv\nKommentariylerge hámmesine juwap beriń.", "script": "Ápiwayı dizayn: úsh bayraq hám úsh tildiń atı.\n\nCAPTION: Siz qaysı tildi úyrenbekshisiz? Kommentariyge jazıń:\n🇬🇧 Inglis tili\n🇷🇺 Rus tili\n🇹🇷 Túrk tili\nEń kóp dawıs alǵan til boyınsha kelesi hápte paydalı sabaq jariyalaymız!", "status": "idea", "time": "", "title": "Sorawnama: Siz qaysı tildi úyrenbekshisiz?", "updatedAt": 1792999309759, "id": "sh-2026-11-14"}, {"createdAt": 1792999309762, "date": "2026-11-20", "example": false, "format": "Post", "hook": "«Balańız bul kursqa tuwra kele me? Biypul tekserip kóriń 🎁»", "notes": "Rubrika: Jazılıw", "script": "Dizayn: «BIYPUL SINAQ SABAQ» úlken jazıw + filial fotosı.\n\nCAPTION: Sınaq sabaqta:\n✅ Balańızdıń dárejesin anıqlaymız\n✅ Ustaz benen tanısasız\n✅ Qaysı topar tuwra keletuǵının aytamız\nJazılıw: +998 (94) 443-11-33 · +998 (93) 558-22-11", "status": "idea", "time": "", "title": "Biypul sınaq sabaqqa shaqırıw", "updatedAt": 1792999309762, "id": "sh-2026-11-20"}], "school": [{"createdAt": 1792741200000, "date": "", "example": false, "format": "Reels", "hook": "«189 ball alǵan oqıwshılar da narazı. Nege? Sebebi qáte sınaqtı saylaǵan.»", "notes": "Shiyshe doska formatında túsiriń, montajda mirror etip jazıwdı durıslaw. Doska artındagı fon qarańǵı bolsın. Petlichka mikrofon. 5-kadr ushın 4–5 oqıwshı, ata-ana ruqsatı.\nMAKS TEKSERIWI KEREK: [ ] orınlarına haqıyqıy maǵlıwmat (Milliy sertifikat beretuǵın ball, tapsırıw tilleri, SAT'ti qabıllaytuǵın universitetler). Real School'da Milliy sertifikat tayarlıǵı bar ekenin tastıyıqlaw.\nJarıyalanǵannan keyin 24 saat ishinde Maks kommentariylerge juwap bersin.", "script": "Uzınlıǵı: 60–75 sek · 9:16 · Collab: @real_school_nks + @repetitor_maks\n\n1-kadr (0–4 sek) — HÚK\nMaks shiyshe doskanıń arǵı tárepinde. Bir tárepke SAT, ekinshi tárepke MILLIY, ortasına VS jazadı.\nKameraǵa: «189 ball alǵan oqıwshılar da narazı. Nege? Sebebi qáte sınaqtı saylaǵan.»\nTekst: «SAT pe, MILLIY me? 🤔»\n\n2-kadr (4–20 sek) — Milliy sertifikat\nMILLIY tárepke jazadı:\n• Ne: Ózbekstannıń mámleketlik sertifikatı\n• Kimge: Ózbekstan JOO'larına túsiwdi rejelestirgenlerge\n• Neni beredi: [Maks anıqlaydı]\n• Til: [Maks anıqlaydı]\nMaks: «Eger maqsetińiz Ózbekstandagı universitet bolsa, Milliy sertifikat sizge tikkeley járdem beredi.»\n\n3-kadr (20–36 sek) — SAT\nSAT tárepke jazadı:\n• Ne: Xalıqaralıq sınaq (matematika + inglis tili)\n• Kimge: Shet eldegi hám xalıqaralıq universitetlerge túsiwdi rejelestirgenlerge\n• Neni beredi: [Maks anıqlaydı]\n• Til: Tek inglis tilinde\nMaks: «SAT matematikası ańsat kórinedi, biraq inglis tili kúshli bolmasa, ball shıqpaydı.»\n\n4-kadr (36–50 sek) — Qalay saylaw kerek?\nDoskanıń tómenine 3 soraw:\n1. Qay jerde oqıǵıń keledi? Ózbekstanda ma, shet elde me?\n2. Inglis tiliń qanday dárejede?\n3. Neshe waqtıń bar? Neshe klasstasań?\nMaks: «Usı úsh sorawǵa juwap berseńiz, saylaw ózinen-ózi ańsat boladı. Ekewine de birden tayarlanıw múmkin, biraq onı erte baslaw kerek.»\n\n5-kadr (50–62 sek) — Real School\nKadr: Real School klassında Maks oqıwshılar menen másele sheship atır.\nMaks (dawıs): «Real School'da Milliy sertifikat hám SAT'qa tayarlıq bar. Eń tiykarǵısı, tayarlıqtı erte baslaw.»\nTekst: «Real School · Milliy sertifikat + SAT tayarlıǵı»\n\n6-kadr (62–70 sek) — CTA\nMaks kameraǵa: «Siz qaysısın saylar edińiz? Kommentariyge SAT yamasa MILLIY dep jazıń. Qaysı sorawıńız bolsa, juwap beremen.»\nTekst: «Kommentariyge jazıń: SAT yamasa MILLIY 👇»\n\nCAPTION:\nSAT pe, Milliy sertifikat pa? 🤔\nEń kóp beriletuǵın sorawǵa Maks muǵallim juwap beredi.\nSaylawdan aldın 3 sorawǵa juwap beriń:\n1️⃣ Qay jerde oqıǵıń keledi?\n2️⃣ Inglis tiliń qanday dárejede?\n3️⃣ Neshe waqtıń bar?\nSiz qaysısın saylaysız? Kommentariyge jazıń 👇\nReal School'da Milliy sertifikat hám SAT tayarlıǵı bar · @real_school_nks\n#realschool #sat #milliysertifikat #abiturient #nukus #nókis #matematika", "status": "script", "time": "", "title": "Maks muǵallim: SAT pe, Milliy sertifikat pa?", "updatedAt": 1792741200000, "id": "maks-sat-milliy"}, {"createdAt": 1792738800000, "date": "", "example": false, "format": "Reels", "hook": "«Bul kitap meniń ómirimdi ózgertti.»", "notes": "Kitaptı hám gúrrińdi Qıdırniyaz ózi saylaydı (haqıyqatında oqıǵan kitabı). Muqabanı jaqınnan bir neshe kadrda túsiriń. 4-kadr ushın jaqtılıq jumsaq (ayna qasında). Petlichka mikrofon. Oqıwshılar óz kitapların alıp kelsin, gáplerin úyretpeń. Ata-analardan ruqsat. Tayarlaw: sawǵa kitap, challenge qaǵıydaları hám sıylıǵı.", "script": "Uzınlıǵı: 70–90 sek · 9:16 · Collab: @real_school_nks + @qidirniyaz.babaniyazov\n\n1-kadr (0–4 sek) — HÚK\nQıdırniyaz partaǵa eski, kóp oqılǵan kitaptı qoyadı, kameraǵa: «Bul kitap meniń ómirimdi ózgertti.»\nTekst: «Qıdırniyaz aǵanıń sabaǵı · KITAPTIŃ KÚSHI»\n\n2-kadr (4–15 sek) — Soraw\nKlassqa: «Balalar, kim sońǵı ayda bir kitap oqıp tamamladı? Qol kóteriń.»\nKamera klass boylap júrip shıǵadı (neshe qol kóterilse, sonı túsiriń).\n\n3-kadr (15–35 sek) — Óz gúrrińi\nKitaptı qolına alıp: qashan, neshe jasında oqıǵanı, onnan neni úyrengeni.\n«Telefon sizge bir kúnlik qızıq beredi, al kitap bir ómirlik aqıl beredi.»\nKadr balalardıń betlerine almasıp otıradı.\n\n4-kadr (35–50 sek) — Oqıp beriw\nKitaptan 3–4 gápti ıssı dawıs penen oqıydı. Fonda tınısh muzıka. Eń kúshli qatar ekranda tekst bolıp shıǵadı.\n\n5-kadr (50–62 sek) — Balalardan soraw\n«Al sen házir ne oqıp atırsań?»\n3–4 oqıwshı kitabın kórsetip, atın hám nesi unaǵanın bir gáp penen aytadı.\n\n6-kadr (62–75 sek) — Challenge\nDoskaǵa jazadı: «1 AY — 1 KITAP»\n«Búginnen baslap Real School'da kitap challenge baslanadı. Hár kim bir ayda bir kitap oqıydı. Bir aydan keyin men qaytıp kelemen hám kim ne oqıǵanın soraymın.»\nBalalar qol shapalaqlaydı.\n\n7-kadr (75–85 sek) — Juwmaq\nKitabın bir oqıwshıǵa sawǵa etedi: «Bunı sen oqı, keyin dostıńa ber.»\nKameraǵa: «Balańızǵa búgin bir kitap satıp alıp beriń. Bul eń jaqsı sawǵa.»\nTekst: «Real School · Bilim hám tárbiya · @real_school_nks»\n\nCAPTION:\n📚 Telefon bir kúnlik qızıq beredi, kitap bir ómirlik aqıl beredi.\nQıdırniyaz aǵa Real School oqıwshılarına kitaptıń kúshi haqqında aytıp berdi hám «1 ay — 1 kitap» challenge'in baslap berdi.\nBalańız házir qanday kitap oqıp atır? Kommentariyge jazıń 👇\n#realschool #nukus #nókis #kitap #kitapoqıw #tárbiya\n\n2-VIDEO (bir aydan keyin): Qıdırniyaz qaytıp keledi, «Kim oqıp tamamladı?», balalar oqıǵan kitapları haqqında aytadı, eń kóp oqıǵanlarǵa sıylıq.\n\nSTORIES (challenge waqıtında): hápte sayin sorawnama «Usı hápte neshe bet oqıdıń?», oqıwshılardıń kitap penen fotoları #1ay1kitap", "status": "script", "time": "", "title": "Qıdırniyaz aǵanıń sabaǵı: Kitaptıń kúshi", "updatedAt": 1792738800000, "id": "qk-kitap"}, {"createdAt": 1792993525601, "date": "", "example": false, "format": "Reels", "hook": "Sultanbek kitaptı jabadı: «Grammatika jetedi.»", "notes": "Dawıs: Sultanbekke petlichka, klass ortasına ekinshi telefon dawıs jazıwǵa. Montajda original audionı astınan jay qosıń.\n2–3 ret repetitsiya (ritm bir bolsın), kúlkili sátlerdi aldınnan úyretpeń.\nKamera: biri klass aldında turaqlı (keń kadr), ekinshisi qolda, betlerdi jaqınnan.\nAvtorlıq huqıq: qosıqtıń tek qısqa bólimi; Instagram muzıka kitapxanasınan sol qosıqtı jay qoyıń.\nAta-analardan ruqsat.\nSeriya: kelesi video 11-klass penen — «10-klass vs 11-klass: kim jaqsıraq ayttı?»", "script": "Uzınlıǵı: 30–45 sek · 9:16 · Collab: @real_school_nks + @teachersultanbek\nQosıq: Queen, «We Will Rock You» (variantlar: Bruno Mars «Count on Me», Imagine Dragons «Believer»). Tek qayırması, 15–20 sek.\n\n1-kadr (0–4 sek) — HÚK\nKlass zerigip otır, doskada uzın grammatika qaǵıydası. Sultanbek kitaptı jabadı, kameraǵa: «Grammatika jetedi.»\nTekst: «Real School-da inglis sabaǵı tusında... 👀»\n\n2-kadr (4–8 sek) — Baslanıw\nSultanbek partanı eki ret urıp, bir ret qol shapalaqlaydı. Klass bir-birine qarasıp jımıyadı.\n\n3-kadr (8–20 sek) — Ritm\nPútkil klass qosıladı: eki ret partanı urıw, bir shapalaq. Kamera aldıńǵı partadan artqı partaǵa jılısadı, hár qatar birinen soń biri qosıladı.\n\n4-kadr (20–32 sek) — Qayırma\nSultanbek klass aldına shıǵıp qayırmanı baslaydı, 10-klass baqırıp qosıladı. Bir-eki oqıwshı ornınan turıp aytadı. Montajda subtitr.\n\n5-kadr (32–38 sek) — Kúlkili tamamlanıw\nQosıq tamamlanadı. Sultanbek hesh nárse bolmaǵanday doskaǵa qaraydı: «Okay... Present Perfect.» Klass kúledi.\n\n6-kadr (38–42 sek) — Juwmaq\nTekst: «Real School · 10-klass · Inglis tili zeriktirmeydi 🇬🇧»\n\nCAPTION:\nGrammatikadan sharshaǵanda bizde usınday 😄🥁\nReal School-da inglis tili zeriktirmeydi: sóylesiw, qosıq hám IELTS tayarlıǵı.\nSultanbek muǵallim (@teachersultanbek) hám 10-klass 🔥\nKelesi ret qaysı qosıqtı aytayıq? Kommentariyge jazıń 👇\n#realschool #english #nukus #nókis #teachersultanbek #wewillrockyou #cover", "status": "script", "time": "", "title": "Sultanbek muǵallim × 10-klass: qosıq cover", "updatedAt": 1792993525601, "id": "sultanbek-cover-10"}]};const SNAP_AT="26.10.2026 17:35";
+const BR={
+  nokis:{name:"Nókis",sub:"bas filial",file:"Nokis-kontent-plan",a:["#B45309","#FDF0D5","#F5B83D","#3A2A10"]},
+  bumer:{name:"Bumer",sub:"Kids",file:"Bumer-kontent-plan",a:["#0E8F7E","#DDF2EE","#3DD1B8","#16332E"]},
+  shimbay:{name:"Shımbay",sub:"filial",file:"Shimbay-kontent-plan",a:["#2F5BD3","#E1E8FA","#7FA2FF","#1C2540"]},
+  school:{name:"Real School",sub:"mektep",file:"RealSchool-kontent-plan",a:["#D92B5E","#F6E3EA","#FF5A87","#3A1F2A"]}
+};
+let branch="nokis";
+try{const h=location.hash.slice(1);const s=localStorage.getItem("kp-branch");branch=BR[h]?h:(BR[s]?s:"nokis")}catch(_){}
+function applyBranch(){
+  const b=BR[branch],dark=matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement.dataset.theme!=="light"||document.documentElement.dataset.theme==="dark";
+  const r=document.documentElement.style;r.setProperty("--accent",dark?b.a[2]:b.a[0]);r.setProperty("--soft",dark?b.a[3]:b.a[1]);r.setProperty("--accent-ink",dark?"#15171C":"#FFFFFF");
+  IMG.accent=b.a[0];IMG.soft=b.a[1];
+  $("ptitle").innerHTML=esc(b.name)+"<br>Kontent Plan";document.title=b.name+" Kontent Plan";
+  $("branches").innerHTML=Object.entries(BR).map(([k,v])=>`<button type="button" data-b="${k}" aria-pressed="${k===branch}">${esc(v.name)}<small>${esc(v.sub)}</small></button>`).join("");
+}
+$("branches").addEventListener("click",e=>{const t=e.target.closest("[data-b]");if(!t||t.dataset.b===branch)return;branch=t.dataset.b;try{localStorage.setItem("kp-branch",branch);history.replaceState(null,"","#"+branch)}catch(_){}filter="all";open.clear();applyBranch();connect()});
+applyBranch(); render(); fillSelects();
+const note=$("note");
+const SB_URL="https://rgqruifzceraivheepdv.supabase.co", SB_KEY="sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS", PIN_LS="kp-pin";
+let pin=""; try{pin=localStorage.getItem(PIN_LS)||""}catch(_){}
+let all=[], seeding=false;
+async function rpc(fn,args){
+  const r=await fetch(SB_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(Object.assign({p_pin:pin},args||{}))});
+  const txt=await r.text(); let j=null; try{j=txt?JSON.parse(txt):null}catch(_){}
+  if(!r.ok){const e=new Error((j&&j.message)||("HTTP "+r.status));throw e}
+  return j;
+}
+function pick(){posts=all.filter(p=>p.branch===branch);render()}
+async function seed(){
+  seeding=true;toast("Planlar júklenbekte…");
+  for(const [b,list] of Object.entries(SNAPSHOT)){
+    for(const p of list){const {id,...d}=p;await rpc("kp_save",{p_id:b+":"+id,p_data:{...d,branch:b}})}
+  }
+  seeding=false;
+}
+async function load(){
+  try{
+    const rows=await rpc("kp_list");
+    all=(rows||[]).map(r=>({id:r.id,...r.data}));
+    if(!seeding&&!all.some(p=>p.branch)){await seed();return load()}
+    pick();note.hidden=true;return true;
+  }catch(e){
+    if(String(e.message).includes("bad_pin")){showLock(true);return false}
+    note.hidden=false;note.textContent="Baylanıs joq. Internetti tekserip, betti jańalań.";return false;
+  }
+}
+store={
+  save:async(id,d)=>{const full=id.includes(":")?id:branch+":"+id;await rpc("kp_save",{p_id:full,p_data:{...d,branch}});await load()},
+  remove:async id=>{await rpc("kp_delete",{p_id:id});await load()}
+};
+function showLock(bad){$("lock").hidden=false;$("lock-err").hidden=!bad;setTimeout(()=>$("lock-pin").focus(),50)}
+$("lock-form").addEventListener("submit",async e=>{
+  e.preventDefault();pin=$("lock-pin").value.trim();
+  if(await load()){try{localStorage.setItem(PIN_LS,pin)}catch(_){}$("lock").hidden=true;$("lock-pin").value=""}
+});
+function connect(){pick()}
+if(pin){load()}else{showLock(false)}
+setInterval(()=>{if(pin&&$("lock").hidden&&$("scrim").hidden&&!document.hidden&&!seeding)load()},20000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&pin)load()});
+})();
+</script>
+
+</body></html>
