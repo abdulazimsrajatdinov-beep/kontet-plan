@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+<!doctype html><html data-theme="dark"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
 </style></head><body>
 <title>Real Education Kontent Plan</title><meta name="robots" content="noindex">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -164,6 +164,79 @@ body{background:radial-gradient(1200px 500px at 50% -120px,var(--soft),transpare
 .fab{border-radius:18px;box-shadow:0 14px 30px -10px var(--accent)}
 .empty{border:0;box-shadow:0 8px 24px -14px rgba(0,0,0,.18);border-radius:18px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121110;--surface:#1C1B19;--line:#2C2A27;--muted:#A39E96;--ink:#EEEBE6}.hook{color:var(--ink)}}
+/* ===== Premium dizayn (qarańǵı, shiyshe, filial reńi menen jaqtılıq) ===== */
+:root[data-theme="dark"]{--bg:#07080C;--surface:#11131A;--surface2:#171A23;--ink:#F2F3F7;--muted:#8E95A6;--line:rgba(255,255,255,.08);color-scheme:dark}
+html,body{background:#07080C}
+body{background:
+  radial-gradient(700px 420px at 100% -120px,color-mix(in srgb,var(--accent) 30%,transparent),transparent 70%),
+  radial-gradient(600px 380px at -15% 18%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%),
+  #07080C;background-attachment:fixed;color:var(--ink);letter-spacing:.005em}
+.wrap{max-width:680px}
+/* sarlavha */
+.slate{margin-top:18px;border-radius:28px;color:#fff;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 68%,#000) 0%,color-mix(in srgb,var(--accent) 34%,#000) 100%);
+  box-shadow:0 30px 60px -28px color-mix(in srgb,var(--accent) 90%,transparent),inset 0 1px 0 rgba(255,255,255,.25)}
+.slate::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(400px 200px at 90% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(transparent 60%,rgba(0,0,0,.18))}
+.slate::after{width:260px;height:260px;right:-80px;top:-90px;background:rgba(255,255,255,.07);box-shadow:0 0 0 40px rgba(255,255,255,.03)}
+.slate-body{position:relative;z-index:1;padding:24px 22px 22px}
+.slate h1{font-size:clamp(30px,8vw,40px);letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.18)}
+.slate .lbl{letter-spacing:.16em}
+.slate-row div,.slate-row div+div{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);border-radius:16px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.big{font-size:28px;font-weight:500}
+.sharebtn{background:rgba(255,255,255,.95);color:color-mix(in srgb,var(--accent) 80%,#000);border-radius:999px;padding:8px 14px;box-shadow:0 8px 20px -8px rgba(0,0,0,.35)}
+/* filiallar */
+.brlabel{color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;margin:26px 2px 10px}
+.branches{gap:10px}
+.branches button{background:linear-gradient(180deg,var(--surface2),var(--surface));color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:16px 8px 14px;box-shadow:none}
+.branches button small{color:var(--muted)}
+.branches button:hover{border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.branches button[aria-pressed="true"]{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 66%,#000),color-mix(in srgb,var(--accent) 40%,#000));border-color:transparent;color:#fff;box-shadow:0 14px 30px -14px var(--accent),inset 0 1px 0 rgba(255,255,255,.25)}
+.branches button[aria-pressed="true"] small{color:rgba(255,255,255,.85)}
+/* statuslar */
+.filters{padding-top:20px}
+.chip{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.chip[aria-pressed="true"]{background:var(--ink);color:#07080C;border-color:var(--ink)}
+.note{color:#F0A43A}
+/* kún toparları */
+.group{margin-top:26px}
+.group h2{font-size:14px;color:var(--ink)}
+.group h2 small{color:var(--muted)}
+.group.today h2{color:var(--accent)}
+.group.today h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);margin-right:8px;vertical-align:middle}
+/* kartochkalar */
+.card{background:linear-gradient(180deg,var(--surface2),var(--surface));border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 40px -26px rgba(0,0,0,.9);transition:border-color .18s ease,transform .18s ease}
+.card:hover{border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.card::before{width:3px;top:16px;bottom:16px;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.time{border-right:1px solid var(--line)}
+.time b{color:var(--ink)}
+.main h3{color:var(--ink);font-size:16.5px;letter-spacing:-.005em}
+.pill{border-radius:999px}
+.fmt{background:color-mix(in srgb,var(--accent) 18%,transparent);color:color-mix(in srgb,var(--accent) 70%,#fff)}
+.hook{background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);color:var(--ink)}
+.hook::before{color:color-mix(in srgb,var(--accent) 70%,#fff)}
+.script{background:#0C0E14;border:1px solid var(--line);color:var(--ink)}
+.more{color:var(--ink)}
+.qbtn{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.qbtn.del{color:#FF7A7A;border-color:rgba(255,122,122,.35)}
+.statusbar button{background:var(--surface);border-color:var(--line)}
+.statusbar button[aria-pressed="true"]{background:var(--surface2)}
+.btn{background:var(--surface2);color:var(--ink);border-color:var(--line)}
+.btn.primary{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 66%,#000),color-mix(in srgb,var(--accent) 42%,#000));color:#fff;border-color:transparent;box-shadow:0 10px 24px -12px var(--accent)}
+.empty{background:var(--surface);border:1px dashed var(--line);color:var(--muted)}
+.empty b{color:var(--ink)}
+/* túymeler hám oyna */
+.fab{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 66%,#000),color-mix(in srgb,var(--accent) 42%,#000));color:#fff;border-radius:20px;padding:16px 22px;box-shadow:0 18px 36px -12px var(--accent),inset 0 1px 0 rgba(255,255,255,.25)}
+.scrim{background:rgba(3,4,7,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sheet{background:linear-gradient(180deg,var(--surface2),var(--surface));border:1px solid var(--line);border-bottom:0;color:var(--ink)}
+.sheet h2{color:var(--ink)}
+.field label{color:var(--muted)}
+.field input,.field select,.field textarea{background:#0C0E14;border-color:var(--line);color:var(--ink)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid color-mix(in srgb,var(--accent) 60%,transparent);outline-offset:0}
+.linkbox input{background:#0C0E14;border-color:var(--line);color:var(--ink)}
+.lvl{border-color:var(--line)}
+.lvl.rec{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:var(--accent)}
+.toast{background:var(--ink);color:#07080C}
 </style>
 
 <div class="wrap">
