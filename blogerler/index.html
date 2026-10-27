@@ -5,60 +5,120 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nókis blogerleri</title>
 <meta name="description" content="Real Education hám Real School ushın Nókis blogerleri hám biznes akkauntları: obunashı, tema, baylanıs, bilim brendine say keliwi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap">
 <style>
-:root{--bg:#f6f7fb;--card:#fff;--text:#1d2330;--muted:#667085;--line:#e4e7ec;--accent:#1f6feb;--accent-soft:#e8f0fe;--gold:#f5a524;--good:#12a150;--warn:#d97706;--bad:#d92d20}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1218;--card:#181c24;--text:#e6e9ef;--muted:#98a2b3;--line:#2a303c;--accent:#58a6ff;--accent-soft:#1b2a40}}
+:root{
+  --bg:#0a0c11;--bg2:#10131b;--card:#141823;--card2:#191e2b;--text:#eef0f5;--muted:#8f97aa;--line:rgba(255,255,255,.08);
+  --gold:#e3b75b;--gold2:#f6d58b;--gold-ink:#1a1407;--good:#3ccf8e;--warn:#f0a43a;--bad:#ff6b6b;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;--body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{padding:24px 16px 8px;max-width:1100px;margin:0 auto}
-h1{margin:0 0 4px;font-size:24px}
-h2{font-size:18px;margin:24px 0 10px}
-.sub{color:var(--muted);margin:0}
-main{max-width:1100px;margin:0 auto;padding:0 16px 40px}
-.controls{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;display:grid;gap:8px;grid-template-columns:1fr}
-.controls input,.controls select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:15px}
-@media(min-width:700px){.controls{grid-template-columns:2fr 1fr 1fr 1fr}}
-.grid{display:grid;gap:12px;grid-template-columns:1fr}
-@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
-@media(min-width:1000px){.grid{grid-template-columns:1fr 1fr 1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+body{margin:0;background:radial-gradient(900px 420px at 85% -80px,rgba(227,183,91,.18),transparent 70%),radial-gradient(700px 380px at -10% 10%,rgba(90,110,255,.12),transparent 70%),var(--bg);color:var(--text);font:15px/1.55 var(--body);min-height:100vh}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+
+/* hero */
+.hero{padding:34px 0 10px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(227,183,91,.35);border-radius:999px;padding:6px 12px;background:rgba(227,183,91,.06)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,6vw,52px);line-height:1.05;margin:16px 0 10px;letter-spacing:-.02em}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);margin:0;max-width:640px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.kpi{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.kpi b{display:block;font-family:var(--display);font-weight:500;font-size:clamp(20px,4vw,28px);color:var(--gold2);font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+
+h2{font-family:var(--display);font-weight:500;font-size:18px;margin:34px 0 14px;letter-spacing:-.01em}
+.info{font-size:13px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:18px}
+
+/* top strip */
+.topstrip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.tcard{scroll-snap-align:start;position:relative;background:linear-gradient(160deg,rgba(227,183,91,.16),rgba(227,183,91,.02) 55%),var(--card);border:1px solid rgba(227,183,91,.28);border-radius:20px;padding:16px;display:grid;gap:8px;overflow:hidden}
+.rank{position:absolute;right:12px;top:4px;font-family:var(--display);font-size:54px;font-weight:700;color:rgba(227,183,91,.14);line-height:1}
+.tcard small{color:var(--muted);font-size:12.5px;line-height:1.45}
+
+/* controls */
+.listhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.listhead h2{margin-bottom:0}
+.controls{position:sticky;top:0;z-index:5;margin:14px -16px 6px;padding:12px 16px;display:grid;gap:8px;grid-template-columns:1fr 1fr;background:rgba(10,12,17,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.controls #q{grid-column:1/-1}
+.controls input,.controls select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font:inherit;font-size:14.5px}
+.controls input:focus,.controls select:focus{outline:2px solid rgba(227,183,91,.55);outline-offset:0}
+@media(min-width:760px){.controls{grid-template-columns:2fr 1fr 1fr 1fr}.controls #q{grid-column:auto}}
+.count{color:var(--muted);font-size:13px;margin:8px 0 12px}
+.status{font-size:13px;color:var(--warn);margin:10px 0 0}
+
+/* cards */
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.card{position:relative;background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-2px);border-color:rgba(227,183,91,.35);box-shadow:0 18px 40px -22px rgba(227,183,91,.45)}
 .card.na{opacity:.7;border-style:dashed}
-.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.name{font-weight:700;font-size:16px;word-break:break-word}
-.handle{color:var(--accent);text-decoration:none;font-size:14px;word-break:break-all}
+.top{display:flex;gap:12px;align-items:center}
+.ava{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:17px;color:var(--gold-ink);background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 0 3px rgba(227,183,91,.18)}
+.ava.biz{background:linear-gradient(135deg,#9fb4ff,#6c7cff);color:#0b1030;box-shadow:0 0 0 3px rgba(108,124,255,.2)}
+.who{min-width:0;flex:1}
+.name{font-weight:800;font-size:16px;line-height:1.25;word-break:break-word}
+.handle{color:var(--gold);text-decoration:none;font-size:13.5px;font-weight:600;word-break:break-all}
 .handle:hover{text-decoration:underline}
-.score{flex:none;font-weight:700;border-radius:999px;padding:2px 10px;font-size:13px;background:var(--accent-soft);color:var(--accent)}
-.stats{display:flex;gap:14px;font-size:13px;color:var(--muted)}
-.stats b{color:var(--text);font-size:15px}
+.score{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;font-weight:800;font-size:14px;color:var(--text);background:conic-gradient(var(--gold) calc(var(--p)*1%),rgba(255,255,255,.08) 0);position:relative}
+.score::before{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--card2)}
+.score span{position:relative}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center}
+.stats b{display:block;font-size:16px;font-variant-numeric:tabular-nums}
+.stats small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-.tag.biz{border-color:var(--warn);color:var(--warn)}
-.tag.err{border-color:var(--bad);color:var(--bad)}
-.bio{font-size:13px;color:var(--muted);white-space:pre-line;border-left:3px solid var(--line);padding-left:8px}
-.row{font-size:13px}
+.tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted)}
+.tag.bl{color:var(--gold);border-color:rgba(227,183,91,.35);background:rgba(227,183,91,.08)}
+.tag.biz{color:#9fb4ff;border-color:rgba(159,180,255,.35);background:rgba(108,124,255,.1)}
+.tag.err{color:var(--bad);border-color:rgba(255,107,107,.4)}
+.bio{font-size:13px;color:var(--muted);white-space:pre-line;border-left:2px solid rgba(227,183,91,.45);padding-left:10px}
+.row{font-size:13.5px}
 .row span{color:var(--muted)}
 .note{font-size:12px;color:var(--warn)}
 .stars{color:var(--gold);letter-spacing:1px}
-.topbox{background:var(--accent-soft);border-radius:14px;padding:12px 14px}
-.topbox ol{margin:0;padding-left:20px}
-.topbox li{margin:6px 0}
-.info{font-size:13px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.count{color:var(--muted);font-size:13px;margin:4px 0 10px}
-footer{color:var(--muted);font-size:12px;text-align:center;padding:20px 16px}
+.del{position:absolute;right:12px;bottom:12px;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);display:grid;place-items:center;cursor:pointer;opacity:.55;transition:.15s}
+.del svg{width:16px;height:16px}
+.card:hover .del,.del:focus-visible{opacity:1}
+.del:hover{color:var(--bad);border-color:rgba(255,107,107,.5);background:rgba(255,107,107,.08)}
+.card .row:last-of-type{padding-right:40px}
+
+/* buttons + dialog */
+.btn{border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:12px;padding:10px 16px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:transparent;color:var(--gold-ink);box-shadow:0 10px 26px -12px rgba(227,183,91,.8)}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn:disabled{opacity:.6;cursor:wait}
+dialog{border:1px solid var(--line);border-radius:22px;padding:0;width:min(580px,calc(100% - 32px));background:var(--card);color:var(--text);box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+dialog::backdrop{background:rgba(4,5,8,.7);backdrop-filter:blur(4px)}
+dialog form{padding:20px;display:grid;gap:12px}
+dialog h3{font-family:var(--display);font-weight:500;margin:0 0 4px;font-size:18px}
+.f{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.f input,.f select,.f textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);color:var(--text);font:inherit;font-size:15px;text-transform:none;letter-spacing:0;font-weight:500}
+.f input:focus,.f select:focus,.f textarea:focus{outline:2px solid rgba(227,183,91,.55)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.formbar{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:28px 16px 36px}
 </style>
 </head>
 <body>
-<header>
-  <h1>Nókis blogerleri</h1>
-  <p class="sub">Real Education hám Real School ushın Instagram akkauntları analizi · 19 akkaunt</p>
+<header class="wrap hero">
+  <span class="eyebrow">★ Real Education · Real School</span>
+  <h1>Nókis <em>blogerleri</em></h1>
+  <p class="sub">Reklama hám birge islesiw ushın Instagram akkauntları: qamtıw, auditoriya, baylanıs hám bilim brendine say keliwi.</p>
+  <div class="kpis">
+    <div class="kpi"><b id="total">…</b><span>Akkaunt</span></div>
+    <div class="kpi"><b id="reach">…</b><span>Jámi qamtıw</span></div>
+    <div class="kpi"><b id="topn">…</b><span>Bilim ushın TOP</span></div>
+  </div>
 </header>
-<main>
-  <p class="info">Maǵlıwmat 2026-jıl 27-oktyabrde Instagram-nıń ashıq profil betinen (kirmey turıp) alındı. Nomerler tek akkaunttıń óz bio-sında jazılǵan bolsa ǵana kórsetildi, basqa jaǵdayda "DM arqalı". Sońǵı post sánesi kirmey turıp kórinbeydi. Say keliw bahası (1–5): ata-analar, oqıwshılar hám abiturientlerge jetiw múmkinshiligi boyınsha.</p>
+<main class="wrap">
+  <h2>Bilim ushın TOP</h2>
+  <div class="topstrip" id="top"></div>
 
-  <h2>⭐ Bilim ushın TOP</h2>
-  <div class="topbox"><ol id="top"></ol></div>
-
-  <h2>Barlıq akkauntlar</h2>
+  <div class="listhead"><h2>Barlıq akkauntlar</h2><button type="button" class="btn primary" id="addbtn">＋ Bloger qosıw</button></div>
+  <p class="status" id="status" hidden></p>
   <div class="controls">
     <input id="q" type="search" placeholder="Izlew: atı, akkaunt, tema…">
     <select id="niche"><option value="">Barlıq temalar</option></select>
@@ -75,11 +135,37 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:20px 16px}
   </div>
   <p class="count" id="count"></p>
   <div class="grid" id="list"></div>
+  <p class="info">Maǵlıwmat 2026-jıl 27–28-oktyabrde Instagram-nıń ashıq profil betinen (kirmey turıp) alındı. Nomerler tek akkaunttıń óz bio-sında jazılǵan bolsa ǵana kórsetildi, basqa jaǵdayda "DM arqalı". Say keliw bahası (1–5): ata-analar, oqıwshılar hám abiturientlerge jetiw múmkinshiligi boyınsha.</p>
 </main>
 <footer>Real Education · Real School marketing · Nókis</footer>
 
+<dialog id="dlg">
+  <form id="form" method="dialog" autocomplete="off">
+    <h3>Jańa bloger qosıw</h3>
+    <label class="f">Instagram akkauntı *<input id="f-h" required placeholder="mısalı: teachersultanbek yamasa silteme"></label>
+    <label class="f">Atı<input id="f-name" placeholder="Bloger atı"></label>
+    <div class="f2">
+      <label class="f">Obunashı sanı<input id="f-fol" type="number" min="0" placeholder="mısalı: 85000"></label>
+      <label class="f">Túri<select id="f-type"><option value="bloger">Bloger</option><option value="biznes">Biznes akkaunt</option></select></label>
+    </div>
+    <div class="f2">
+      <label class="f">Tema<input id="f-niche" placeholder="mısalı: Food / shańaraq"></label>
+      <label class="f">Say keliwi (1–5)<select id="f-fit"><option value="">—</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+    </div>
+    <label class="f">Reklama baylanısı<input id="f-contact" placeholder="Bio-daǵı nomer yamasa «DM arqalı»"></label>
+    <label class="f">Bio<textarea id="f-bio" rows="2"></textarea></label>
+    <label class="f">Auditoriya<input id="f-aud" placeholder="mısalı: analar, abiturientler"></label>
+    <label class="f">Pikir (bilim ushın)<textarea id="f-why" rows="2"></textarea></label>
+    <div class="formbar">
+      <button type="button" class="btn" id="cancel">Biykarlaw</button>
+      <button type="submit" class="btn primary" id="save">Saqlaw</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
-const DATA = [
+// Baslanǵısh dizim: bazaǵa tek bir ret júklenedi, keyin hámme ózgerisler bazada saqlanadı
+const SEED = [
  {h:"sultan_bek_isakov",name:"Sultanbek Isakov Abatbaevich",fol:644000,posts:195,fing:103,type:"bloger",niche:"Kontent / oyın-sawǵa",
   bio:"Podpiska basın birgelikte mlnǵa jetemiz. Mánili kontent, tásirli videolar, sawǵalı oyınlar. Reklama adminge jazıń.",
   contact:"Reklama: @isakov_adminn · 99-573-97-97 (bio) · YouTube, Telegram kanal",
@@ -134,12 +220,78 @@ const DATA = [
   aud:"Ata-analar hám úlken jastaǵılar, keń.",
   style:"Konsertler, qızıqlı waqıyalar.",
   fit:3, why:"Ata-analar tanıytuǵın hám húrmetleytuǵın artist — isenim beredi. Real School ushın ata-analarǵa arnalǵan reklama ushın jaramlı."},
- {h:"farida_butik",name:"Farida",fol:8,posts:1,fing:0,type:"biznes",niche:"Butik / kiyim",
-  bio:"",
+ {h:"farida_butikk",typed:"farida_butik",name:"Farida Butik | Túrk kiyimleri | Nókis",fol:129000,posts:1116,fing:49,type:"biznes",niche:"Butik / kiyim",
+  bio:"Túrk kiyimleri. N2 filial @sabiko_mega, N3 filial @sabiko_boutique. Jumıs waqtı 09:00–21:00.",
+  contact:"t.me/farida_butik_admin (bio)",
+  aud:"Hayal-qızlar, analar.",
+  style:"Kiyim kórsetiw, otzıvlar.",
+  fit:2, why:"Biznes akkaunt (dúkan), bloger emes. Auditoriyası analar — barter yamasa birgelikte aksiya (mısalı 1-sentyabr ushın) sorap kóriwge boladı."},
+ {h:"avto_tuning_nukus",name:"Avto Tuning Nukus",fol:133000,posts:1162,fing:27,type:"biznes",niche:"Avto xızmet",
+  bio:"Avto tyuning orayı: tonirovka, laminaciya, tyuning salon, elektr xızmetleri.",
   contact:"DM arqalı",
-  aud:"Derlik joq (8 obunashı).",
-  style:"1 post.",
-  fit:1, why:"Biznes akkaunt, derlik bos. Bul siz izlegen butik bolmawı múmkin — atın qayta tekseriń."},
+  aud:"Erkekler, jaslar, avtomobil iyeleri.",
+  style:"Mashina tyuningi videoları.",
+  fit:1, why:"Biznes akkaunt, avto tema. Qamtıwı úlken, biraq bilim temasına derlik say kelmeydi."},
+ {h:"doctor_ametova",name:"Gulayım Ametova",fol:85400,posts:145,fing:161,type:"bloger",niche:"Shıpaker / densawlıq",
+  bio:"UZI shıpakeri, ginekolog. 30 000-nan aslam razı nawqas, 8 jıldan aslam tájiriybe. «Perzent klinikası».",
+  contact:"DM arqalı · t.me/doctor_ametova",
+  aud:"Hayal-qızlar, jas analar.",
+  style:"Densawlıq keńesleri, shańaraq.",
+  fit:3, why:"Analar isenetuǵın shıpaker obrazı. Bumer Kids hám Real School ushın «balanıń densawlıǵı hám oqıwı» temasında jaqsı."},
+ {h:"qidirniyaz.babaniyazov",name:"Qıdırniyaz Babaniyazov",fol:93000,posts:741,fing:320,type:"bloger",niche:"Aktyor / aǵartıwshı",
+  bio:"Aktyor. Ruwxıy aǵartıwshı. Toy alıp barıwshı.",
+  contact:"Reklama: 95 552 75 15 (bio) · Telegram kanal",
+  aud:"Ata-analar hám jaslar, keń.",
+  style:"Ilhamlandıratuǵın sózler, toy, aktyorlıq.",
+  fit:5, why:"Burın birge islesken. Ata-analar isenetuǵın aǵartıwshı obrazı — Real School ushın eń jaqsı say keledi."},
+ {h:"teachersultanbek",name:"Sultanbek | IELTS instructor",fol:27000,posts:62,fing:95,type:"bloger",niche:"Bilim / inglis tili",
+  bio:"IELTS, but without the boring stuff. IELTS • English • Study Tips.",
+  contact:"DM arqalı · t.me/teachersultanbek",
+  aud:"Jaslar, abiturientler.",
+  style:"IELTS keńesleri, ázil reels.",
+  fit:5, why:"Burın birge islesken, tikkeley bilim temasında. IELTS hám inglis tili kursları ushın eń anıq auditoriya."},
+ {h:"prenova_nurjamal",name:"Prenova Nurjamal | Food bloger",fol:123000,posts:498,fing:58,type:"bloger",niche:"Food / shańaraq",
+  bio:"Qaraqalpaqsha food-blog. Oflayn kursqa jazılıw: +998 95 947 80 08.",
+  contact:"+998 95 947 80 08 (bio, kurs ushın)",
+  aud:"Analar, shańaraqlar.",
+  style:"Qaraqalpaqsha retseptler, kurslar.",
+  fit:4, why:"Qaraqalpaqsha jazadı, auditoriyası balanı kursqa jazatuǵın analar. Óziniń kursı bar — oqıw temasın túsinedi."},
+ {h:"aynur_alemi",name:"Aynur Alemi | Food bloger",fol:80000,posts:295,fing:136,type:"bloger",niche:"Food / shańaraq",
+  bio:"Ańsat hám mazalı úy retseptleri. Reklama hám birge islesiw: DM.",
+  contact:"DM arqalı (bio: reklama & birge islesiw)",
+  aud:"Analar.",
+  style:"Úy retseptleri.",
+  fit:4, why:"Analar auditoriyası úlken. «Balamdı qay jerge oqıwǵa beriw kerek?» formatı bunda tábiyiy."},
+ {h:"gulnaz_farxadovna",name:"Gulnaz Farxadovna",fol:56000,posts:287,fing:594,type:"bloger",niche:"Mobilograf / brandface",
+  bio:"SMM, mobilograf, brandface. Aralas kontent. Reklama xızmeti.",
+  contact:"Reklama: +998 91 393 95 95 (bio)",
+  aud:"Jaslar hám hayal-qızlar.",
+  style:"Reklama videoları, aralas kontent.",
+  fit:4, why:"Reklama video túsiriwdi biledi, nomeri ashıq. «Bir kún mektepte» videosı ushın jaqsı."},
+ {h:"nukus.students",name:"Nukus Students",fol:14000,posts:82,fing:18,type:"bloger",niche:"Student ómiri",
+  bio:"Student life | Nukus. Bizdiń kúnlerimiz, bizdiń esteliklerimiz.",
+  contact:"DM arqalı",
+  aud:"Studentler, abiturientler.",
+  style:"Student ómirinen reels.",
+  fit:4, why:"Tikkeley abiturientler hám studentler. SAT, IELTS, Milliy sertifikat kursları ushın anıq auditoriya, baha arzan bolıwı múmkin."},
+ {h:"ibrahim.apple.nukus",name:"Ibrahim | Biznesmen, lifestyle",fol:173000,posts:416,fing:798,type:"bloger",niche:"Biznes / lifestyle",
+  bio:"@apple.nukus tiykarın salıwshı. Reklama | Travel | My Lifestyle.",
+  contact:"DM arqalı (bio-da «Reklama» bar)",
+  aud:"Jaslar, keń.",
+  style:"Lifestyle, sayaxat, biznes.",
+  fit:3, why:"Úlken jaslar auditoriyası, reklama qabıl etedi. «Bilim — tabıs» temasında jaqsı bolıwı múmkin."},
+ {h:"nukus_kontent",name:"Qaraqalpaqstan Nukus",fol:74000,posts:482,fing:670,type:"biznes",niche:"Qala kontenti",
+  bio:"Nókis haqqında kontent.",
+  contact:"Reklama: +998 99 451-51-31 (bio)",
+  aud:"Nókis jasları, keń.",
+  style:"Qala reels, jańalıqlar.",
+  fit:3, why:"Nókiske baǵdarlanǵan qala betı, reklama nomeri ashıq. Arzan hám tez qamtıw ushın jaramlı."},
+ {h:"barnos_blog",name:"Barno | Lifestyle | Nukus",fol:17000,posts:43,fing:2,type:"bloger",niche:"Analıq / lifestyle",
+  bio:"Mazalı retseptler, analıq hám ózin-ózi rawajlandırıw.",
+  contact:"DM arqalı",
+  aud:"Jas analar.",
+  style:"Retseptler, analıq.",
+  fit:3, why:"Kishi, biraq anıq analar auditoriyası. Bumer Kids ushın arzan sınaq."},
  {h:"ametovaarukhan",name:"Aruxan Ametova",fol:204000,posts:160,fing:128,type:"bloger",niche:"Lifestyle / toy",
   bio:"Notarius.",
   contact:"DM arqalı",
@@ -198,30 +350,45 @@ const DATA = [
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const fmt = n => n == null ? "—" : n >= 1000 ? (n/1000).toLocaleString("ru-RU",{maximumFractionDigits:1}) + " mıń" : n.toLocaleString("ru-RU");
+const fmt = n => n == null ? "—" : n >= 1e6 ? (n/1e6).toLocaleString("ru-RU",{maximumFractionDigits:1}) + " mln" : n >= 1000 ? (n/1000).toLocaleString("ru-RU",{maximumFractionDigits:1}) + " mıń" : n.toLocaleString("ru-RU");
 const stars = f => f == null ? "—" : "★".repeat(f) + "☆".repeat(5 - f);
-const typeLabel = t => t === "biznes" ? '<span class="tag biz">biznes akkaunt</span>' : t === "na" ? '<span class="tag err">tekseriw kerek</span>' : '<span class="tag">bloger</span>';
+const typeLabel = t => t === "biznes" ? '<span class="tag biz">biznes akkaunt</span>' : t === "na" ? '<span class="tag err">tekseriw kerek</span>' : '<span class="tag bl">bloger</span>';
+const initials = d => (String(d.name || d.h).replace(/[^\p{L}\p{N} ]/gu, " ").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("") || "@").toUpperCase();
 
-[...new Set(DATA.map(d => d.niche))].sort().forEach(n => $("niche").insertAdjacentHTML("beforeend", `<option>${esc(n)}</option>`));
+let DATA = [];
 
-$("top").innerHTML = DATA.filter(d => d.fit >= 4).sort((a,b) => b.fit - a.fit || b.fol - a.fol)
-  .map(d => `<li><a class="handle" href="https://www.instagram.com/${d.h}/" target="_blank" rel="noopener">@${d.h}</a> — ${fmt(d.fol)} · <span class="stars">${stars(d.fit)}</span><br><small>${esc(d.why)}</small></li>`).join("");
+function renderStatic(){
+  $("total").textContent = DATA.length;
+  const cur = $("niche").value;
+  $("niche").innerHTML = '<option value="">Barlıq temalar</option>' +
+    [...new Set(DATA.map(d => d.niche).filter(Boolean))].sort().map(n => `<option>${esc(n)}</option>`).join("");
+  $("niche").value = cur;
+  const top = DATA.filter(d => d.fit >= 4).sort((a,b) => b.fit - a.fit || (b.fol ?? 0) - (a.fol ?? 0));
+  $("reach").textContent = fmt(DATA.reduce((s, d) => s + (d.fol || 0), 0));
+  $("topn").textContent = top.length;
+  $("top").innerHTML = top.map((d, i) => `<div class="tcard"><span class="rank">${i + 1}</span>
+      <div class="top"><div class="ava">${esc(initials(d))}</div><div class="who"><div class="name">${esc(d.name)}</div>
+      <a class="handle" href="https://www.instagram.com/${esc(d.h)}/" target="_blank" rel="noopener">@${esc(d.h)}</a></div></div>
+      <div><b>${fmt(d.fol)}</b> <span style="color:var(--muted)">obunashı</span> · <span class="stars">${stars(d.fit)}</span></div>
+      <small>${esc(d.why)}</small></div>`).join("");
+}
 
 function card(d){
   const fixed = d.typed && d.typed !== d.h ? `<div class="note">Siz jazǵan: ${esc(d.typed)} → durısı: ${esc(d.h)}</div>` : "";
   return `<article class="card ${d.type === "na" ? "na" : ""}">
-    <div class="top"><div><div class="name">${esc(d.name)}</div>
-      <a class="handle" href="https://www.instagram.com/${d.h}/" target="_blank" rel="noopener">@${esc(d.h)}</a></div>
-      <div class="score" title="Bilim brendine say keliwi">${d.fit ?? "?"}/5</div></div>
+    <div class="top"><div class="ava ${d.type === "biznes" ? "biz" : ""}">${esc(initials(d))}</div>
+      <div class="who"><div class="name">${esc(d.name)}</div>
+      <a class="handle" href="https://www.instagram.com/${esc(d.h)}/" target="_blank" rel="noopener">@${esc(d.h)}</a></div>
+      <div class="score" style="--p:${(d.fit || 0) * 20}" title="Bilim brendine say keliwi"><span>${d.fit ?? "?"}</span></div></div>
     ${fixed}
-    <div class="stats"><div><b>${fmt(d.fol)}</b> obunashı</div><div><b>${d.posts ?? "—"}</b> post</div><div><b>${d.fing ?? "—"}</b> jazılǵan</div></div>
+    <div class="stats"><div><b>${fmt(d.fol)}</b><small>obunashı</small></div><div><b>${d.posts ?? "—"}</b><small>post</small></div><div><b>${d.fing ?? "—"}</b><small>jazılǵan</small></div></div>
     <div class="tags">${typeLabel(d.type)}<span class="tag">${esc(d.niche)}</span></div>
     ${d.bio ? `<div class="bio">${esc(d.bio)}</div>` : ""}
     <div class="row"><span>Baylanıs:</span> ${esc(d.contact)}</div>
     ${d.aud ? `<div class="row"><span>Auditoriya:</span> ${esc(d.aud)}</div>` : ""}
     ${d.style ? `<div class="row"><span>Kontent:</span> ${esc(d.style)}</div>` : ""}
-    <div class="row"><span>Sońǵı post:</span> kirmey turıp kórinbeydi</div>
     <div class="row"><span>Bilim ushın:</span> <span class="stars">${stars(d.fit)}</span> ${esc(d.why)}</div>
+    <button type="button" class="del" data-del="${esc(d._id)}" title="Óshiriw" aria-label="@${esc(d.h)} óshiriw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
   </article>`;
 }
 
@@ -236,7 +403,70 @@ function render(){
   $("count").textContent = `${list.length} / ${DATA.length} akkaunt kórsetildi`;
 }
 ["q","niche","type","sort"].forEach(id => $(id).addEventListener("input", render));
-render();
+
+// ---------- ulıwma baza (kontent plan saytı menen bir baza, «blog:» belgisi menen)
+const SB_URL = "https://rgqruifzceraivheepdv.supabase.co", SB_KEY = "sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS", PIN = "370447";
+const META_ID = "blog:__meta", TAG = "_blogerler";
+async function rpc(fn, args){
+  const r = await fetch(SB_URL + "/rest/v1/rpc/" + fn, {method:"POST",
+    headers:{apikey:SB_KEY, Authorization:"Bearer " + SB_KEY, "Content-Type":"application/json"},
+    body:JSON.stringify(Object.assign({p_pin:PIN}, args || {}))});
+  const txt = await r.text();
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return txt ? JSON.parse(txt) : null;
+}
+function status(msg){ $("status").hidden = !msg; $("status").textContent = msg || ""; }
+const cleanHandle = s => s.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/^@/, "").replace(/[/?#].*$/, "").toLowerCase();
+
+async function load(){
+  try {
+    let rows = (await rpc("kp_list")) || [];
+    if (!rows.some(r => r.id === META_ID)) {
+      status("Dizim bazaǵa júklenbekte…");
+      await Promise.all(SEED.map(d => rpc("kp_save", {p_id:"blog:" + d.h, p_data:{...d, branch:TAG}})));
+      await rpc("kp_save", {p_id:META_ID, p_data:{branch:TAG, meta:true}});
+      rows = (await rpc("kp_list")) || [];
+    }
+    DATA = rows.filter(r => r.id.startsWith("blog:") && r.id !== META_ID).map(r => ({...r.data, _id:r.id}));
+    status("");
+  } catch (e) {
+    DATA = SEED.map(d => ({...d, _id:"blog:" + d.h}));
+    status("Baylanıs joq: ózgerisler saqlanbaydı. Internetti tekserip, betti jańalań.");
+  }
+  renderStatic(); render();
+}
+
+$("list").addEventListener("click", async e => {
+  const b = e.target.closest("[data-del]"); if (!b) return;
+  const d = DATA.find(x => x._id === b.dataset.del);
+  if (!d || !confirm(`@${d.h} dizimnen óshirilsin be?`)) return;
+  b.disabled = true;
+  try { await rpc("kp_delete", {p_id:d._id}); await load(); }
+  catch (_) { b.disabled = false; alert("Óshiriw múmkin bolmadı. Internetti tekseriń."); }
+});
+
+$("addbtn").addEventListener("click", () => { $("form").reset(); $("dlg").showModal(); $("f-h").focus(); });
+$("cancel").addEventListener("click", () => $("dlg").close());
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const h = cleanHandle($("f-h").value);
+  if (!h) return;
+  if (DATA.some(d => d.h === h) && !confirm(`@${h} dizimde bar. Ústinen jazılsın ba?`)) return;
+  const num = v => v === "" ? null : Number(v);
+  const d = {h, name:$("f-name").value.trim() || "@" + h, fol:num($("f-fol").value), posts:null, fing:null,
+    type:$("f-type").value, niche:$("f-niche").value.trim() || "Belgisiz",
+    bio:$("f-bio").value.trim(), contact:$("f-contact").value.trim() || "DM arqalı",
+    aud:$("f-aud").value.trim(), style:"", fit:num($("f-fit").value), why:$("f-why").value.trim(), branch:TAG};
+  $("save").disabled = true;
+  try { await rpc("kp_save", {p_id:"blog:" + h, p_data:d}); $("dlg").close(); await load(); }
+  catch (_) { alert("Saqlaw múmkin bolmadı. Internetti tekseriń."); }
+  $("save").disabled = false;
+});
+
+// baza juwap bergenshe dizimdi birden kórsetiw
+DATA = SEED.map(d => ({...d, _id:"blog:" + d.h}));
+renderStatic(); render();
+load();
 </script>
 </body>
 </html>
