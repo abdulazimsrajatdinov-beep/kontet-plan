@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="kaa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nókis blogerleri</title>
+<meta name="description" content="Real Education hám Real School ushın Nókis blogerleri hám biznes akkauntları: obunashı, tema, baylanıs, bilim brendine say keliwi.">
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#1d2330;--muted:#667085;--line:#e4e7ec;--accent:#1f6feb;--accent-soft:#e8f0fe;--gold:#f5a524;--good:#12a150;--warn:#d97706;--bad:#d92d20}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1218;--card:#181c24;--text:#e6e9ef;--muted:#98a2b3;--line:#2a303c;--accent:#58a6ff;--accent-soft:#1b2a40}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:24px 16px 8px;max-width:1100px;margin:0 auto}
+h1{margin:0 0 4px;font-size:24px}
+h2{font-size:18px;margin:24px 0 10px}
+.sub{color:var(--muted);margin:0}
+main{max-width:1100px;margin:0 auto;padding:0 16px 40px}
+.controls{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;display:grid;gap:8px;grid-template-columns:1fr}
+.controls input,.controls select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:15px}
+@media(min-width:700px){.controls{grid-template-columns:2fr 1fr 1fr 1fr}}
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.card.na{opacity:.7;border-style:dashed}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.name{font-weight:700;font-size:16px;word-break:break-word}
+.handle{color:var(--accent);text-decoration:none;font-size:14px;word-break:break-all}
+.handle:hover{text-decoration:underline}
+.score{flex:none;font-weight:700;border-radius:999px;padding:2px 10px;font-size:13px;background:var(--accent-soft);color:var(--accent)}
+.stats{display:flex;gap:14px;font-size:13px;color:var(--muted)}
+.stats b{color:var(--text);font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.tag.biz{border-color:var(--warn);color:var(--warn)}
+.tag.err{border-color:var(--bad);color:var(--bad)}
+.bio{font-size:13px;color:var(--muted);white-space:pre-line;border-left:3px solid var(--line);padding-left:8px}
+.row{font-size:13px}
+.row span{color:var(--muted)}
+.note{font-size:12px;color:var(--warn)}
+.stars{color:var(--gold);letter-spacing:1px}
+.topbox{background:var(--accent-soft);border-radius:14px;padding:12px 14px}
+.topbox ol{margin:0;padding-left:20px}
+.topbox li{margin:6px 0}
+.info{font-size:13px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.count{color:var(--muted);font-size:13px;margin:4px 0 10px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:20px 16px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Nókis blogerleri</h1>
+  <p class="sub">Real Education hám Real School ushın Instagram akkauntları analizi · 23 akkaunt</p>
+</header>
+<main>
+  <p class="info">Maǵlıwmat 2026-jıl 27-oktyabrde Instagram-nıń ashıq profil betinen (kirmey turıp) alındı. Nomerler tek akkaunttıń óz bio-sında jazılǵan bolsa ǵana kórsetildi, basqa jaǵdayda "DM arqalı". Sońǵı post sánesi kirmey turıp kórinbeydi. Say keliw bahası (1–5): ata-analar, oqıwshılar hám abiturientlerge jetiw múmkinshiligi boyınsha.</p>
+
+  <h2>⭐ Bilim ushın TOP</h2>
+  <div class="topbox"><ol id="top"></ol></div>
+
+  <h2>Barlıq akkauntlar</h2>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Izlew: atı, akkaunt, tema…">
+    <select id="niche"><option value="">Barlıq temalar</option></select>
+    <select id="type">
+      <option value="">Barlıq túrler</option>
+      <option value="bloger">Bloger</option>
+      <option value="biznes">Biznes akkaunt</option>
+      <option value="na">Ashılmadı / tekseriw kerek</option>
+    </select>
+    <select id="sort">
+      <option value="fol">Obunashı boyınsha</option>
+      <option value="fit">Say keliw boyınsha</option>
+      <option value="name">Atı boyınsha</option>
+    </select>
+  </div>
+  <p class="count" id="count"></p>
+  <div class="grid" id="list"></div>
+</main>
+<footer>Real Education · Real School marketing · Nókis</footer>
+
+<script>
+const DATA = [
+ {h:"sultan_bek_isakov",name:"Sultanbek Isakov Abatbaevich",fol:644000,posts:195,fing:103,type:"bloger",niche:"Kontent / oyın-sawǵa",
+  bio:"Podpiska basın birgelikte mlnǵa jetemiz. Mánili kontent, tásirli videolar, sawǵalı oyınlar. Reklama adminge jazıń.",
+  contact:"Reklama: @isakov_adminn · 99-573-97-97 (bio) · YouTube, Telegram kanal",
+  aud:"Keń jaslar auditoriyası, Qaraqalpaqstan boyınsha eń úlkenlerdiń biri.",
+  style:"Qaraqalpaqsha mánili videolar, sawǵalı oyınlar (giveaway).",
+  fit:4, why:"Úlken qamtıw + 'mánili kontent' obrazı. Sawǵalı oyın formatı (mısalı bepul kurs utıw) oqıwshı hám jaslarǵa jaqsı isleydi. Baha qımbat bolıwı múmkin."},
+ {h:"nursu1tanu",typed:"nursu1ltanu",name:"Nursultan | Kreator | Qaraqalpaqstan",fol:242000,posts:151,fing:44,type:"bloger",niche:"Kreator / aktyor",
+  bio:"Kontent — ayrıqsha dárejede. Joqarı mamanlıqlı aktyor. Kino aktyorlıq fakulteti 2021–2025 (1-grant).",
+  contact:"DM arqalı",
+  aud:"Jaslar hám jasóspirimler.",
+  style:"Sapalı reels, aktyorlıq sahnalar.",
+  fit:4, why:"Grant penen oqıǵan jas aktyor — abiturientler ushın 'men de grantqa túsemen' degen motivaciya formatı tábiyiy. Sketch-reklama túsire aladı."},
+ {h:"rashidovich_aziz",name:"Azizbek Seytmuratov",fol:46000,posts:137,fing:346,type:"bloger",niche:"Shou / bilimli tulǵa",
+  bio:"QVZ Agrolife · Digirman shou · QQ liga · Bakalavr, Magistr, PhD doktorantura.",
+  contact:"☎️ 99 095 20 22 (bio) · t.me/azizbek2444",
+  aud:"Jaslar hám orta jastaǵılar, shou kórermenleri.",
+  style:"Shou, sayaxat, kúlki.",
+  fit:4, why:"PhD, magistr obrazı + shou tanımalılıǵı — 'oqıw kerek' degen xabardı isenimli jetkeredi. Auditoriyası kishi, baha arzan bolıwı múmkin."},
+ {h:"rasu_jumambetovv",name:"— (tabılmadı)",fol:null,posts:null,fing:null,type:"na",niche:"Belgisiz",
+  bio:"", contact:"—", aud:"", style:"", fit:null,
+  why:"Profil ashılmadı ('Profil qoljetimsiz'). rasu_jumambetov, rasul_jumambetov (8 obunashı) tekserildi — durısı emes. Durıs akkaunt atın anıqlaw kerek."},
+ {h:"bakirov_mura",name:"Bakirov Murat Kandıbay ulı",fol:172000,posts:330,fing:156,type:"bloger",niche:"Kúlki / yumor",
+  bio:"Mura | Yumor. Ápiwayı ómirdegi prikollar. Kúnde jańa video.",
+  contact:"Reklama: +998 94-145-01-18 (bio)",
+  aud:"Qazaqsha sóylewshi jaslar (Qazaqstan + Qaraqalpaqstan).",
+  style:"Kúndelikli qısqa yumor videolar, qazaq tilinde.",
+  fit:2, why:"Qamtıwı úlken, biraq kontent qazaq tilinde hám auditoriyanıń kóbi Qazaqstanda bolıwı múmkin. Nókis ushın auditoriya statistikasın soraw shárt."},
+ {h:"sarsenbekjetkerbaev",name:"Sarsenbek Jetkerbaev",fol:61000,posts:82,fing:555,type:"bloger",niche:"Qosıqshı",
+  bio:"Qosıqshı-melodist.",
+  contact:"Admin Mirat: +998 91 379 77 17 (bio)",
+  aud:"Toy hám muzıka súyiwshiler, keń.",
+  style:"Qosıqlar, konsertler.",
+  fit:2, why:"Muzıka auditoriyası, bilimge tikkeley baylanısı joq. Bayram/kontsert sıyaqlı ilajlar ushın jaramlı."},
+ {h:"atabek_altinbekovich",name:"Atabek Altınbek ulı",fol:97000,posts:115,fing:88,type:"bloger",niche:"Tamada / shou",
+  bio:"I love Taxtakópir! Gentleman Taxtakópir. Tamada. 'Digirman show'. YouTube.",
+  contact:"Tamada: 99-095-20-22 (bio) · YouTube",
+  aud:"Taxtakópir hám aymaqlar, keń.",
+  style:"Shou, tamada, kúlki.",
+  fit:2, why:"Toy/shou auditoriyası. Taxtakópir yamasa aymaqlardan oqıwshı tartıw ushın sınap kóriwge boladı."},
+ {h:"abbas.showman.official",typed:"abbas.showman.officia",name:"Abbas Showman",fol:184000,posts:445,fing:738,type:"bloger",niche:"Tamada / shou",
+  bio:"1 Showman. Tamada.",
+  contact:"+998 99-451-79-73 · +998 90-591-87-81 · t.me/abbasshowmanofficial (bio)",
+  aud:"Toy auditoriyası, shańaraqlar.",
+  style:"Toy shou, kúlki videolar.",
+  fit:2, why:"Úlken qamtıw, biraq kontent toy/shou. Ata-analarǵa jetedi, biraq bilim temasına tábiyiy sáykes emes."},
+ {h:"raman.stylist",typed:"raman.styist",name:"— (tabılmadı)",fol:null,posts:null,fing:null,type:"na",niche:"Belgisiz",
+  bio:"", contact:"—", aud:"", style:"", fit:null,
+  why:"raman.styist hám raman.stylist ekewi de ashılmadı. Durıs akkaunt atın anıqlaw kerek."},
+ {h:"iamdavir",name:"Davi",fol:200,posts:0,fing:238,type:"na",niche:"Jabıq profil",
+  bio:"ba",
+  contact:"DM arqalı",
+  aud:"Jabıq profil, 200 obunashı.",
+  style:"Kórinbeydi.",
+  fit:1, why:"Jabıq (private) profil, post joq. Bul siz izlegen bloger bolmawı múmkin — akkaunt atın qayta tekseriń."},
+ {h:"ajiniyaz.qosimbetov",typed:"ajinyaz.qosimbetov",name:"Ajiniyaz Qosimbetov",fol:63000,posts:476,fing:688,type:"bloger",niche:"Qosıqshı / toy",
+  bio:"Toy xızmetleri ushın.",
+  contact:"Toy xızmetleri: +998 91 300 09 90 (bio)",
+  aud:"Toy hám muzıka súyiwshiler.",
+  style:"Qosıqlar, toy videoları.",
+  fit:2, why:"Muzıka/toy auditoriyası. Bilim brendine sáykesligi tómen."},
+ {h:"baxadir.razimbetov",name:"Baxadir Razimbetov",fol:120000,posts:442,fing:506,type:"bloger",niche:"Artist",
+  bio:"Qaraqalpaqstan Respublikasına miyneti sińgen artist.",
+  contact:"Admin: +998 91 255 87 87 (bio) · tap.li/BaxadirRazimbetov",
+  aud:"Ata-analar hám úlken jastaǵılar, keń.",
+  style:"Konsertler, qızıqlı waqıyalar.",
+  fit:3, why:"Ata-analar tanıytuǵın hám húrmetleytuǵın artist — isenim beredi. Real School ushın ata-analarǵa arnalǵan reklama ushın jaramlı."},
+ {h:"farida_butik",name:"Farida",fol:8,posts:1,fing:0,type:"biznes",niche:"Butik / kiyim",
+  bio:"",
+  contact:"DM arqalı",
+  aud:"Derlik joq (8 obunashı).",
+  style:"1 post.",
+  fit:1, why:"Biznes akkaunt, derlik bos. Bul siz izlegen butik bolmawı múmkin — atın qayta tekseriń."},
+ {h:"ametovaarukhan",name:"Aruxan Ametova",fol:204000,posts:160,fing:128,type:"bloger",niche:"Lifestyle / toy",
+  bio:"Notarius.",
+  contact:"DM arqalı",
+  aud:"Hayal-qızlar, jas shańaraqlar.",
+  style:"Toy (sırǵa salıw, komsomol toy, musılman toy) videoları.",
+  fit:3, why:"Úlken hayal-qızlar auditoriyası, jas analar kóp. Bumer Kids ushın jaqsı bolıwı múmkin."},
+ {h:"zoloto_rose_nukus",name:"Roza Allambergenova",fol:323000,posts:94,fing:5,type:"bloger",niche:"Biznes / lifestyle",
+  bio:"Biznes, Zoloto hám azǵana ómir. Founder @zoloto_rose_zoloto. Gózzal jasayman hám ilhamlandıraman.",
+  contact:"DM arqalı · Telegram kanal (bio)",
+  aud:"Hayal-qızlar, ataları-analar, isbilermenler.",
+  style:"Lifestyle, biznes, sayaxat.",
+  fit:3, why:"Eń úlken qamtıwlardıń biri (323 mıń). Analar auditoriyası bar, biraq zergerlik biznesi menen baylanıslı, baha joqarı bolıwı múmkin."},
+ {h:"feruza_zairovna",name:"Feruza",fol:160000,posts:418,fing:285,type:"bloger",niche:"Motivaciya / beauty",
+  bio:"Motivator. Beauty-expert. Turmısqa shıqqan. Tiykarın salıwshı @dyson.hair_shop2. Jumıs profili @vizajist_feruza.",
+  contact:"DM arqalı",
+  aud:"Hayal-qızlar, jas analar.",
+  style:"Motivaciya, gózzallıq, shańaraq.",
+  fit:3, why:"Analar auditoriyası + motivaciya. 'Balama durıs bilim' temasında jaqsı isleydi."},
+ {h:"nargiizem",name:"Nargiza | lifestyle blog",fol:159000,posts:388,fing:185,type:"bloger",niche:"Lifestyle",
+  bio:"Xosh keldińiz. Jumıs akkaunt @nargizem_depilyatsiya. Dúkan @nargizem_shopp.",
+  contact:"Reklama: 95-279-77-76 (bio)",
+  aud:"Hayal-qızlar, analar.",
+  style:"Lifestyle, pisiriw, reklama otzıvları (rubrika bar).",
+  fit:4, why:"Analar auditoriyası, reklama nomeri ashıq hám 'reklama otzıvları' rubrikası bar — reklama formatın biledi. Bumer Kids hám Real School ushın jaqsı."},
+ {h:"mukarrama.live",name:"Mukarrama Orazbaeva | Poetess & Artist",fol:207000,posts:204,fing:205,type:"bloger",niche:"Shayır / qosıqshı",
+  bio:"Influencer | Shayır | Qosıqshı.",
+  contact:"Kontent/collab: +998 99 959 96 92 (bio) · t.me/poeziyamukarrama",
+  aud:"Jaslar, studentler, Qaraqalpaq tili súyiwshiler.",
+  style:"Qaraqalpaqsha poeziya, qosıq, mádeniyat.",
+  fit:4, why:"Qaraqalpaqsha jazadı, mádeniyat hám ádebiyat obrazı — bilim brendine sáykes. Collab ushın arnawlı nomer bar."},
+ {h:"kupi_proday_nukus",typed:"kupi_praday_nukus",name:"Eń birinshi Kupi-Proday Nókis",fol:199000,posts:9723,fing:2,type:"biznes",niche:"Reklama / sawda betı",
+  bio:"Qaraqalpaqstandaǵı birinshi 'Kupi-Proday'. 200 mıńnan aslam razı klient.",
+  contact:"Reklama: +998 91 379 99 98 (bio)",
+  aud:"Nókis turǵınları, keń, ásirese shańaraqlar.",
+  style:"Kúnine kóp reklama postları.",
+  fit:2, why:"Biznes akkaunt (reklama doskası). Qamtıwı úlken hám Nókiske baǵdarlanǵan, biraq reklama kóp postlar arasında joǵalıp ketedi. Arzan qamtıw ushın jaramlı."},
+ {h:"kupi_praday_ayko",name:"— (tabılmadı)",fol:null,posts:null,fing:null,type:"na",niche:"Belgisiz",
+  bio:"", contact:"—", aud:"", style:"", fit:null,
+  why:"kupi_praday_ayko, kupi_prodai_ayko, kupi_proday_ayko tekserildi — hesh biri ashılmadı. Durıs atın anıqlaw kerek."},
+ {h:"d.butiknks",name:"Dilnura Brend",fol:127000,posts:987,fing:44,type:"biznes",niche:"Butik / kiyim",
+  bio:"Hayal-qızlar kiyim dúkanı. Ózbekstan boylap jetkerip beriw. Mánzil: Jipek jolı kóshesi.",
+  contact:"Dúkan nomeri bio-da · t.me/dilnurabrendd",
+  aud:"Hayal-qızlar, analar.",
+  style:"Kiyim kórsetiw, otzıvlar.",
+  fit:2, why:"Biznes akkaunt. Auditoriyası analar, biraq reklama satpawı múmkin — barter yamasa birgelikte aksiya sorap kóriw kerek."},
+ {h:"miss_zara_kubera",name:"Zarafshan Panaeva",fol:161000,posts:271,fing:5,type:"bloger",niche:"Bloger / brand face",
+  bio:"Bloger | Brand face | Influencer. Ambassador: @kosmetolog_indiraa, @sagnamebel.uz, @zoloto_almaz_nukus.",
+  contact:"DM arqalı · t.me/miss_zara_kubera",
+  aud:"Hayal-qızlar, jas analar.",
+  style:"Brand face reklama, otzıvlar, lifestyle.",
+  fit:3, why:"Brand face/ambassador formatın jaqsı biledi. Analar auditoriyası. Uzaq múddetli ambassador sıpatında oylap kóriwge boladı."},
+ {h:"makler_nukus",name:"Makler Nukus",fol:460000,posts:1545,fing:369,type:"biznes",niche:"Úy-jay reklama",
+  bio:"Úy-jay reklama xızmeti. Kvartira hám kvartirant tawıp beremiz.",
+  contact:"91-385-15-75 (bio)",
+  aud:"Nókis turǵınları, shańaraqlar — eń úlken qamtıw.",
+  style:"Úy-jay reklamaları.",
+  fit:2, why:"Biznes akkaunt, bloger emes. Qamtıw óte úlken (460 mıń), arzan storis reklaması ushın paydalanıwǵa boladı."}
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n == null ? "—" : n >= 1000 ? (n/1000).toLocaleString("ru-RU",{maximumFractionDigits:1}) + " mıń" : n.toLocaleString("ru-RU");
+const stars = f => f == null ? "—" : "★".repeat(f) + "☆".repeat(5 - f);
+const typeLabel = t => t === "biznes" ? '<span class="tag biz">biznes akkaunt</span>' : t === "na" ? '<span class="tag err">tekseriw kerek</span>' : '<span class="tag">bloger</span>';
+
+[...new Set(DATA.map(d => d.niche))].sort().forEach(n => $("niche").insertAdjacentHTML("beforeend", `<option>${esc(n)}</option>`));
+
+$("top").innerHTML = DATA.filter(d => d.fit >= 4).sort((a,b) => b.fit - a.fit || b.fol - a.fol)
+  .map(d => `<li><a class="handle" href="https://www.instagram.com/${d.h}/" target="_blank" rel="noopener">@${d.h}</a> — ${fmt(d.fol)} · <span class="stars">${stars(d.fit)}</span><br><small>${esc(d.why)}</small></li>`).join("");
+
+function card(d){
+  const fixed = d.typed && d.typed !== d.h ? `<div class="note">Siz jazǵan: ${esc(d.typed)} → durısı: ${esc(d.h)}</div>` : "";
+  return `<article class="card ${d.type === "na" ? "na" : ""}">
+    <div class="top"><div><div class="name">${esc(d.name)}</div>
+      <a class="handle" href="https://www.instagram.com/${d.h}/" target="_blank" rel="noopener">@${esc(d.h)}</a></div>
+      <div class="score" title="Bilim brendine say keliwi">${d.fit ?? "?"}/5</div></div>
+    ${fixed}
+    <div class="stats"><div><b>${fmt(d.fol)}</b> obunashı</div><div><b>${d.posts ?? "—"}</b> post</div><div><b>${d.fing ?? "—"}</b> jazılǵan</div></div>
+    <div class="tags">${typeLabel(d.type)}<span class="tag">${esc(d.niche)}</span></div>
+    ${d.bio ? `<div class="bio">${esc(d.bio)}</div>` : ""}
+    <div class="row"><span>Baylanıs:</span> ${esc(d.contact)}</div>
+    ${d.aud ? `<div class="row"><span>Auditoriya:</span> ${esc(d.aud)}</div>` : ""}
+    ${d.style ? `<div class="row"><span>Kontent:</span> ${esc(d.style)}</div>` : ""}
+    <div class="row"><span>Sońǵı post:</span> kirmey turıp kórinbeydi</div>
+    <div class="row"><span>Bilim ushın:</span> <span class="stars">${stars(d.fit)}</span> ${esc(d.why)}</div>
+  </article>`;
+}
+
+function render(){
+  const q = $("q").value.trim().toLowerCase(), n = $("niche").value, t = $("type").value, s = $("sort").value;
+  let list = DATA.filter(d => (!n || d.niche === n) && (!t || d.type === t) &&
+    (!q || [d.h, d.name, d.niche, d.bio, d.aud, d.style, d.typed].join(" ").toLowerCase().includes(q)));
+  list.sort(s === "fit" ? (a,b) => (b.fit ?? -1) - (a.fit ?? -1) || (b.fol ?? -1) - (a.fol ?? -1)
+          : s === "name" ? (a,b) => a.h.localeCompare(b.h)
+          : (a,b) => (b.fol ?? -1) - (a.fol ?? -1));
+  $("list").innerHTML = list.map(card).join("");
+  $("count").textContent = `${list.length} / ${DATA.length} akkaunt kórsetildi`;
+}
+["q","niche","type","sort"].forEach(id => $(id).addEventListener("input", render));
+render();
+</script>
+</body>
+</html>
