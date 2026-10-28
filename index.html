@@ -237,6 +237,14 @@ body{background:
 .lvl{border-color:var(--line)}
 .lvl.rec{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:var(--accent)}
 .toast{background:var(--ink);color:#07080C}
+.targetlink{display:flex;align-items:center;gap:12px;margin-top:10px;padding:14px 16px;border-radius:18px;text-decoration:none;color:var(--ink);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 22%,var(--surface2)),var(--surface));border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);box-shadow:0 14px 30px -18px var(--accent)}
+.targetlink[hidden]{display:none}
+.targetlink .ti{font-size:24px}
+.targetlink b{display:block;font-family:var(--display);font-weight:500;font-size:14.5px}
+.targetlink small{color:var(--muted);font-size:12.5px}
+.targetlink .ta{margin-left:auto;font-size:20px;color:var(--accent)}
+.targetlink:hover{border-color:var(--accent)}
 </style>
 
 <div class="wrap">
@@ -255,6 +263,7 @@ body{background:
 
   <div class="brlabel">Filialdı tańlań</div>
   <nav class="branches" id="branches" aria-label="Filial tańlaw"></nav>
+  <a class="targetlink" id="targetlink" href="target/" hidden><span class="ti">🎯</span><span><b>Target reklama jobası</b><small>Noyabr · auditoriya, kampaniyalar, tekstler</small></span><span class="ta">→</span></a>
   <nav class="filters" id="filters" aria-label="Status boyınsha saylaw"></nav>
   <div class="note" id="note" hidden></div>
   <main id="board"></main>
@@ -703,6 +712,7 @@ function applyBranch(){
   const r=document.documentElement.style;r.setProperty("--accent",dark?b.a[2]:b.a[0]);r.setProperty("--soft",dark?b.a[3]:b.a[1]);r.setProperty("--accent-ink",dark?"#15171C":"#FFFFFF");
   IMG.accent=b.a[0];IMG.soft=b.a[1];
   $("ptitle").innerHTML=esc(b.name)+"<br>Kontent Plan";document.title=b.name+" Kontent Plan";
+  $("targetlink").hidden=branch!=="school";
   $("branches").innerHTML=Object.entries(BR).map(([k,v])=>`<button type="button" data-b="${k}" aria-pressed="${k===branch}"><span class="ic">${v.ic}</span>${esc(v.name)}<small>${esc(v.sub)}</small></button>`).join("");
 }
 $("branches").addEventListener("click",e=>{const t=e.target.closest("[data-b]");if(!t||t.dataset.b===branch)return;branch=t.dataset.b;try{localStorage.setItem("kp-branch",branch);history.replaceState(null,"","#"+branch)}catch(_){}filter="all";open.clear();applyBranch();connect()});

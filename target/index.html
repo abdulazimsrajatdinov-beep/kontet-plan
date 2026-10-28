@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="kaa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Real School target jobası</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap">
+<style>
+:root{--bg:#07080C;--card:#11131A;--card2:#171A23;--ink:#F2F3F7;--muted:#8E95A6;--line:rgba(255,255,255,.08);
+  --accent:#FF5A87;--accent-deep:#B3224C;--good:#3CCF8E;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;--body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:15px/1.6 var(--body);min-height:100vh;
+  background:radial-gradient(700px 420px at 100% -120px,rgba(255,90,135,.28),transparent 70%),radial-gradient(600px 380px at -15% 18%,rgba(255,90,135,.10),transparent 70%),var(--bg);background-attachment:fixed}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+a{color:inherit}
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:18px;color:var(--muted);text-decoration:none;font-weight:700;font-size:14px}
+.back:hover{color:var(--ink)}
+.hero{margin-top:14px;border-radius:28px;padding:24px 22px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#B3224C 0%,#5A1027 100%);box-shadow:0 30px 60px -28px rgba(255,90,135,.9),inset 0 1px 0 rgba(255,255,255,.25)}
+.hero::after{content:"";position:absolute;right:-80px;top:-90px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.07);box-shadow:0 0 0 40px rgba(255,255,255,.03)}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,40px);line-height:1.08;margin:10px 0 14px;letter-spacing:-.02em}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;position:relative;z-index:1}
+.facts div{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:10px 12px}
+.facts span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;font-weight:700}
+.facts b{font-size:14.5px}
+.hint{margin:16px 0 0;font-size:13px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+code{background:rgba(255,90,135,.14);color:#FF9AB5;border-radius:6px;padding:1px 6px;font-family:inherit;font-weight:700}
+nav.toc{display:flex;gap:8px;overflow-x:auto;padding:18px 0 4px;scrollbar-width:none}
+nav.toc::-webkit-scrollbar{display:none}
+nav.toc a{flex:none;text-decoration:none;font-size:13px;font-weight:700;padding:8px 13px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+nav.toc a:hover{border-color:rgba(255,90,135,.5)}
+section{margin-top:30px;scroll-margin-top:12px}
+h2{font-family:var(--display);font-weight:500;font-size:18px;margin:0 0 12px;display:flex;gap:10px;align-items:center}
+h2 .n{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;font-size:13px;background:linear-gradient(145deg,#B3224C,#5A1027);color:#fff;flex:none}
+.cards{display:grid;gap:12px}
+@media(min-width:700px){.cards.three{grid-template-columns:repeat(3,1fr)}.cards.two{grid-template-columns:1fr 1fr}}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:20px;padding:16px;position:relative}
+.card.hl{border-color:rgba(255,90,135,.4);box-shadow:0 18px 40px -24px rgba(255,90,135,.6)}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{margin:4px 0;font-size:14px}
+.muted{color:var(--muted)}
+.badge{display:inline-block;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:rgba(255,90,135,.15);color:#FF9AB5;margin-bottom:8px}
+.pct{position:absolute;right:16px;top:14px;font-family:var(--display);font-size:24px;color:#FF9AB5}
+.bar{height:8px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#FF5A87,#FF9AB5)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px;margin-top:8px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.warn{margin-top:12px;font-size:13.5px;border-radius:14px;padding:10px 12px;background:rgba(240,164,58,.1);border:1px solid rgba(240,164,58,.35);color:#F6C27A}
+.list{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:14px}
+.date{font-family:var(--display);font-size:12px;text-align:center;line-height:1.2;padding:8px 10px;border-radius:12px;background:rgba(255,90,135,.12);color:#FF9AB5;min-width:58px}
+.date b{display:block;font-size:20px}
+.item h3{margin:0;font-size:15px}
+.item p{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:999px;border:1px solid rgba(255,90,135,.4);color:#FF9AB5;margin-top:6px}
+.ad{white-space:pre-line;font-size:14px;background:#0C0E14;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px}
+.copy{margin-top:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:10px;padding:7px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.copy:hover{border-color:rgba(255,90,135,.5)}
+.steps{counter-reset:s;display:grid;gap:8px}
+.step{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:14px}
+.step::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:rgba(255,90,135,.15);color:#FF9AB5;font-weight:800;font-size:13px}
+.week{border-left:3px solid #FF5A87;padding-left:12px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);cursor:pointer}
+.check input{accent-color:#FF5A87;width:18px;height:18px;margin-top:2px;flex:none}
+.check.done span{text-decoration:line-through;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font-weight:700;font-size:14px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../#school">← Kontent planǵa qaytıw</a>
+
+  <header class="hero">
+    <div class="eyebrow">Real School · Target reklama</div>
+    <h1>Noyabr target jobası</h1>
+    <div class="facts">
+      <div><span>Platforma</span><b>Instagram + Facebook</b></div>
+      <div><span>Akkaunt</span><b>@real_school_nks</b></div>
+      <div><span>Maqset</span><b>Sınaq sabaqqa jazılıw</b></div>
+      <div><span>Dáwir</span><b>3–30 noyabr</b></div>
+    </div>
+  </header>
+  <p class="hint"><code>[kvadrat qawsırma]</code> ishindegi orınlardı ózińiz toltırıń: byudjet, baha, telefon, aksiya.</p>
+
+  <nav class="toc">
+    <a href="#aud">Auditoriya</a><a href="#camp">Kampaniyalar</a><a href="#posts">Postlar</a><a href="#video">Video</a><a href="#texts">Tekstler</a><a href="#cal">Kalendar</a><a href="#kpi">KPI</a><a href="#check">Tekseriw</a>
+  </nav>
+
+  <section id="aud">
+    <h2><span class="n">1</span>Kimge kórsetemiz</h2>
+    <div class="cards three">
+      <div class="card hl"><span class="badge">A · Bas auditoriya</span><h3>Ata-analar</h3>
+        <p class="muted">Mektep jasındaǵı balası bar ata-analar — balanı jazatuǵın hám tóleytuǵın adamlar.</p>
+        <dl class="kv"><dt>Orın</dt><dd>Nókis + 15 km</dd><dt>Jas</dt><dd>28–50</dd><dt>Jınısı</dt><dd>barlıǵı</dd><dt>Qızıǵıwshılıq</dt><dd>Parenting, Education, School, Children</dd><dt>Til</dt><dd>Qaraqalpaq, Ózbek, Rus</dd></dl></div>
+      <div class="card"><span class="badge">B</span><h3>Abiturientler</h3>
+        <p class="muted">9–11-klass, SAT / Milliy sertifikat tayarlıǵı.</p>
+        <dl class="kv"><dt>Orın</dt><dd>Nókis + 15 km</dd><dt>Jas</dt><dd>18–24 hám ata-analar 35–55</dd><dt>Qızıǵıwshılıq</dt><dd>University, SAT, IELTS, Study abroad</dd></dl></div>
+      <div class="card"><span class="badge">C · Eń arzan</span><h3>Retargeting</h3>
+        <p class="muted">Bizdi burın kórgenler.</p>
+        <dl class="kv"><dt>Kimler</dt><dd>90 kúnde profil menen baylanısqanlar, reels-ti 50%+ kórgenler, DM jazǵanlar</dd></dl></div>
+    </div>
+    <div class="warn">⚠️ Meta qaǵıydası: 18 jastan kishilerge qızıǵıwshılıq boyınsha sazlaw derlik islemeydi. Sonıń ushın oqıwshılardıń ózine emes, <b>ata-analarǵa</b> hám 18+ abiturientlerge target qılamız.</div>
+  </section>
+
+  <section id="camp">
+    <h2><span class="n">2</span>Kampaniyalar</h2>
+    <div class="cards three">
+      <div class="card hl"><span class="pct">60%</span><span class="badge">1</span><h3>Jazılıw (lid)</h3>
+        <dl class="kv"><dt>Maqset</dt><dd>Messages (Instagram Direct) yamasa Telegram silteme</dd><dt>Auditoriya</dt><dd>A + B</dd><dt>Kreativ</dt><dd>«Biypul sınaq sabaq» reels hám karusel</dd></dl>
+        <div class="bar"><i style="width:60%"></i></div></div>
+      <div class="card"><span class="pct">25%</span><span class="badge">2</span><h3>Tanıtıw</h3>
+        <dl class="kv"><dt>Maqset</dt><dd>Reach / ThruPlay</dd><dt>Auditoriya</dt><dd>A (keń)</dd><dt>Kreativ</dt><dd>Eń kúshli 2–3 reels</dd></dl>
+        <div class="bar"><i style="width:25%"></i></div></div>
+      <div class="card"><span class="pct">15%</span><span class="badge">3</span><h3>Retargeting</h3>
+        <dl class="kv"><dt>Maqset</dt><dd>Messages</dd><dt>Auditoriya</dt><dd>C</dd><dt>Kreativ</dt><dd>«Orınlar sheklengen» + ata-ana pikiri</dd></dl>
+        <div class="bar"><i style="width:15%"></i></div></div>
+    </div>
+    <div class="card" style="margin-top:12px"><h3>Byudjet: <code>[ay ushın byudjet]</code></h3>
+      <div class="steps">
+        <div class="step">Hár ad set ke kishi kúndelik byudjet qoyıp (<code>[...] / kún</code>), 3–4 kún sınap kóriń.</div>
+        <div class="step">Jaqsı islegen reklamaǵa byudjetti kóbeytiń, jamanın óshiriń.</div>
+        <div class="step">Bir ad set ishinde 2–3 kreativ bolsın — Meta ózi eń jaqsısın tańlaydı.</div>
+      </div></div>
+  </section>
+
+  <section id="posts">
+    <h2><span class="n">3</span>Reklamaǵa beriletuǵın postlar</h2>
+    <div class="list">
+      <div class="item"><div class="date"><b>5</b>noy</div><div><h3>Qıdırniyaz aǵanıń sabaǵı: Kitaptıń kúshi</h3><p>Ata-analar isenetuǵın tulǵa, «tárbiya» xabarı.</p><span class="tag">2 · Tanıtıw</span></div></div>
+      <div class="item"><div class="date"><b>10</b>noy</div><div><h3>Maks: SAT pe, Milliy sertifikat pa?</h3><p>Abiturient ata-analarınıń eń kóp beretuǵın sorawı.</p><span class="tag">1 · Jazılıw (B)</span></div></div>
+      <div class="item"><div class="date"><b>12</b>noy</div><div><h3>Real School-dı tańlawdıń 5 sebebi</h3><p>Tikkeley «nege biz?» degen sorawǵa juwap.</p><span class="tag">1 · Jazılıw (A)</span></div></div>
+      <div class="item"><div class="date"><b>21</b>noy</div><div><h3>Sultanbek × 10-klass qosıq cover</h3><p>Kóp tarqalatuǵın, «zeriktirmeytuǵın mektep» obrazı.</p><span class="tag">2 · Tanıtıw</span></div></div>
+      <div class="item"><div class="date"><b>25</b>noy</div><div><h3>Ata-ana pikiri</h3><p>Isenim beredi — «basqa ata-analar da razı».</p><span class="tag">3 · Retargeting</span></div></div>
+      <div class="item"><div class="date"><b>26</b>noy</div><div><h3>POV: Real School-da birinshi kún</h3><p>Ata-anaǵa mektep ishin kórsetedi.</p><span class="tag">1 · Jazılıw (A)</span></div></div>
+    </div>
+    <p class="hint">Qaǵıyda: post Instagram da organik túrde 2–3 kún jaqsı nátiyje berse (kóriw, saqlaw, kommentariy), sońınan ǵana reklamaǵa beriń.</p>
+  </section>
+
+  <section id="video">
+    <h2><span class="n">4</span>Arnawlı reklama videosı · 15–20 sek</h2>
+    <div class="card">
+      <div class="steps">
+        <div class="step"><span><b>0–3 sek:</b> Klass, kúlip otırǵan oqıwshılar. Tekst: «Balańız mektepke qızıǵıp bara ma? 🤔»</span></div>
+        <div class="step"><span>3 tez kadr: inglis sabaǵı → laboratoriya → kitap oqıw.</span></div>
+        <div class="step"><span>Muǵallim kameraǵa: «Real School da hár balaǵa itibar beremiz.»</span></div>
+        <div class="step"><span>Ekranda: «Biypul sınaq sabaq · <code>[sánesi]</code>» + «Jazılıw ushın DM ge jazıń».</span></div>
+      </div>
+      <p class="muted" style="margin-top:10px">Ata-analardan kadrǵa túsiw ushın ruxsat alıń.</p>
+    </div>
+  </section>
+
+  <section id="texts">
+    <h2><span class="n">5</span>Reklama tekstleri</h2>
+    <div class="cards">
+      <div class="card"><span class="badge">1 · Ata-analarǵa</span>
+        <div class="ad" id="t1">Balańız mektepke qızıǵıp barıwın qáleysiz be? 📚
+Real School da: tájiriybeli muǵallimler, kúshli inglis tili, tárbiyaǵa itibar.
+🎁 Biypul sınaq sabaqqa jazılıń — DM ge «Sınaq» dep jazıń.
+📍 Nókis · [mánzil] · ☎️ [telefon]</div>
+        <button class="copy" data-copy="t1">Tekstti kóshiriw</button></div>
+      <div class="card"><span class="badge">2 · Abiturientlerge</span>
+        <div class="ad" id="t2">SAT pa, Milliy sertifikat pa? 🤔
+Real School da ekewine de tayarlıq bar. Tayarlıqtı erte baslaǵan utadı!
+👉 DM ge «SAT» yamasa «MILLIY» dep jazıń — sizge qaysısı say keletuǵının aytamız.</div>
+        <button class="copy" data-copy="t2">Tekstti kóshiriw</button></div>
+      <div class="card"><span class="badge">3 · Retargeting</span>
+        <div class="ad" id="t3">[ay] ushın orınlar sheklengen ⏳
+Basqa ata-analar Real School dı tańladı — siz de kelip kóriń.
+🎁 Biypul sınaq sabaq · DM ge jazıń.</div>
+        <button class="copy" data-copy="t3">Tekstti kóshiriw</button></div>
+    </div>
+    <p class="hint">Túyme (CTA): «Send message» / «Xabar jiberiw».</p>
+  </section>
+
+  <section id="cal">
+    <h2><span class="n">6</span>Háptelik kalendar</h2>
+    <div class="cards two">
+      <div class="card week"><span class="badge">1-hápte · 3–9 noy</span><p>Kampaniyalardı jasaw. 1 hám 2-kampaniyanı kishi byudjet penen baslaw. Hár ad set te 2–3 kreativ.</p></div>
+      <div class="card week"><span class="badge">2-hápte · 10–16 noy</span><p>Nátiyjelerdi qaraw: eń arzan DM bergen reklamanı qaldırıw, jamanların óshiriw. Maks SAT reels in qosıw.</p></div>
+      <div class="card week"><span class="badge">3-hápte · 17–23 noy</span><p>Retargeting baslaw. Jaqsı reklamaǵa byudjetti 20–30% kóbeytiw.</p></div>
+      <div class="card week"><span class="badge">4-hápte · 24–30 noy</span><p>«Orınlar sheklengen» xabarı + ata-ana pikiri. Ay juwmaǵı: esabat.</p></div>
+    </div>
+  </section>
+
+  <section id="kpi">
+    <h2><span class="n">7</span>Neni esaplaymız</h2>
+    <div class="cards two">
+      <div class="card"><h3>Bir xabardıń bahası</h3><p class="muted">1 DM ushın qansha tóledik · Ads Manager</p></div>
+      <div class="card"><h3>CTR</h3><p class="muted">Kórgenlerdiń neshe %-ı bastı · Ads Manager</p></div>
+      <div class="card"><h3>CPM</h3><p class="muted">1000 kóriwdiń bahası · Ads Manager</p></div>
+      <div class="card"><h3>Sınaqqa jazılǵanlar</h3><p class="muted">DM dan neshe adam jazıldı · administrator dápteri / EduTizim</p></div>
+      <div class="card hl"><h3>Oqıwǵa túskenler</h3><p class="muted">Eń tiykarǵı nátiyje · EduTizim</p></div>
+      <div class="card"><h3>Bir oqıwshınıń bahası</h3><p class="muted">Ulıwma byudjet ÷ túsken oqıwshılar</p></div>
+    </div>
+    <p class="hint">Keńes: administrator hár DM ga «Bizdi qay jerden kórdińiz?» dep sorasın hám jazıp barsın.</p>
+  </section>
+
+  <section id="check">
+    <h2><span class="n">8</span>Baslawdan aldın tekseriw</h2>
+    <div class="list" id="checks">
+      <label class="check"><input type="checkbox"><span>@real_school_nks — Professional (biznes) akkaunt hám Facebook betine jalǵanǵan</span></label>
+      <label class="check"><input type="checkbox"><span>Ads Manager da tólew usılı qosılǵan (kartanı ózińiz qosasız)</span></label>
+      <label class="check"><input type="checkbox"><span>Bio da qısqa usınıs + telefon + mánzil + «DM ge jazıń»</span></label>
+      <label class="check"><input type="checkbox"><span>DM ga 5–10 minut ishinde juwap beretuǵın adam bekitilgen</span></label>
+      <label class="check"><input type="checkbox"><span>Avtomat juwaplar: «Sınaq», «SAT», «MILLIY» sózlerine tayın juwap</span></label>
+      <label class="check"><input type="checkbox"><span>Videoǵa túsken balalardıń ata-anasınan ruxsat alınǵan</span></label>
+      <label class="check"><input type="checkbox"><span>Byudjet, baha, aksiya hám telefon toltırıldı</span></label>
+    </div>
+    <p class="hint">Belgiler tek usı telefonda/brauzerde saqlanadı.</p>
+  </section>
+
+  <footer>Real Education · Real School marketing · Nókis</footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const toast = msg => { const t = document.getElementById("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 1600); };
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+  const text = document.getElementById(b.dataset.copy).innerText;
+  try { await navigator.clipboard.writeText(text); toast("Kóshirildi ✓"); }
+  catch (_) { toast("Kóshiriw múmkin bolmadı"); }
+}));
+
+// tekseriw belgileri usı brauzerde saqlanadı
+const KEY = "rs-target-checks";
+const boxes = [...document.querySelectorAll("#checks input")];
+let saved = [];
+try { saved = JSON.parse(localStorage.getItem(KEY)) || []; } catch (_) {}
+boxes.forEach((b, i) => {
+  b.checked = !!saved[i];
+  b.closest(".check").classList.toggle("done", b.checked);
+  b.addEventListener("change", () => {
+    b.closest(".check").classList.toggle("done", b.checked);
+    try { localStorage.setItem(KEY, JSON.stringify(boxes.map(x => x.checked))); } catch (_) {}
+  });
+});
+</script>
+</body>
+</html>
