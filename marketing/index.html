@@ -4,309 +4,381 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marketing planlar</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f4ef;--card:#fff;--ink:#1d1d1f;--muted:#6b6b72;--line:#e6e2d9;
-  --edu:#e8892b;--edu-soft:#fdf0e2;--sch:#d6457a;--sch-soft:#fbe6ee;
-  --ok:#2f9e6a;--danger:#c93b3b;--shadow:0 6px 22px rgba(30,25,15,.08);
+  --bg:#f4f1ea;--card:#ffffff;--ink:#16151a;--muted:#77737c;--line:#ebe6dc;--soft:#faf8f4;
+  --gold:#b8935a;--danger:#c63d3d;
+  --edu1:#f39a3d;--edu2:#d9572b;--sch1:#e0558b;--sch2:#8f3aa8;
+  --a1:var(--sch1);--a2:var(--sch2);
+  --sh:0 1px 2px rgba(20,15,10,.04),0 10px 30px rgba(20,15,10,.07);
+  --r:20px;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:15px}
-button{font:inherit;cursor:pointer}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit}
 input,textarea,select{font:inherit;color:inherit}
-.wrap{max-width:980px;margin:0 auto;padding:20px 16px 80px}
-header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-header.top h1{margin:0;font-size:22px;font-weight:800}
-.sync{font-size:12px;color:var(--muted)}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.tab{border:2px solid transparent;border-radius:18px;padding:16px;background:var(--card);box-shadow:var(--shadow);text-align:left;display:flex;align-items:center;gap:12px}
-.tab .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:18px;color:#fff}
-.tab b{display:block;font-size:16px}.tab small{color:var(--muted)}
-.tab.edu .ic{background:var(--edu)}.tab.sch .ic{background:var(--sch)}
-.tab.edu.on{border-color:var(--edu);background:var(--edu-soft)}
-.tab.sch.on{border-color:var(--sch);background:var(--sch-soft)}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
-.bar h2{margin:0;font-size:18px}
-.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;background:var(--ink);color:#fff}
-.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.btn.small{padding:6px 10px;font-size:13px;border-radius:9px}
-.btn.danger{background:transparent;color:var(--danger);border:1.5px solid #f0caca}
-.accent{background:var(--a)!important}
-.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
-.pcard{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);border-top:4px solid var(--a);cursor:pointer}
-.pcard h3{margin:0 0 6px;font-size:16px}
-.pcard .meta{color:var(--muted);font-size:13px;display:flex;gap:10px;flex-wrap:wrap}
-.prog{height:7px;background:#eee;border-radius:9px;margin-top:12px;overflow:hidden}
-.prog i{display:block;height:100%;background:var(--a)}
-.empty{padding:40px 16px;text-align:center;color:var(--muted);background:var(--card);border-radius:16px}
-.editor{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:18px}
-.ehead{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
-.title-in{width:100%;border:0;font-size:22px;font-weight:800;padding:6px 0;background:transparent;outline:none;border-bottom:2px dashed var(--line)}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
-label.f{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);font-weight:600}
-label.f input,label.f select,textarea{border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;background:#fff;color:var(--ink);font-size:15px;font-weight:500}
-textarea{width:100%;min-height:80px;resize:vertical}
-section.s{margin-top:22px}
-section.s h4{margin:0 0 8px;font-size:15px;display:flex;justify-content:space-between;align-items:center}
-table{width:100%;border-collapse:collapse}
-td,th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
-th{font-size:12px;color:var(--muted);font-weight:700}
-td input{width:100%;border:1px solid transparent;border-radius:8px;padding:6px;background:transparent}
-td input:focus{border-color:var(--line);background:#fff;outline:none}
-.x{border:0;background:transparent;color:#b5b0a6;font-size:18px;line-height:1;padding:4px 6px}
-.x:hover{color:var(--danger)}
-.month{margin-bottom:12px;border:1.5px solid var(--line);border-radius:12px;padding:10px}
-.month-h{display:flex;gap:8px;align-items:center}
-.month-h input{flex:1;border:0;font-weight:700;font-size:15px;padding:4px;outline:none;background:transparent}
-.task{display:flex;gap:8px;align-items:center;padding:4px 0}
-.task input[type=text]{flex:1;border:0;padding:5px;border-radius:8px;outline:none;background:transparent}
-.task input[type=text]:focus{background:#faf8f3}
+.serif{font-family:Fraunces,Georgia,serif;letter-spacing:-.01em}
+
+/* HERO */
+.hero{background:radial-gradient(120% 140% at 0% 0%,#2b2533 0%,#141218 60%);color:#fff;padding:28px 16px 86px}
+.hero .in{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hero small{color:var(--gold);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+.hero h1{margin:6px 0 0;font-size:34px;font-weight:700}
+.hero .today{color:#bdb6c4;font-size:14px}
+.wrap{max-width:1000px;margin:-62px auto 0;padding:0 16px 90px}
+
+/* ORG SWITCH */
+.orgs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.org{border:0;border-radius:var(--r);padding:18px;text-align:left;background:var(--card);box-shadow:var(--sh);display:flex;gap:14px;align-items:center;position:relative;overflow:hidden;transition:transform .15s}
+.org:hover{transform:translateY(-2px)}
+.org .ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;color:#fff;flex:none}
+.org .ic svg{width:24px;height:24px}
+.org.edu .ic{background:linear-gradient(135deg,var(--edu1),var(--edu2))}
+.org.sch .ic{background:linear-gradient(135deg,var(--sch1),var(--sch2))}
+.org b{display:block;font-size:17px}
+.org span.c{color:var(--muted);font-size:13px}
+.org.on.edu{background:linear-gradient(135deg,var(--edu1),var(--edu2));color:#fff}
+.org.on.sch{background:linear-gradient(135deg,var(--sch1),var(--sch2));color:#fff}
+.org.on .ic{background:rgba(255,255,255,.22)!important}
+.org.on span.c{color:rgba(255,255,255,.85)}
+
+/* LIST */
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.head h2{margin:0;font-size:24px}
+.btn{border:0;border-radius:14px;padding:12px 18px;font-weight:700;background:var(--ink);color:#fff;display:inline-flex;align-items:center;gap:8px}
+.btn.grad{background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 8px 20px -8px var(--a2)}
+.btn.line{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:11px}
+.btn.del{background:#fff;color:var(--danger);border:1.5px solid #f2d2d2}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.pc{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--sh);cursor:pointer;position:relative;transition:transform .15s}
+.pc:hover{transform:translateY(-2px)}
+.pc .top{display:flex;justify-content:space-between;gap:10px}
+.pc h3{margin:0;font-size:17px;line-height:1.3}
+.pc .br{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:var(--a2);background:color-mix(in srgb,var(--a1) 12%,#fff);padding:3px 9px;border-radius:20px}
+.pc .dates{display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--muted);font-size:13px}
+.pc .dates svg{width:16px;height:16px}
+.pc .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.left{font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--soft)}
+.left.late{color:var(--danger);background:#fdeeee}
+.ring{--p:0;width:52px;height:52px;border-radius:50%;flex:none;background:conic-gradient(var(--a1) calc(var(--p)*1%),#efebe3 0);display:grid;place-items:center}
+.ring i{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800}
+.trash{border:0;background:var(--soft);width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#a8a2ad}
+.trash:hover{background:#fdeeee;color:var(--danger)}
+.trash svg{width:17px;height:17px}
+.empty{background:var(--card);border-radius:var(--r);padding:46px 20px;text-align:center;box-shadow:var(--sh)}
+.empty p{color:var(--muted);margin:8px 0 18px}
+
+/* EDITOR */
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.saved{font-size:13px;color:var(--muted);font-weight:600}
+.box{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:14px}
+.ptitle{width:100%;border:0;outline:none;background:transparent;font-family:Fraunces,Georgia,serif;font-size:28px;font-weight:700;padding:0}
+.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.fl{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;color:var(--muted)}
+.fl input,.fl select,.fl textarea,textarea.ta{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--soft);font-size:15px;font-weight:500;color:var(--ink);outline:none;width:100%;min-width:0}
+.fl input:focus,.fl select:focus,textarea.ta:focus{border-color:var(--a1);background:#fff}
+textarea.ta{min-height:80px;resize:vertical}
+.stitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.stitle h3{margin:0;font-size:17px;display:flex;align-items:center;gap:10px}
+.stitle h3 .dot{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--a1) 14%,#fff);color:var(--a2)}
+.stitle h3 .dot svg{width:16px;height:16px}
+.row{display:grid;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row.ch{grid-template-columns:1.3fr .8fr 1.6fr 34px}
+.row.kp{grid-template-columns:1.6fr 1fr 1fr 34px}
+.row.hd{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding-top:0}
+.row input{border:1.5px solid transparent;border-radius:10px;padding:8px 10px;background:var(--soft);outline:none;width:100%;min-width:0}
+.row input:focus{border-color:var(--a1);background:#fff}
+.month{border:1.5px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px;background:var(--soft)}
+.mh{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.mh input{flex:1;border:0;background:transparent;font-weight:800;font-size:15px;outline:none;padding:4px}
+.mh .cnt{font-size:12px;color:var(--muted);font-weight:700}
+.task{display:grid;grid-template-columns:24px 1fr 140px 34px;gap:8px;align-items:center;background:#fff;border-radius:12px;padding:6px 6px 6px 10px;margin-bottom:6px}
+.task input[type=checkbox]{width:20px;height:20px;accent-color:var(--a1);margin:0}
+.task input[type=text]{border:0;outline:none;background:transparent;padding:6px 2px;min-width:0}
+.task input[type=date]{border:1.5px solid var(--line);border-radius:9px;padding:5px 6px;font-size:13px;background:var(--soft);outline:none;min-width:0}
 .task.done input[type=text]{text-decoration:line-through;color:var(--muted)}
-.task input[type=checkbox]{width:18px;height:18px;accent-color:var(--a)}
-.pin{min-height:100vh;display:grid;place-items:center;padding:16px}
-.pinbox{background:var(--card);padding:28px;border-radius:20px;box-shadow:var(--shadow);width:100%;max-width:340px;text-align:center}
-.pinbox input{width:100%;font-size:26px;letter-spacing:8px;text-align:center;border:1.5px solid var(--line);border-radius:12px;padding:12px;margin:14px 0}
-.err{color:var(--danger);font-size:13px;min-height:18px}
+.task.late input[type=date]{border-color:#efb7b7;color:var(--danger)}
+.addt{border:1.5px dashed #d9d2c4;background:transparent;border-radius:12px;width:100%;padding:9px;color:var(--muted);font-weight:700}
+.addt:hover{border-color:var(--a1);color:var(--a2)}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(20,16,24,.5);backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px;z-index:10}
+.mbox{background:#fff;border-radius:24px;padding:24px;width:100%;max-width:440px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.mbox h3{margin:0 0 16px;font-size:24px}
+.mbox .fl{margin-bottom:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mact{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
 .hide{display:none!important}
-@media (max-width:640px){
-  .grid3{grid-template-columns:1fr}
-  .tab{padding:12px}.tab .ic{width:36px;height:36px}
-  .hide-m{display:none}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:20;box-shadow:var(--sh)}
+
+@media (max-width:700px){
+  .hero h1{font-size:28px}
+  .fields{grid-template-columns:1fr 1fr}
+  .org{padding:14px;gap:10px}.org .ic{width:42px;height:42px}.org b{font-size:15px}
+  .row.ch{grid-template-columns:1fr 1fr 34px}.row.ch .why{grid-column:1/3}
+  .row.ch.hd .why{display:none}
+  .task{grid-template-columns:24px 1fr 34px}.task input[type=date]{grid-column:2/3}
+  .ptitle{font-size:23px}
 }
 </style>
 </head>
 <body>
 
-<div id="pinView" class="pin">
-  <div class="pinbox">
-    <h2 style="margin:0">Marketing planlar</h2>
-    <p style="color:var(--muted);margin:6px 0 0">PIN kodtı kirgiziń</p>
-    <input id="pinIn" type="password" inputmode="numeric" maxlength="12" autocomplete="off">
-    <div class="err" id="pinErr"></div>
-    <button class="btn" style="width:100%" id="pinBtn">Kiriw</button>
-  </div>
-</div>
+<div class="hero"><div class="in">
+  <div><small>Real · Marketing</small><h1 class="serif">Marketing planlar</h1></div>
+  <div class="today" id="today"></div>
+</div></div>
 
-<div id="app" class="wrap hide">
-  <header class="top">
-    <h1>Marketing planlar</h1>
-    <span class="sync" id="sync"></span>
-  </header>
-
-  <div class="tabs">
-    <button class="tab edu" data-org="edu"><span class="ic">E</span><span><b>Real Education</b><small id="cnt-edu">—</small></span></button>
-    <button class="tab sch" data-org="sch"><span class="ic">S</span><span><b>Real School</b><small id="cnt-sch">—</small></span></button>
+<div class="wrap">
+  <div class="orgs">
+    <button class="org edu" data-org="edu"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span><span><b>Real Education</b><span class="c" id="c-edu">—</span></span></button>
+    <button class="org sch" data-org="sch"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/></svg></span><span><b>Real School</b><span class="c" id="c-sch">—</span></span></button>
   </div>
 
   <div id="listView">
-    <div class="bar">
-      <h2 id="listTitle"></h2>
-      <button class="btn accent" id="newBtn">+ Jańa plan</button>
+    <div class="head">
+      <h2 class="serif" id="lt"></h2>
+      <button class="btn grad" id="newBtn">＋ Plan qosıw</button>
     </div>
     <div id="list" class="list"></div>
   </div>
 
   <div id="editView" class="hide">
     <div class="bar">
-      <button class="btn ghost small" id="backBtn">← Artqa</button>
-      <span class="sync" id="saveState"></span>
+      <button class="btn line sm" id="backBtn">← Planlarǵa qaytıw</button>
+      <span class="saved" id="saved"></span>
     </div>
-    <div class="editor" id="editor"></div>
+    <div id="editor"></div>
   </div>
 </div>
 
+<div class="modal hide" id="modal">
+  <div class="mbox">
+    <h3 class="serif">Jańa plan</h3>
+    <label class="fl">Plannıń atı<input id="nTitle" placeholder="mıs.: Noyabr aylıq planı"></label>
+    <label class="fl" id="nBrW">Filial<select id="nBr"></select></label>
+    <div class="two">
+      <label class="fl">Baslanıwı<input type="date" id="nStart"></label>
+      <label class="fl">Tamamlanıwı<input type="date" id="nEnd"></label>
+    </div>
+    <label class="fl">Byudjet<input id="nBud" placeholder="mıs.: 250 $"></label>
+    <div class="mact">
+      <button class="btn line" id="nCancel">Biykar etiw</button>
+      <button class="btn grad" id="nOk">Qosıw</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast hide" id="toast"></div>
+
 <script>
-const SB_URL = "https://rgqruifzceraivheepdv.supabase.co";
-const SB_KEY = "sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS";
-const ORGS = {
-  edu:{name:"Real Education", color:"var(--edu)", branches:["Nókis","Bumer","Shımbay","Ramada (jańa filial)","Barlıq filiallar"]},
-  sch:{name:"Real School", color:"var(--sch)", branches:[]}
+const SB_URL="https://rgqruifzceraivheepdv.supabase.co";
+const SB_KEY="sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS";
+const PIN="370447";
+const ORGS={
+  edu:{name:"Real Education",a1:"var(--edu1)",a2:"var(--edu2)",branches:["Nókis","Bumer","Shımbay","Ramada (jańa filial)","Barlıq filiallar"]},
+  sch:{name:"Real School",a1:"var(--sch1)",a2:"var(--sch2)",branches:[]}
 };
-let PIN = null, plans = [], org = "sch", cur = null, saveTimer = null;
+const MONTHS=["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentyabr","oktyabr","noyabr","dekabr"];
+const IC={
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
+  target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
+  mega:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11v2l13 5V6L3 11ZM16 9a3 3 0 0 1 0 6M7 13l1 6h3l-1-5"/></svg>',
+  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5V3Z"/><path d="M9 11h6M9 15h6"/></svg>'
+};
+let plans=[],org="sch",cur=null,timer=null;
 
-function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null}}
-function forget(k){try{localStorage.removeItem(k)}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+function todayISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function fmt(iso){if(!iso)return"";const[y,m,d]=iso.split("-").map(Number);return `${d}-${MONTHS[m-1]} ${y}`}
+function fmtShort(iso){if(!iso)return"";const[,m,d]=iso.split("-").map(Number);return `${d}-${MONTHS[m-1]}`}
+function daysTo(iso){return Math.round((new Date(iso)-new Date(todayISO()))/864e5)}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.remove("hide");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.add("hide"),2200)}
 
-async function rpc(fn, args){
-  const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{
-    method:"POST",
+async function rpc(fn,args){
+  const r=await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{method:"POST",
     headers:{"apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`,"Content-Type":"application/json"},
-    body:JSON.stringify(args)
-  });
-  const t = await r.text();
-  if(!r.ok){ const e = new Error(t); e.bad = t.includes("bad_pin"); throw e; }
-  return t ? JSON.parse(t) : null;
+    body:JSON.stringify({p_pin:PIN,...args})});
+  const t=await r.text(); if(!r.ok) throw new Error(t); return t?JSON.parse(t):null;
 }
-
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-
-/* ---------- PIN ---------- */
-async function tryPin(p){
-  try{ const rows = await rpc("mp_list",{p_pin:p}); PIN = p; store("mp_pin",p); return rows; }
-  catch(e){ if(e.bad) return null; throw e; }
-}
-async function login(p){
-  document.getElementById("pinErr").textContent = "";
-  try{
-    const rows = await tryPin(p);
-    if(!rows){ forget("mp_pin"); document.getElementById("pinErr").textContent = "PIN qáte"; return; }
-    plans = rows;
-    document.getElementById("pinView").classList.add("hide");
-    document.getElementById("app").classList.remove("hide");
-    setOrg(store("mp_org") || "sch");
-  }catch(e){ document.getElementById("pinErr").textContent = "Baylanıs joq, qayta urınıń"; }
-}
-document.getElementById("pinBtn").onclick = () => login(document.getElementById("pinIn").value.trim());
-document.getElementById("pinIn").onkeydown = e => { if(e.key==="Enter") login(e.target.value.trim()); };
 
 /* ---------- LIST ---------- */
-function progress(p){
-  const t = (p.months||[]).flatMap(m => m.tasks||[]);
-  return t.length ? Math.round(100 * t.filter(x=>x.done).length / t.length) : 0;
-}
+function prog(p){const t=(p.months||[]).flatMap(m=>m.tasks||[]).filter(x=>x.text);return t.length?Math.round(100*t.filter(x=>x.done).length/t.length):0}
 function setOrg(o){
-  org = o; store("mp_org", o);
-  document.documentElement.style.setProperty("--a", ORGS[o].color);
-  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("on", b.dataset.org===o));
+  org=o;ls("mp_org",o);
+  document.documentElement.style.setProperty("--a1",ORGS[o].a1);
+  document.documentElement.style.setProperty("--a2",ORGS[o].a2);
+  document.querySelectorAll(".org").forEach(b=>b.classList.toggle("on",b.dataset.org===o));
   showList();
 }
-document.querySelectorAll(".tab").forEach(b => b.onclick = () => setOrg(b.dataset.org));
+document.querySelectorAll(".org").forEach(b=>b.onclick=()=>setOrg(b.dataset.org));
 
 function showList(){
-  cur = null;
-  document.getElementById("editView").classList.add("hide");
-  document.getElementById("listView").classList.remove("hide");
-  document.getElementById("listTitle").textContent = ORGS[org].name + " planları";
-  ["edu","sch"].forEach(o => {
-    const n = plans.filter(p=>p.org===o).length;
-    document.getElementById("cnt-"+o).textContent = n + " plan";
-  });
-  const mine = plans.filter(p => p.org===org);
-  const list = document.getElementById("list");
-  if(!mine.length){ list.innerHTML = `<div class="empty">Ele plan joq. «+ Jańa plan» túymesin basıń.</div>`; return; }
-  list.innerHTML = mine.map(p => {
-    const pr = progress(p);
-    return `<div class="pcard" data-id="${esc(p.id)}">
-      <h3>${esc(p.title||"Atı joq plan")}</h3>
-      <div class="meta">${p.branch?`<span>${esc(p.branch)}</span>`:""}<span>${esc(p.period||"Múddet kórsetilmegen")}</span>${p.budget?`<span>${esc(p.budget)}</span>`:""}</div>
-      <div class="prog"><i style="width:${pr}%"></i></div>
-      <div class="meta" style="margin-top:6px"><span>Orınlandı: ${pr}%</span></div>
-    </div>`;
-  }).join("");
-  list.querySelectorAll(".pcard").forEach(c => c.onclick = () => openPlan(c.dataset.id));
+  flush();cur=null;
+  $("editView").classList.add("hide");$("listView").classList.remove("hide");
+  $("lt").textContent=ORGS[org].name;
+  ["edu","sch"].forEach(o=>$("c-"+o).textContent=plans.filter(p=>p.org===o).length+" plan");
+  const mine=plans.filter(p=>p.org===org);
+  if(!mine.length){
+    $("list").innerHTML=`<div class="empty" style="grid-column:1/-1"><h3 class="serif" style="margin:0;font-size:22px">Ele plan joq</h3><p>Birinshi marketing planıńızdı qosıń.</p><button class="btn grad" onclick="openNew()">＋ Plan qosıw</button></div>`;
+    return;
+  }
+  $("list").innerHTML=mine.map(p=>{
+    const pr=prog(p);let left="";
+    if(p.end){const d=daysTo(p.end);left=d<0?`<span class="left late">Múddeti ótti</span>`:d===0?`<span class="left">Búgin tamamlanadı</span>`:`<span class="left">${d} kún qaldı</span>`}
+    const dates=p.start||p.end?`${fmtShort(p.start)||"?"} — ${fmt(p.end)||"?"}`:(p.period||"Sánesi kórsetilmegen");
+    return `<div class="pc" data-id="${esc(p.id)}">
+      <div class="top"><div><h3>${esc(p.title||"Atı joq plan")}</h3>${p.branch?`<span class="br">${esc(p.branch)}</span>`:""}</div>
+        <div class="ring" style="--p:${pr}"><i>${pr}%</i></div></div>
+      <div class="dates">${IC.cal}<span>${esc(dates)}</span></div>
+      <div class="foot">${left||"<span></span>"}<button class="trash" data-del="${esc(p.id)}" title="Óshiriw">${IC.trash}</button></div>
+    </div>`}).join("");
+  document.querySelectorAll(".pc").forEach(c=>c.onclick=e=>{if(!e.target.closest(".trash"))openPlan(c.dataset.id)});
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>delPlan(b.dataset.del));
 }
 
-document.getElementById("newBtn").onclick = () => {
-  const p = {id:uid(), org, title:"Jańa marketing plan", branch: ORGS[org].branches[0]||"", period:"", budget:"", goal:"",
+async function delPlan(id){
+  const p=plans.find(x=>x.id===id);if(!p)return;
+  if(!confirm(`«${p.title}» planı óshiriledi. Dawam etemiz be?`))return;
+  try{await rpc("mp_delete",{p_id:id});plans=plans.filter(x=>x.id!==id);showList();toast("Plan óshirildi")}
+  catch(e){toast("Óshiriw ámelge aspadı — internetti tekseriń")}
+}
+
+/* ---------- NEW PLAN MODAL ---------- */
+function openNew(){
+  const br=ORGS[org].branches;
+  $("nBrW").classList.toggle("hide",!br.length);
+  $("nBr").innerHTML=br.map(b=>`<option>${esc(b)}</option>`).join("");
+  $("nTitle").value="";$("nBud").value="";$("nStart").value=todayISO();$("nEnd").value="";
+  $("modal").classList.remove("hide");setTimeout(()=>$("nTitle").focus(),50);
+}
+$("newBtn").onclick=openNew;
+$("nCancel").onclick=()=>$("modal").classList.add("hide");
+$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.add("hide")};
+$("nOk").onclick=async()=>{
+  const p={id:uid(),org,title:$("nTitle").value.trim()||"Jańa marketing plan",
+    branch:ORGS[org].branches.length?$("nBr").value:"",start:$("nStart").value,end:$("nEnd").value,
+    budget:$("nBud").value.trim(),goal:"",
     channels:[{name:"",budget:"",why:""}],
-    months:[{name:"1-ay",tasks:[{text:"",done:false}]}],
-    kpis:[{name:"Leadlar",target:"",now:""},{name:"Jańa oqıwshılar",target:"",now:""}],
-    notes:""};
-  plans.unshift(p); save(p, true); openPlan(p.id);
+    months:[{name:"1-basqısh",tasks:[{text:"",done:false,date:""}]}],
+    kpis:[{name:"Leadlar",target:"",now:""},{name:"Jańa oqıwshılar",target:"",now:""}],notes:""};
+  $("modal").classList.add("hide");
+  plans.unshift(p);
+  try{await save(p,true);toast("Plan qosıldı")}catch(e){}
+  openPlan(p.id);
 };
-document.getElementById("backBtn").onclick = () => { flush(); showList(); };
 
 /* ---------- EDITOR ---------- */
 function openPlan(id){
-  cur = plans.find(p=>p.id===id); if(!cur) return;
-  document.getElementById("listView").classList.add("hide");
-  document.getElementById("editView").classList.remove("hide");
-  document.getElementById("saveState").textContent = "";
-  render();
-  window.scrollTo(0,0);
+  cur=plans.find(p=>p.id===id);if(!cur)return;
+  $("listView").classList.add("hide");$("editView").classList.remove("hide");$("saved").textContent="";
+  render();window.scrollTo(0,0);
 }
+function sec(icon,title,btn){return `<div class="stitle"><h3><span class="dot">${icon}</span>${title}</h3>${btn||""}</div>`}
 
 function render(){
-  const p = cur, br = ORGS[p.org].branches;
-  const ed = document.getElementById("editor");
-  ed.innerHTML = `
-    <div class="ehead">
-      <input class="title-in" data-k="title" value="${esc(p.title)}">
+  const p=cur,br=ORGS[p.org].branches,t=todayISO();
+  p.months=p.months||[];p.channels=p.channels||[];p.kpis=p.kpis||[];
+  $("editor").innerHTML=`
+  <div class="box">
+    <input class="ptitle" data-k="title" value="${esc(p.title)}" placeholder="Plannıń atı">
+    <div class="fields">
+      ${br.length?`<label class="fl">Filial<select data-k="branch">${br.map(b=>`<option ${b===p.branch?"selected":""}>${esc(b)}</option>`).join("")}</select></label>`:""}
+      <label class="fl">Baslanıwı<input type="date" data-k="start" value="${esc(p.start)}"></label>
+      <label class="fl">Tamamlanıwı<input type="date" data-k="end" value="${esc(p.end)}"></label>
+      <label class="fl">Byudjet<input data-k="budget" value="${esc(p.budget)}" placeholder="mıs.: 250 $"></label>
     </div>
-    <div class="grid3">
-      ${br.length?`<label class="f">Filial<select data-k="branch">${br.map(b=>`<option ${b===p.branch?"selected":""}>${esc(b)}</option>`).join("")}</select></label>`:""}
-      <label class="f">Múddet<input data-k="period" value="${esc(p.period)}" placeholder="mıs.: Noyabr 2026 – Yanvar 2027"></label>
-      <label class="f">Byudjet<input data-k="budget" value="${esc(p.budget)}" placeholder="mıs.: 250 $ / ay"></label>
-    </div>
-    <label class="f">Maqset<textarea data-k="goal" placeholder="Bul plan neni beriwi kerek?">${esc(p.goal)}</textarea></label>
+  </div>
 
-    <section class="s"><h4>Kanallar hám byudjet <button class="btn ghost small" data-add="channels">+ qatar</button></h4>
-      <table><tr><th>Kanal</th><th style="width:22%">Byudjet</th><th class="hide-m">Ne ushın</th><th style="width:30px"></th></tr>
-      ${p.channels.map((c,i)=>`<tr>
-        <td><input data-arr="channels" data-i="${i}" data-f="name" value="${esc(c.name)}"></td>
-        <td><input data-arr="channels" data-i="${i}" data-f="budget" value="${esc(c.budget)}"></td>
-        <td class="hide-m"><input data-arr="channels" data-i="${i}" data-f="why" value="${esc(c.why)}"></td>
-        <td><button class="x" data-del="channels" data-i="${i}" title="Óshiriw">×</button></td></tr>`).join("")}
-      </table>
-    </section>
+  <div class="box">${sec(IC.target,"Maqset")}
+    <textarea class="ta" data-k="goal" placeholder="Bul plan neni beriwi kerek? Mısalı: 150 lead, 20 jańa oqıwshı">${esc(p.goal)}</textarea>
+  </div>
 
-    <section class="s"><h4>Jumıs rejesi <button class="btn ghost small" id="addMonth">+ ay / basqısh</button></h4>
-      ${p.months.map((m,mi)=>`<div class="month">
-        <div class="month-h"><input data-month="${mi}" value="${esc(m.name)}"><button class="x" data-delmonth="${mi}" title="Óshiriw">×</button></div>
-        ${m.tasks.map((t,ti)=>`<div class="task ${t.done?"done":""}">
-          <input type="checkbox" data-chk="${mi}:${ti}" ${t.done?"checked":""}>
-          <input type="text" data-task="${mi}:${ti}" value="${esc(t.text)}" placeholder="Wazıypa…">
-          <button class="x" data-deltask="${mi}:${ti}">×</button></div>`).join("")}
-        <button class="btn ghost small" data-addtask="${mi}" style="margin-top:6px">+ wazıypa</button>
-      </div>`).join("")}
-    </section>
+  <div class="box">${sec(IC.list,"Jumıs rejesi",`<button class="btn line sm" id="addM">＋ Basqısh</button>`)}
+    ${p.months.map((m,mi)=>{const done=m.tasks.filter(x=>x.done).length;return `<div class="month">
+      <div class="mh"><input data-m="${mi}" value="${esc(m.name)}" placeholder="Basqısh atı"><span class="cnt">${done}/${m.tasks.length}</span>
+        <button class="trash" data-dm="${mi}" title="Basqıshtı óshiriw">${IC.trash}</button></div>
+      ${m.tasks.map((x,ti)=>`<div class="task ${x.done?"done":""} ${x.date&&!x.done&&x.date<t?"late":""}">
+        <input type="checkbox" data-c="${mi}:${ti}" ${x.done?"checked":""}>
+        <input type="text" data-t="${mi}:${ti}" value="${esc(x.text)}" placeholder="Ne islew kerek?">
+        <input type="date" data-d="${mi}:${ti}" value="${esc(x.date)}" title="Sánesi">
+        <button class="trash" data-dt="${mi}:${ti}" title="Óshiriw">${IC.trash}</button></div>`).join("")}
+      <button class="addt" data-at="${mi}">＋ Wazıypa qosıw</button>
+    </div>`}).join("")}
+  </div>
 
-    <section class="s"><h4>KPI <button class="btn ghost small" data-add="kpis">+ qatar</button></h4>
-      <table><tr><th>Kórsetkish</th><th style="width:22%">Maqset</th><th style="width:22%">Házir</th><th style="width:30px"></th></tr>
-      ${p.kpis.map((c,i)=>`<tr>
-        <td><input data-arr="kpis" data-i="${i}" data-f="name" value="${esc(c.name)}"></td>
-        <td><input data-arr="kpis" data-i="${i}" data-f="target" value="${esc(c.target)}"></td>
-        <td><input data-arr="kpis" data-i="${i}" data-f="now" value="${esc(c.now)}"></td>
-        <td><button class="x" data-del="kpis" data-i="${i}">×</button></td></tr>`).join("")}
-      </table>
-    </section>
+  <div class="box">${sec(IC.mega,"Kanallar hám byudjet",`<button class="btn line sm" data-add="channels">＋ Kanal</button>`)}
+    <div class="row ch hd"><span>Kanal</span><span>Byudjet</span><span class="why">Ne ushın</span><span></span></div>
+    ${p.channels.map((c,i)=>`<div class="row ch">
+      <input data-a="channels" data-i="${i}" data-f="name" value="${esc(c.name)}" placeholder="Kanal">
+      <input data-a="channels" data-i="${i}" data-f="budget" value="${esc(c.budget)}" placeholder="$">
+      <input class="why" data-a="channels" data-i="${i}" data-f="why" value="${esc(c.why)}" placeholder="Ne ushın">
+      <button class="trash" data-r="channels" data-i="${i}">${IC.trash}</button></div>`).join("")}
+  </div>
 
-    <section class="s"><h4>Eskertpeler</h4>
-      <textarea data-k="notes" placeholder="Ashıq sorawlar, ideyalar…">${esc(p.notes)}</textarea>
-    </section>
+  <div class="box">${sec(IC.chart,"Nátiyjeler (KPI)",`<button class="btn line sm" data-add="kpis">＋ Kórsetkish</button>`)}
+    <div class="row kp hd"><span>Kórsetkish</span><span>Maqset</span><span>Házir</span><span></span></div>
+    ${p.kpis.map((c,i)=>`<div class="row kp">
+      <input data-a="kpis" data-i="${i}" data-f="name" value="${esc(c.name)}" placeholder="Kórsetkish">
+      <input data-a="kpis" data-i="${i}" data-f="target" value="${esc(c.target)}" placeholder="Maqset">
+      <input data-a="kpis" data-i="${i}" data-f="now" value="${esc(c.now)}" placeholder="Házir">
+      <button class="trash" data-r="kpis" data-i="${i}">${IC.trash}</button></div>`).join("")}
+  </div>
 
-    <div style="display:flex;justify-content:flex-end;margin-top:22px">
-      <button class="btn danger small" id="delPlan">Plandı óshiriw</button>
-    </div>`;
+  <div class="box">${sec(IC.note,"Eskertpeler")}
+    <textarea class="ta" data-k="notes" placeholder="Ideyalar, ashıq sorawlar…">${esc(p.notes)}</textarea>
+  </div>
 
-  ed.querySelectorAll("[data-k]").forEach(el => el.oninput = () => { p[el.dataset.k] = el.value; queue(); });
-  ed.querySelectorAll("[data-arr]").forEach(el => el.oninput = () => { p[el.dataset.arr][+el.dataset.i][el.dataset.f] = el.value; queue(); });
-  ed.querySelectorAll("[data-add]").forEach(el => el.onclick = () => {
-    p[el.dataset.add].push(el.dataset.add==="kpis"?{name:"",target:"",now:""}:{name:"",budget:"",why:""}); queue(); render(); });
-  ed.querySelectorAll("[data-del]").forEach(el => el.onclick = () => { p[el.dataset.del].splice(+el.dataset.i,1); queue(); render(); });
-  ed.querySelectorAll("[data-month]").forEach(el => el.oninput = () => { p.months[+el.dataset.month].name = el.value; queue(); });
-  ed.querySelectorAll("[data-delmonth]").forEach(el => el.onclick = () => {
-    if(confirm("Bul bólimdi wazıypaları menen óshiriw kerek pe?")){ p.months.splice(+el.dataset.delmonth,1); queue(); render(); } });
-  ed.querySelectorAll("[data-task]").forEach(el => el.oninput = () => { const [a,b]=el.dataset.task.split(":"); p.months[a].tasks[b].text = el.value; queue(); });
-  ed.querySelectorAll("[data-chk]").forEach(el => el.onchange = () => { const [a,b]=el.dataset.chk.split(":"); p.months[a].tasks[b].done = el.checked; el.parentNode.classList.toggle("done", el.checked); queue(); });
-  ed.querySelectorAll("[data-deltask]").forEach(el => el.onclick = () => { const [a,b]=el.dataset.deltask.split(":"); p.months[a].tasks.splice(b,1); queue(); render(); });
-  ed.querySelectorAll("[data-addtask]").forEach(el => el.onclick = () => { p.months[+el.dataset.addtask].tasks.push({text:"",done:false}); queue(); render();
-    const all = ed.querySelectorAll(`[data-task^="${el.dataset.addtask}:"]`); all[all.length-1]?.focus(); });
-  document.getElementById("addMonth").onclick = () => { p.months.push({name:"Jańa bólim",tasks:[{text:"",done:false}]}); queue(); render(); };
-  document.getElementById("delPlan").onclick = async () => {
-    if(!confirm("Bul plan tolıq óshiriledi. Dawam etemiz be?")) return;
-    clearTimeout(saveTimer);
-    try{ await rpc("mp_delete",{p_pin:PIN,p_id:p.id}); plans = plans.filter(x=>x.id!==p.id); showList(); }
-    catch(e){ alert("Óshiriw ámelge aspadı, internetti tekseriń."); }
-  };
+  <div style="display:flex;justify-content:center;margin-top:20px">
+    <button class="btn del" id="delP">${IC.trash.replace("<svg","<svg width=16 height=16")} Bul plandı óshiriw</button>
+  </div>`;
+
+  const E=$("editor"),ij=(s)=>s.split(":").map(Number);
+  E.querySelectorAll("[data-k]").forEach(el=>{el.oninput=()=>{p[el.dataset.k]=el.value;q()};el.onchange=el.oninput});
+  E.querySelectorAll("[data-a]").forEach(el=>el.oninput=()=>{p[el.dataset.a][+el.dataset.i][el.dataset.f]=el.value;q()});
+  E.querySelectorAll("[data-add]").forEach(el=>el.onclick=()=>{p[el.dataset.add].push(el.dataset.add==="kpis"?{name:"",target:"",now:""}:{name:"",budget:"",why:""});q();render()});
+  E.querySelectorAll("[data-r]").forEach(el=>el.onclick=()=>{p[el.dataset.r].splice(+el.dataset.i,1);q();render()});
+  E.querySelectorAll("[data-m]").forEach(el=>el.oninput=()=>{p.months[+el.dataset.m].name=el.value;q()});
+  E.querySelectorAll("[data-dm]").forEach(el=>el.onclick=()=>{if(confirm("Bul basqısh wazıypaları menen óshiriledi. Dawam etemiz be?")){p.months.splice(+el.dataset.dm,1);q();render()}});
+  E.querySelectorAll("[data-t]").forEach(el=>el.oninput=()=>{const[a,b]=ij(el.dataset.t);p.months[a].tasks[b].text=el.value;q()});
+  E.querySelectorAll("[data-d]").forEach(el=>el.onchange=()=>{const[a,b]=ij(el.dataset.d);p.months[a].tasks[b].date=el.value;q();render()});
+  E.querySelectorAll("[data-c]").forEach(el=>el.onchange=()=>{const[a,b]=ij(el.dataset.c);p.months[a].tasks[b].done=el.checked;q();render()});
+  E.querySelectorAll("[data-dt]").forEach(el=>el.onclick=()=>{const[a,b]=ij(el.dataset.dt);p.months[a].tasks.splice(b,1);q();render()});
+  E.querySelectorAll("[data-at]").forEach(el=>el.onclick=()=>{const mi=+el.dataset.at;p.months[mi].tasks.push({text:"",done:false,date:""});q();render();
+    const all=E.querySelectorAll(`[data-t^="${mi}:"]`);all[all.length-1]?.focus()});
+  $("addM").onclick=()=>{p.months.push({name:"Jańa basqısh",tasks:[{text:"",done:false,date:""}]});q();render()};
+  $("delP").onclick=async()=>{clearTimeout(timer);timer=null;await delPlan(p.id)};
 }
 
 /* ---------- SAVE ---------- */
-function queue(){ document.getElementById("saveState").textContent = "Saqlanıp atır…"; clearTimeout(saveTimer); saveTimer = setTimeout(()=>save(cur), 700); }
-function flush(){ if(saveTimer && cur){ clearTimeout(saveTimer); save(cur); } }
-async function save(p, quiet){
-  saveTimer = null;
-  const {id, updated_at, ...data} = p;
-  try{ await rpc("mp_save",{p_pin:PIN,p_id:id,p_data:data}); if(!quiet) document.getElementById("saveState").textContent = "Saqlandı ✓"; }
-  catch(e){ document.getElementById("saveState").textContent = "Saqlanbadı — internetti tekseriń"; }
+function q(){$("saved").textContent="Saqlanıp atır…";clearTimeout(timer);timer=setTimeout(()=>save(cur),700)}
+function flush(){if(timer&&cur){clearTimeout(timer);save(cur)}}
+async function save(p,quiet){
+  timer=null;const{id,updated_at,...data}=p;
+  try{await rpc("mp_save",{p_id:id,p_data:data});if(!quiet)$("saved").textContent="✓ Saqlandı"}
+  catch(e){$("saved").textContent="Saqlanbadı — internetti tekseriń";throw e}
 }
-window.addEventListener("beforeunload", flush);
+window.addEventListener("beforeunload",flush);
+$("backBtn").onclick=showList;
 
 /* ---------- START ---------- */
-const saved = store("mp_pin");
-if(saved) login(saved);
+$("today").textContent="Búgin: "+fmt(todayISO());
+(async()=>{
+  setOrg(ls("mp_org")||"sch");
+  $("list").innerHTML=`<div class="empty" style="grid-column:1/-1"><p>Júklenip atır…</p></div>`;
+  try{plans=await rpc("mp_list",{})||[]}catch(e){toast("Bazaǵa baylanıs joq")}
+  showList();
+})();
 </script>
 </body>
 </html>
