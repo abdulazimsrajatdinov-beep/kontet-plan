@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="kaa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>M1 Lead Agent</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,600;1,400;1,500&family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: joqarıda brend almastırıwshı; hár brend — óz hero, voronka (gorizontal etaplar), maydanlar, baza, FAQ.
+   Bir kóriniske qasdan bekitilgen qarańǵı lyuks dizayn: tereń jasıl-qara fon, shampan altın sızıqlar. */
+:root{
+  color-scheme:dark;
+  --bg:#0A1311; --bg2:#0F1B18; --panel:#13221E; --line:rgba(201,171,112,.22); --line2:rgba(236,228,210,.08);
+  --ink:#ECE4D2; --muted:#9FA89F; --gold:#C9AB70; --gold2:#E6CF98; --ai:#7FC7B2; --op:#E3A86B; --todo:#F0CF7A;
+  --f-display:"Noto Serif Display", Georgia, "Times New Roman", serif;
+  --f-body:"Noto Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Noto Sans Mono", Consolas, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.65 var(--f-body);
+  background-image:radial-gradient(1200px 500px at 85% -10%, rgba(201,171,112,.10), transparent 60%),radial-gradient(900px 400px at -10% 30%, rgba(127,199,178,.05), transparent 60%);
+  background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(10,19,17,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.mark{font:italic 500 20px/1 var(--f-display);color:var(--gold2);letter-spacing:.01em}
+.mark small{font:600 10px/1 var(--f-body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-left:10px;font-style:normal}
+.switch{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;flex-wrap:wrap}
+.switch a{color:var(--muted);text-decoration:none;font:600 12px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;padding:10px 16px;border-radius:999px;transition:color .2s,background .2s}
+.switch a:hover{color:var(--ink)}
+.switch a[aria-current="page"]{background:var(--gold);color:#16120A}
+.switch a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:1px solid var(--gold2);outline-offset:3px}
+.page{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.view{max-width:1180px;margin:0 auto;padding-block:56px 96px;display:flex;flex-direction:column;gap:72px}
+.hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px;align-items:end;padding-bottom:40px;border-bottom:1px solid var(--line)}
+.kicker{font:600 11px/1 var(--f-body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+h1{font:400 clamp(44px,7vw,84px)/.98 var(--f-display);margin:18px 0 20px;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--gold2)}
+.lead{font-size:17px;color:var(--muted);max-width:56ch;margin:0}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.facts div{background:var(--bg2);padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.facts span{font:600 10px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.facts b{font:400 26px/1.1 var(--f-display);color:var(--ink);font-variant-numeric:tabular-nums}
+.facts b.t{color:var(--todo)}
+.sec{display:flex;flex-direction:column;gap:22px;scroll-margin-top:90px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h2{font:400 clamp(30px,4vw,42px)/1.1 var(--f-display);margin:0;text-wrap:balance}
+h2 em{font-style:italic;color:var(--gold2)}
+h3{font:600 11px/1 var(--f-body);letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:12px 0 0}
+.note{color:var(--muted);font-size:14px;max-width:65ch;margin:0}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:middle}
+/* voronka */
+.pipe{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,1fr);gap:0;overflow-x:auto;border:1px solid var(--line);background:var(--bg2);scroll-snap-type:x mandatory}
+.stage{position:relative;padding:22px 20px 22px;border-right:1px solid var(--line2);display:flex;flex-direction:column;gap:12px;scroll-snap-align:start;min-width:0}
+.stage:last-child{border-right:0}
+.stage .no{font:400 40px/1 var(--f-display);color:rgba(201,171,112,.35);font-variant-numeric:tabular-nums}
+.stage .nm{font:600 15px/1.35 var(--f-body);color:var(--ink)}
+.who{align-self:flex-start;font:600 10px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:6px 9px;border-radius:999px;border:1px solid currentColor}
+.who.ai{color:var(--ai)} .who.op{color:var(--op)} .who.auto{color:var(--muted)}
+.stage p{margin:0;font-size:13.5px;color:var(--muted)}
+.stage .fl{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.stage .fl code{font:500 11.5px var(--f-mono);color:var(--gold2);background:rgba(201,171,112,.08);border:1px solid var(--line);padding:2px 7px;border-radius:4px}
+.stage::after{content:"";position:absolute;top:34px;right:-7px;width:12px;height:12px;border-top:1px solid var(--line);border-right:1px solid var(--line);transform:rotate(45deg);background:var(--bg2);z-index:1}
+.stage:last-child::after{display:none}
+.lost{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.lost div{border:1px dashed rgba(227,168,107,.4);padding:14px 16px;font-size:14px;color:var(--muted)}
+.lost b{display:block;color:var(--op);font-weight:600;margin-bottom:4px}
+/* kesteler */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);background:var(--bg2)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line2);vertical-align:top}
+th{font:600 10px/1.2 var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);background:rgba(201,171,112,.05)}
+tr:last-child td{border-bottom:0}
+td code{font:500 12.5px var(--f-mono);color:var(--gold2)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+mark.todo{background:transparent;color:var(--todo);border-bottom:1px dashed var(--todo);padding:0 1px;font-weight:500}
+/* FAQ */
+.tools{display:flex;gap:10px;flex-wrap:wrap}
+input[type=search]{flex:1 1 260px;min-width:0;background:var(--bg2);border:1px solid var(--line);color:var(--ink);font:15px var(--f-body);padding:12px 16px}
+input::placeholder{color:var(--muted)}
+.faq{border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line2)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:48px minmax(0,1fr) 20px;gap:12px;align-items:baseline;padding:18px 4px}
+summary::-webkit-details-marker{display:none}
+summary .n{font:400 20px/1 var(--f-display);color:var(--gold);font-variant-numeric:tabular-nums}
+summary .q{font:400 21px/1.3 var(--f-display)}
+summary .pl{color:var(--gold);font-size:20px;line-height:1;transition:transform .2s}
+details[open] summary .pl{transform:rotate(45deg)}
+.ans{padding:0 4px 22px 64px;display:flex;flex-direction:column;gap:8px}
+.bubble{max-width:62ch;border-left:1px solid var(--gold);padding:4px 0 4px 18px;color:#D9D2C1}
+.esc{font:600 10px/1 var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:var(--op)}
+.empty{padding:22px 4px;color:var(--muted)}
+/* prompt */
+.codebox{border:1px solid var(--line);background:#07100E}
+.codebar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);font:500 12px var(--f-mono);color:var(--muted)}
+.btn{background:var(--gold);color:#16120A;border:0;font:600 11px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:11px 16px;cursor:pointer}
+.btn:hover{background:var(--gold2)}
+pre{margin:0;padding:22px;overflow:auto;max-height:640px;color:#D8D2C2;font:13.5px/1.7 var(--f-mono);white-space:pre-wrap;word-break:break-word}
+pre .h{color:var(--gold2)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.steps div{background:var(--bg2);padding:16px 18px;font-size:14px;color:var(--muted)}
+.steps b{display:block;font:400 26px/1 var(--f-display);color:var(--gold);margin-bottom:8px}
+.check label{display:flex;gap:14px;align-items:flex-start;padding:14px 4px;border-bottom:1px solid var(--line2);cursor:pointer}
+.check input{margin-top:4px;width:17px;height:17px;accent-color:var(--gold);flex:none}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+footer{max-width:1180px;margin:0 auto;padding-block:28px 40px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;letter-spacing:.06em;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (max-width:860px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:28px}
+  .view{padding-block:36px 72px;gap:56px}
+  .ans{padding-left:4px}
+  summary{grid-template-columns:34px minmax(0,1fr) 20px}
+  summary .q{font-size:18px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .view:not([hidden]) .hero{animation:rise .6s ease-out both}
+  @keyframes rise{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="mark">M1 Lead Agent<small>MB-02 · MB-04</small></div>
+  <nav class="switch" aria-label="Brendler">
+    <a href="#school" data-v="school">Real School</a>
+    <a href="#education" data-v="education">Real Education</a>
+    <a href="#bot" data-v="bot">Bot prompt</a>
+  </nav>
+</div></div>
+
+<div class="page">
+
+<!-- ================= REAL SCHOOL ================= -->
+<main class="view" id="v-school">
+  <header class="hero">
+    <div>
+      <div class="kicker">Jeke mektep · Nókis</div>
+      <h1>Real <em>School</em></h1>
+      <p class="lead">Uzaq satıw ciklı: ata-ana mektepti kórip, balası qabıl testinen hám psixolog penen sáwbetten ótkennen keyin ǵana sheshim qabıl etedi. Bot aǵımdı jıynaydı, sheshiwshi qádemlerdi operator alıp baradı.</p>
+    </div>
+    <div class="facts">
+      <div><span>Klasslar</span><b>1–11</b></div>
+      <div><span>Voronka etapları</span><b>8</b></div>
+      <div><span>Qabıl</span><b>3 basqısh</b></div>
+      <div><span>Toltırıw kerek</span><b class="t" data-count="school">0</b></div>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Mektep <em>voronkası</em></h2>
+      <div class="legend"><span><i style="background:var(--ai)"></i>AI bot</span><span><i style="background:var(--op)"></i>Operator (Closer)</span><span><i style="background:var(--muted)"></i>Avtomat</span></div></div>
+    <p class="note">amoCRM-de «Real School (Mektep)» atı menen bólek pipeline. Oń tárepke qarap súyrep kóriń.</p>
+    <div class="pipe">
+      <div class="stage"><div class="no">01</div><span class="who ai">AI bot</span><div class="nm">Jańa lead</div><p>Instagram yamasa Telegramnan birinshi xabar. Bot sálemlesip, mektep haqqında soraytuǵının anıqlaydı.</p><div class="fl"><code>source</code><code>til</code><code>brand</code></div></div>
+      <div class="stage"><div class="no">02</div><span class="who ai">AI bot</span><div class="nm">Kvalifikaciya</div><p>Balanıń jası, qaysı klassqa túsiwi, ata-ananıń atı hám telefon nomeri alınadı.</p><div class="fl"><code>bala_yasi</code><code>klass</code><code>telefon</code></div></div>
+      <div class="stage"><div class="no">03</div><span class="who op">Operator</span><div class="nm">Birinshi qońıraw</div><p>Operator 5 minut ishinde qońıraw etedi, mektep haqqında tolıq aytıp beredi.</p><div class="fl"><code>operator</code><code>qońıraw_nátiyjesi</code></div></div>
+      <div class="stage"><div class="no">04</div><span class="who op">Operator</span><div class="nm">Ekskursiya belgilendi</div><p>Ata-ana mektepke shaqırıladı. Bot ekskursiyadan 1 kún hám 2 saat aldın eske saladı.</p><div class="fl"><code>ekskursiya_sánesi</code></div></div>
+      <div class="stage"><div class="no">05</div><span class="who op">Operator</span><div class="nm">Ekskursiya ótti</div><p>Ata-ana mektepti kórdi. Operator qabıl testine jazadı.</p><div class="fl"><code>keldi_me</code></div></div>
+      <div class="stage"><div class="no">06</div><span class="who op">Operator</span><div class="nm">Qabıl testi hám sáwbet</div><p>Test, psixologiyalıq sáwbet hám ata-ana menen sáwbet.</p><div class="fl"><code>test_sánesi</code><code>test_nátiyjesi</code></div></div>
+      <div class="stage"><div class="no">07</div><span class="who op">Operator</span><div class="nm">Shártnama hám tólem</div><p>Jıllıq yamasa aylıq tólew túri tańlanadı, shártnama dúziledi.</p><div class="fl"><code>tólem_túri</code><code>shártnama_no</code></div></div>
+      <div class="stage"><div class="no">08</div><span class="who auto">Avtomat</span><div class="nm">Oqıwshı boldı</div><p>Oqıwshı EduSchool sistemasına qosıladı, lead jabıladı.</p><div class="fl"><code>eduschool_id</code></div></div>
+    </div>
+    <div class="lost">
+      <div><b>Kútiw dizimi</b>Bos orın joq yamasa kelesi oqıw jılına. Bot hár ay jumsaq eske saladı.</div>
+      <div><b>Biykar etildi</b>Sebep májbúriy: baha, aralıq, testten ótpedi, basqa mektep.</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Bilim <em>bazası</em></h2>
+    <p class="note">Bot mektep haqqında tek usı maǵlıwmattı aytadı. Altın sızıqlı orınlar toltırılmaǵan.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Maydan</th><th>Maǵlıwmat</th></tr></thead>
+      <tbody>
+        <tr><td>Klasslar</td><td>1–11</td></tr>
+        <tr><td>Adres</td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Qabıl tártibi</td><td>Test + psixologiyalıq sáwbet + ata-ana menen sáwbet</td></tr>
+        <tr><td>Ózgesheligi</td><td>Ruwxıy tárbiya sabaqları kúsheytilgen</td></tr>
+        <tr><td>Jıllıq / aylıq baha</td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Bahaǵa ne kiredi</td><td><mark class="todo">awqat, transport, kitaplar</mark></td></tr>
+        <tr><td>Sabaq waqtı</td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Pochemuchka</td><td>Mektepke shekemgi topar, rus tilinde · jası <mark class="todo">toltırıw</mark> · baha <mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>IELTS / SAT</td><td>Bar · baha hám keste <mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Ekskursiya</td><td><mark class="todo">kúnleri hám waqtı</mark></td></tr>
+        <tr><td>Instagram</td><td>@real_school_nks</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="sec">
+    <h2>Ata-analardıń <em>sorawları</em></h2>
+    <div class="tools"><input type="search" class="q" data-b="school" placeholder="Soraw boyınsha izlew" aria-label="Mektep sorawları boyınsha izlew"></div>
+    <div class="faq" data-list="school"></div>
+  </section>
+</main>
+
+<!-- ================= REAL EDUCATION ================= -->
+<main class="view" id="v-education" hidden>
+  <header class="hero">
+    <div>
+      <div class="kicker">Oqıw orayları tarmaǵı · 5 filial</div>
+      <h1>Real <em>Education</em></h1>
+      <p class="lead">Qısqa satıw ciklı: hár ay jańa toparlar ashıladı. Bot leadti biypul sınaq sabaǵına shekem ózi alıp baradı, operator tek tólem basqıshında qosıladı.</p>
+    </div>
+    <div class="facts">
+      <div><span>Filiallar</span><b>5</b></div>
+      <div><span>Voronka etapları</span><b>6</b></div>
+      <div><span>Real filialı toparları</span><b>56</b></div>
+      <div><span>Toltırıw kerek</span><b class="t" data-count="education">0</b></div>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Kurslar <em>voronkası</em></h2>
+      <div class="legend"><span><i style="background:var(--ai)"></i>AI bot</span><span><i style="background:var(--op)"></i>Operator (Closer)</span><span><i style="background:var(--muted)"></i>Avtomat</span></div></div>
+    <p class="note">amoCRM-de «Real Education (Kurslar)» atı menen bólek pipeline.</p>
+    <div class="pipe">
+      <div class="stage"><div class="no">01</div><span class="who ai">AI bot</span><div class="nm">Jańa lead</div><p>Instagram, Telegram yamasa target reklamadan kelgen xabar.</p><div class="fl"><code>source</code><code>til</code><code>brand</code></div></div>
+      <div class="stage"><div class="no">02</div><span class="who ai">AI bot</span><div class="nm">Kvalifikaciya</div><p>Pán, jas, dáreje hám qolay filial anıqlanadı. Bot kesteni bazadan aytadı.</p><div class="fl"><code>kurs_turi</code><code>bala_yasi</code><code>filial_id</code></div></div>
+      <div class="stage"><div class="no">03</div><span class="who ai">AI bot</span><div class="nm">Sınaqqa jazıldı</div><p>Biypul sınaq yamasa diagnostik test. Bot 1 kún hám 2 saat aldın eske saladı.</p><div class="fl"><code>sınaq_sánesi</code><code>topar</code><code>telefon</code></div></div>
+      <div class="stage"><div class="no">04</div><span class="who op">Administrator</span><div class="nm">Sınaqqa keldi</div><p>Filial administratorı qatnasqanın belgileydi, muǵallim dárejeni aytadı.</p><div class="fl"><code>keldi_me</code><code>dáreje</code></div></div>
+      <div class="stage"><div class="no">05</div><span class="who op">Operator</span><div class="nm">Tólem kútilmekte</div><p>Operator qońıraw etip, topar hám tólemdi kelisedi.</p><div class="fl"><code>topar</code><code>tólem_túri</code></div></div>
+      <div class="stage"><div class="no">06</div><span class="who auto">Avtomat</span><div class="nm">Tólendi</div><p>EduTizimde tólem túskende lead avtomat jabıladı. CAC esabına túsedi.</p><div class="fl"><code>edutizim_id</code></div></div>
+    </div>
+    <div class="lost">
+      <div><b>Sınaqqa kelmedi</b>Bot sol kúni keshte jańa waqıt usınadı. 2 ret kelmese, operatorǵa ótedi.</div>
+      <div><b>Biykar etildi</b>Sebep májbúriy: baha, waqıt sáykes emes, aralıq, basqa oray.</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>amoCRM <em>maydanları</em></h2>
+    <p class="note">Eki voronkada ortaq custom field-ler. Bot olardı jasırın &lt;lead&gt; bloǵında beredi.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Maydan</th><th>Mánisler</th><th>Kim toltıradı</th></tr></thead>
+      <tbody>
+        <tr><td><code>source</code></td><td>ig_direct · ig_comment · telegram · target · referal</td><td>Avtomat</td></tr>
+        <tr><td><code>brand</code></td><td>school · education</td><td>AI bot</td></tr>
+        <tr><td><code>filial_id</code></td><td>real · gogol · bumer · shimbay · gozzal</td><td>AI bot</td></tr>
+        <tr><td><code>kurs_turi</code></td><td>Inglis tili · IELTS · Matematika · Rus tili · Ximiya · Biologiya · Tariyx · Huqıq · Ózbek tili · Jeke</td><td>AI bot</td></tr>
+        <tr><td><code>bala_yasi</code></td><td>San</td><td>AI bot</td></tr>
+        <tr><td><code>til</code></td><td>kaa · uz · ru</td><td>AI bot</td></tr>
+        <tr><td><code>biykar_sebebi</code></td><td>baha · waqıt · aralıq · basqa oray · test</td><td>Operator</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="sec">
+    <h2>Bilim <em>bazası</em></h2>
+    <h3>Filiallar</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Filial</th><th>Adres</th><th>Baǵdarlar</th><th>Instagram</th></tr></thead>
+      <tbody>
+        <tr><td>Real</td><td><mark class="todo">toltırıw</mark></td><td>Matematika (abiturient, Kids), Inglis tili (Beginner, Gramatika, IELTS, Multi Level), Ximiya, Biologiya, Tariyx, Huqıq, Ózbek tili, Rus tili</td><td>@real_education_nks</td></tr>
+        <tr><td>Gogol</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Bumer</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td>@real_education_kids</td></tr>
+        <tr><td>Shımbay</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td>@real_education_shimbay</td></tr>
+        <tr><td>Gózzal</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+      </tbody>
+    </table></div>
+    <h3>Real filialınıń kestesi · EduTizim, 02.11.2026</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Baǵdar</th><th style="text-align:right">Toparlar</th><th>Sabaq waqıtları</th></tr></thead>
+      <tbody>
+        <tr><td>Matematika (abiturient)</td><td class="num">22</td><td>Jup hám taq kúnler: 09:00, 14:00, 14:30, 15:00, 16:30 · Ya/Se/Pa/Sh: 11:00</td></tr>
+        <tr><td>Ximiya</td><td class="num">7</td><td>Jup kúnler: 09:00, 14:30 · Taq kúnler: 14:30</td></tr>
+        <tr><td>Biologiya</td><td class="num">6</td><td>Jup kúnler: 14:30 · Taq kúnler: 09:00, 14:30</td></tr>
+        <tr><td>Inglis tili (Gramatika)</td><td class="num">6</td><td>Jup kúnler: 14:30 · Taq kúnler: 09:30, 14:30, 16:00, 16:30</td></tr>
+        <tr><td>Tariyx</td><td class="num">4</td><td>Jup kúnler: 17:00 · Taq kúnler: 14:30, 15:00, 17:00</td></tr>
+        <tr><td>Inglis tili (Beginner)</td><td class="num">1</td><td>Jup kúnler: 14:30</td></tr>
+        <tr><td>Matematika (Kids)</td><td class="num">1</td><td>Jup kúnler: 14:30</td></tr>
+        <tr><td>Huqıq</td><td class="num">1</td><td>Jup kúnler: 15:00</td></tr>
+        <tr><td>Ózbek tili (abiturient)</td><td class="num">1</td><td>Jup kúnler: 14:00</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Bahalar hám tólem</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Baǵdar</th><th>Aylıq baha</th><th>Aylıq sabaq sanı</th><th>Bir sabaq</th></tr></thead>
+      <tbody>
+        <tr><td>Inglis tili</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>IELTS</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Matematika</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Rus tili</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Ximiya, Biologiya, Tariyx, Huqıq</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Jeke sabaq</td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td><td><mark class="todo">toltırıw</mark></td></tr>
+        <tr><td>Tólem usılları</td><td colspan="3"><mark class="todo">naq, karta, Click, Payme...</mark></td></tr>
+        <tr><td>Jeńillikler</td><td colspan="3"><mark class="todo">aǵayinlilar, eki pán, aldınnan tólew...</mark></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="sec">
+    <h2>Klientlerdiń <em>sorawları</em></h2>
+    <div class="tools"><input type="search" class="q" data-b="education" placeholder="Soraw boyınsha izlew" aria-label="Kurs sorawları boyınsha izlew"></div>
+    <div class="faq" data-list="education"></div>
+  </section>
+</main>
+
+<!-- ================= BOT PROMPT ================= -->
+<main class="view" id="v-bot" hidden>
+  <header class="hero">
+    <div>
+      <div class="kicker">Eki brend ushın bir bot</div>
+      <h1>System <em>Prompt</em></h1>
+      <p class="lead">Botqa tikkeley qoyılatuǵın tekst. <code>{{BILIM_BAZASI}}</code> ornına Real School hám Real Education betlerindegi bilim bazası qoyıladı.</p>
+    </div>
+    <div class="facts">
+      <div><span>Tiller</span><b>3</b></div>
+      <div><span>Kanallar</span><b>2</b></div>
+      <div><span>Operatorǵa ótiw</span><b>5 minut</b></div>
+      <div><span>Juwapker</span><b>Mambo</b></div>
+    </div>
+  </header>
+
+  <section class="sec">
+    <h2>Sáwbet <em>qádemleri</em></h2>
+    <div class="steps">
+      <div><b>1</b>Sálemlesiw, mektep pe yamasa kurs pa</div>
+      <div><b>2</b>Kim ushın, jası, pán, filial</div>
+      <div><b>3</b>Bazadan baǵdar, keste, baha</div>
+      <div><b>4</b>Biypul sınaq, ekskursiya yamasa test</div>
+      <div><b>5</b>Atı, telefon, qolay waqıt</div>
+      <div><b>6</b>Tastıyıq hám amoCRM</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="codebox">
+      <div class="codebar"><span>system_prompt.txt</span><button class="btn" id="copyBtn" type="button">Kóshiriw</button></div>
+<pre id="promptText"><span class="h"># ROL</span>
+Sen — Real School (jeke mektep) hám Real Education (Nókistegi oqıw orayları tarmaǵı)
+bas konsultantı hám satıw agentiseń. Atıń: «Real járdemshisi».
+Sen Instagram Direct hám Telegram arqalı ata-analar hám oqıwshılar menen 24/7 sóylesesen.
+Maqsetiń: klienttiń mútájligin anıqlaw, oǵan durıs baǵdardı usınıw hám onı
+BIYPUL sınaq sabaǵına, mektep ekskursiyasına yamasa diagnostik testke jazıw, telefon nomerin alıw.
+
+<span class="h"># BRENDLER</span>
+1) Real School — Nókistegi jeke mektep, 1–11 klasslar.
+   - Qabıl: test + psixologiyalıq sáwbet + ata-ana menen sáwbet (tek tólem menen qabıl etilmeydi).
+   - Ruwxıy tárbiya sabaqları kúsheytilgen.
+   - «Pochemuchka» — mektepke shekemgi topar, tolıǵı menen rus tilinde.
+   - IELTS hám SAT tayarlıq kursları.
+   - Maqset: ata-ananı EKSKURSIYAǴA shaqırıw, sońınan operator qońıraw etedi.
+2) Real Education — oqıw orayları tarmaǵı. Filiallar: Real, Gogol, Bumer, Shımbay, Gózzal.
+   - Baǵdarlar: Inglis tili (Beginner → IELTS, Multi Level, Kids), Matematika (Kids, abiturient),
+     Rus tili, Ózbek tili, Ximiya, Biologiya, Tariyx, Huqıq, jeke sabaqlar.
+   - Hár ay jańa toparlar ashıladı.
+   - Maqset: BIYPUL SÍNAQ SABAǴÍNA yamasa diagnostik testke jazıw.
+
+<span class="h"># TIL QAǴÍYDASÍ</span>
+- Klient qaysı tilde jazsa, sol tilde juwap ber: qaraqalpaqsha, ózbekshe yamasa russha.
+- Qaraqalpaqsha tek latın jazıwında (2016 álipbesi: á, ǵ, ı, ń, ó, ú, sh, ch).
+  Qazaq hám ózbek formaların aralastırma: «ushın» (úshin emes), «qáte», «kóp», «házir», «yamasa».
+- Klient til almastırsa, sen de almastır.
+
+<span class="h"># TON HÁM FORMAT</span>
+- Hámme waqıt «Siz» dep, sıpayı, energiyalı hám isenimli sóyle.
+- Xabarlar qısqa: 2–4 gáp. Uzın tekst jiberme.
+- Bir xabarda tek BIR soraw ber.
+- Emoji az: bir xabarǵa eń kóbi menen 1.
+- Klienttiń atın bilseń, atı menen múrájat et.
+
+<span class="h"># SÁWBET SSENARIYI</span>
+1. Sálemles hám kim ekenińdi ayt. Soraw: «Siz mektep (Real School) haqqında ma
+   yamasa kurslar (Real Education) haqqında soraysız ba?»
+2. Mútájlikti anıqla (hár birin bólek xabarda):
+   - Kim ushın: balaǵa ma, ózine me?
+   - Balanıń jası yamasa klassı.
+   - Qaysı pán / baǵdar (Inglis tili, Matematika, IELTS, mektep, Pochemuchka...).
+   - Kurslar ushın: qaysı filial qolay (Real, Gogol, Bumer, Shımbay, Gózzal).
+3. Bilim bazasınan sáykes baǵdardı, kesteni hám bahanı ayt.
+4. Mektep ushın ekskursiyanı, kurslar ushın BIYPUL sınaq sabaǵın yamasa diagnostik testti usın.
+5. Jazılıw ushın jıyna: atı-familiyası, telefon nomeri, qolay kún hám waqıt.
+6. Qısqasha tastıyıqla: «Siz [kún] [waqıt] [filial] filialındaǵı [baǵdar] sınaq sabaǵına
+   jazıldıńız. Operatorımız [telefon] nomerine qońıraw etip tastıyıqlaydı.»
+
+<span class="h"># MAǴLÍWMAT QAǴÍYDASÍ (ÁHMIYETLI)</span>
+- Bahalardı, kestelerdi, bos orınlardı, jeńilliklerdi hám adreslerdi TEK &lt;BILIM_BAZASI&gt;
+  ishinen al. Ol jerde joq sandı yamasa fakttı HESH QASHAN oylap tappa.
+- Juwap bazada joq bolsa: «Bul sorawıńızǵa anıq juwaptı operatorımız beredi.
+  Telefon nomerińizdi qaldırasız ba?» dep ayt hám nomerdi al.
+- Nátiyjege kepil berme («100% IELTS 7.0», «sózsiz grantqa túsedi» degen sıyaqlı).
+  Tek «sistemalı oqısa, nátiyje boladı, dárejeni diagnostik test anıqlaydı» de.
+
+<span class="h"># ESKALACIYA (OPERATORǴA ÓTKERIW)</span>
+Tómendegi jaǵdaylarda sáwbetti dárriw operatorǵa ótker:
+- Klient shaǵım etse yamasa narazı bolsa.
+- Klient «adam menen / operator menen sóylesemen» dese.
+- Tólemdi qaytarıw, shártnama, qarız yamasa jeke máseleler haqqında soraw bolsa.
+- Bir sorawǵa bazadan 2 ret juwap taba almasań.
+- Klient ashıwlı yamasa qopal bolsa.
+Juwap: «Túsindim. Operatorımız sizge 5 minut ishinde qońıraw etedi.»
+Telefon nomeri bolmasa, aldın nomerdi sora. Sońınan basqa satıw sorawların berme.
+
+<span class="h"># QADAǴAN</span>
+- Basqa oqıw orayların yamasa mektepleri jamanlaw.
+- Bazada joq jeńillik, aksiya yamasa sıylıq usınıw.
+- Pasport, karta nomeri yamasa jeke hújjet maǵlıwmatların soraw.
+- Siyasat, din hám basqa temalarda pikir aytıw — sıpayı túrde temaǵa qaytar.
+- Ózińdi adam dep tanıstırıw. Sorasa: «Men Real School hám Real Education'nıń
+  AI járdemshisimen, kerek bolsa operatorǵa jalǵayman» de.
+
+<span class="h"># amoCRM USHÍN TEXNIKALÍQ SHÍǴÍS</span>
+Hár juwaptıń eń aqırında, klientke kórinbeytuǵın blok qos (dev-komanda onı alıp taslaydı):
+&lt;lead&gt;{"brand":"school|education|belgisiz","source":"ig_direct|ig_comment|telegram",
+"filial_id":"real|gogol|bumer|shimbay|gozzal|belgisiz","kurs_turi":"...","bala_yasi":"...",
+"atı":"...","telefon":"...","til":"kaa|uz|ru",
+"etap":"jańa|kvalifikaciya|ekskursiya|sınaqqa_jazıldı|eskalaciya"}&lt;/lead&gt;
+"brand" boyınsha lead sáykes voronkaǵa túsedi: school → «Real School (Mektep)»,
+education → «Real Education (Kurslar)». Belgisiz maydanlardı bos qaldır, oylap tappa.
+
+<span class="h"># BILIM BAZASÍ</span>
+&lt;BILIM_BAZASI&gt;
+{{BILIM_BAZASI}}
+&lt;/BILIM_BAZASI&gt;</pre>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Iske túsiriwden <em>aldın</em></h2>
+    <p class="note">Belgilegenińiz usı brauzerde saqlanadı.</p>
+    <div class="check" id="checks">
+      <label><input type="checkbox" id="c1"><span>Eki bilim bazasındaǵı barlıq toltırılmaǵan orınlar toltırıldı: bahalar, adresler, 4 filialdıń baǵdarları.</span></label>
+      <label><input type="checkbox" id="c2"><span>Gogol, Bumer, Shımbay, Gózzal filiallarınıń kestesi EduTizimnen qosıldı.</span></label>
+      <label><input type="checkbox" id="c3"><span>amoCRM-de eki bólek voronka dúzildi hám custom field-ler qosıldı.</span></label>
+      <label><input type="checkbox" id="c4"><span>Dev-komanda &lt;lead&gt; blogın amoCRM field-lerine baylanıstırdı.</span></label>
+      <label><input type="checkbox" id="c5"><span>4 operator (Paruaz, Gúlnaz, 2 Aygúl) bottı test etti hám testlew aktına qol qoydı.</span></label>
+    </div>
+  </section>
+</main>
+
+<footer><span>Real School · Real Education · Nókis</span><span>Juwapker: Mambo Pirnazarov · v1.1 · 02.11.2026</span></footer>
+</div>
+
+<script>
+const T = s => s.replace(/\[([^\]]+)\]/g, '<mark class="todo">$1</mark>');
+// [brend, soraw, juwap, operatorǵa ótkeriledi]
+const FAQ = {
+ school: [
+  ["Real School-ǵa qalay qabıl etiledi?","Qabıl 3 basqıshta ótedi: test, psixologiyalıq sáwbet hám ata-ana menen sáwbet. Balańız neshinshi klassqa túsedi?"],
+  ["Mekteptiń bahası qansha, ne kiredi?","[Klass] ushın baha [baha]. Bahaǵa [awqat, transport...] kiredi. Mektepti ózińiz kórip shıǵıwıńız ushın ekskursiyaǵa jazayın ba?"],
+  ["Mektepti kórip shıǵıwǵa bola ma?","Awa, ekskursiya [kúnleri hám waqtı] ótedi. Sizge qaysı kún qolay?"],
+  ["«Pochemuchka» degen ne?","«Pochemuchka» — mektepke shekemgi balalar ushın topar, sabaqlar tolıǵı menen rus tilinde ótedi. [Jas] jastaǵı balalar qabıl etiledi. Balańız neshe jasta?"],
+  ["Mektepte IELTS hám SAT tayarlıq bar ma?","Awa, Real School-da IELTS hám SAT tayarlıq kursları bar. [Baha hám keste]. Diagnostik testke jazayın ba?"],
+  ["Klassta neshe oqıwshı boladı?","Bir klassta [san] oqıwshı oqıydı. Sonlıqtan muǵallim hár bir balaǵa itibar bere aladı."],
+  ["Sabaqlar qaysı tilde ótedi?","[Oqıtıw tili]. Pochemuchka toparı tolıǵı menen rus tilinde."],
+  ["Tólemdi qalay tóleymen?","Tólemdi [tólem usılları] arqalı jıllıq yamasa aylıq tólewińizge boladı."],
+  ["Ata-ana balanıń úlgerimin qalay biledi?","Ata-analarǵa balanıń qatnasıwı hám bahaları boyınsha turaqlı maǵlıwmat beriledi. [Telegram, ata-analar jıynalısı...]"],
+  ["Shártnamanı biykar etsek, pul qaytarıla ma?","Bul soraw boyınsha operatorımız sizge tolıq túsindirip beredi. Telefon nomerińizdi qaldırasız ba?", true]
+ ],
+ education: [
+  ["Baha qansha?","[Baǵdar] kursınıń aylıq bahası [baha] sum. Aldın biypul sınaq sabaǵına kelip kóriwińizge boladı. Sizge qaysı filial qolay?"],
+  ["Biypul sınaq sabaq bar ma?","Awa, birinshi sınaq sabaq biypul. Sabaqtan keyin muǵallim balańızdıń dárejesin aytıp beredi. Qaysı kúni kelgenińiz qolay?"],
+  ["Filiallarıńız qay jerde?","Bizde 5 filial bar: Real, Gogol, Bumer, Shımbay hám Gózzal. [Adresler]. Sizge qaysısı jaqın?"],
+  ["Sabaqlar qaysı kúnleri, neshede?","[Baǵdar] sabaqları jup kúnleri [waqıt] hám taq kúnleri [waqıt] ótedi. Qaysı waqıt sizge qolay?"],
+  ["Neshe jastan qabıl etesiz?","Kids toparlarına [jas] jastan, ulıwma toparlarǵa [jas] jastan qabıl etemiz. Balańız neshe jasta?"],
+  ["Toparda neshe oqıwshı boladı?","Bir toparda ortasha [san] oqıwshı boladı. Sonlıqtan muǵallim hár bir oqıwshıǵa itibar bere aladı."],
+  ["Muǵallimleriniz kim?","Muǵallimlerimiz óz pánin jaqsı biletuǵın, tájiriybeli qánigeler. Sınaq sabaǵında muǵallim menen tikkeley tanısa alasız."],
+  ["Balamnıń dárejesin qalay bilemiz?","Bunıń ushın biypul diagnostik test bar. Test nátiyjesi boyınsha balańızǵa sáykes topardı tańlaymız. Testke jazayın ba?"],
+  ["IELTS-ke neshe ayda tayarlanadı?","Bul házirgi dárejege baylanıslı. Aldın diagnostik test tapsırasız, sonnan keyin muǵallim shama menen qansha waqıt kerek ekenin aytadı."],
+  ["Abiturientlerge qanday pánler bar?","Abiturientler ushın Matematika, Ximiya, Biologiya, Tariyx, Huqıq, Ózbek tili hám Rus tili toparları bar. Qaysı pánlerden tayarlanasız?"],
+  ["Online sabaq bar ma?","[Awa, bar / Házirshe tek offline]. Qaysı formattı qáleysiz?"],
+  ["Sabaqlar qaysı tilde ótedi?","Sabaqlar qaraqalpaq, ózbek hám rus tillerinde ótedi. Til toparǵa baylanıslı. Sizge qaysı til qolay?"],
+  ["Tólemdi qalay tóleymen?","Tólemdi [tólem usılları] arqalı tólewińizge boladı. Tólem hár ay [sáne] ǵa shekem tólenedi."],
+  ["Jeńillik bar ma?","[Bazadaǵı jeńillikler]. Bazada jeńillik bolmasa: «Jeńillikler haqqında operatorımız tolıq aytıp beredi. Nomerińizdi qaldırasız ba?»"],
+  ["Sabaqqa kelmese pul qaytarıla ma?","Bul soraw boyınsha operatorımız sizge tolıq túsindirip beredi. Telefon nomerińizdi qaldırasız ba?", true],
+  ["Ata-ana balanıń úlgerimin qalay biledi?","Ata-analarǵa balanıń qatnasıwı hám nátiyjeleri boyınsha turaqlı maǵlıwmat beriledi. [Telegram, ata-analar jıynalısı...]"]
+ ]
+};
+function render(b){
+  const box = document.querySelector(`[data-list="${b}"]`);
+  const q = document.querySelector(`.q[data-b="${b}"]`).value.trim().toLowerCase();
+  const rows = FAQ[b].map((f,i)=>({f,i})).filter(({f})=>!q || (f[0]+' '+f[1]).toLowerCase().includes(q));
+  box.innerHTML = rows.length ? rows.map(({f,i})=>`<details><summary><span class="n">${String(i+1).padStart(2,'0')}</span><span class="q">${f[0]}</span><span class="pl" aria-hidden="true">+</span></summary><div class="ans"><div class="bubble">${T(f[1])}</div>${f[2]?'<div class="esc">Operatorǵa ótkeriledi</div>':''}</div></details>`).join('') : '<div class="empty">Bunday soraw tabılmadı. Basqa sóz benen izlep kóriń.</div>';
+}
+['school','education'].forEach(b=>{
+  render(b);
+  document.querySelector(`.q[data-b="${b}"]`).addEventListener('input',()=>render(b));
+  const first = document.querySelector(`[data-list="${b}"] details`); if(first) first.open = true;
+  const n = document.querySelectorAll(`#v-${b} mark.todo`).length + FAQ[b].reduce((s,f)=>s+(f[1].match(/\[/g)||[]).length,0);
+  document.querySelector(`[data-count="${b}"]`).textContent = n;
+});
+
+const views = ['school','education','bot'];
+function show(){
+  const h = location.hash.slice(1); const v = views.includes(h) ? h : 'school';
+  views.forEach(x=>{ document.getElementById('v-'+x).hidden = x!==v; });
+  document.querySelectorAll('.switch a').forEach(a=>{ if(a.dataset.v===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+}
+window.addEventListener('hashchange',()=>{ show(); window.scrollTo(0,0); });
+show();
+
+const btn = document.getElementById('copyBtn');
+btn.addEventListener('click',()=>{
+  const el = document.getElementById('promptText'); const txt = el.innerText;
+  const done = ()=>{btn.textContent='Kóshirildi'; setTimeout(()=>btn.textContent='Kóshiriw',1800)};
+  const fallback = ()=>{const r=document.createRange(); r.selectNodeContents(el); const s=getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent='Belgilendi · Ctrl+C';};
+  try{ navigator.clipboard.writeText(txt).then(done,fallback); }catch(e){ fallback(); }
+});
+document.querySelectorAll('#checks input').forEach(c=>{
+  try{ c.checked = localStorage.getItem('m1-'+c.id)==='1'; }catch(e){}
+  c.addEventListener('change',()=>{ try{ localStorage.setItem('m1-'+c.id, c.checked?'1':'0'); }catch(e){} });
+});
+</script>
+</body>
+</html>
