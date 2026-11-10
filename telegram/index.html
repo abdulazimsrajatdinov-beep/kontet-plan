@@ -140,25 +140,9 @@ footer .rule{margin:0 auto 18px}
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="Atı yamasa @silteme boyınsha izlew" autocomplete="off">
     </label>
-    <button class="btn" id="addBtn" type="button" hidden>＋ Qosıw</button>
-    <button class="btn ghost" id="lockBtn" type="button" title="Ózgertiw rejimi">🔒</button>
+    
+    
     </div>
-    <form class="panel" id="pinForm" hidden>
-      <h3>Ózgertiw rejimi</h3>
-      <label class="field" for="fPin"><span>PIN kod</span><input id="fPin" type="password" inputmode="numeric" autocomplete="off" maxlength="12"></label>
-      <div class="actions"><button class="btn" type="submit">Kiriw</button><button class="btn ghost" type="button" id="pinCancel">Biykar etiw</button></div>
-    </form>
-    <form class="panel" id="form" hidden>
-      <h3>Jańa kanal yamasa topar</h3>
-      <div class="grid2">
-        <label class="field" for="fName"><span>Atı</span><input id="fName" required maxlength="80" placeholder="mıs.: Nukus Elonlar"></label>
-        <label class="field" for="fUser"><span>Silteme</span><input id="fUser" required maxlength="120" placeholder="@kanal yamasa t.me/kanal"></label>
-        <label class="field" for="fKind"><span>Túri</span><select id="fKind"><option value="kanal">Kanal</option><option value="topar">Topar</option></select></label>
-        <label class="field" for="fGroup"><span>Bólim</span><select id="fGroup"></select></label>
-        <label class="field" for="fMem"><span>Aǵzalar sanı</span><input id="fMem" type="number" min="0" step="1" inputmode="numeric" placeholder="mıs.: 12500"></label>
-      </div>
-      <div class="actions"><button class="btn" type="submit" id="saveBtn">Saqlaw</button><button class="btn ghost" type="button" id="cancelBtn">Biykar etiw</button><span class="msg" id="fMsg"></span></div>
-    </form>
     <div class="chips" id="chips" role="group" aria-label="Bólimler"></div>
   </div>
 
@@ -181,7 +165,7 @@ const GROUPS=Object.keys(ICONS);
 let rows=[], cat="Barlıǵı", canEdit=false, db=null, armed=null;
 const $=id=>document.getElementById(id), chips=$('chips'), out=$('out'), q=$('q');
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-$('fGroup').innerHTML=GROUPS.map(g=>`<option>${esc(g)}</option>`).join('');
+
 function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2200)}
 function grouped(){const m=new Map(GROUPS.map(g=>[g,[]]));for(const r of rows){const g=GROUPS.includes(r.group)?r.group:"Basqa";m.get(g).push(r)}
   for(const l of m.values())l.sort((a,b)=>(b.members||0)-(a.members||0));return [...m].filter(([,l])=>l.length)}
@@ -222,18 +206,6 @@ out.addEventListener('click',async e=>{const b=e.target.closest('.del');if(!b||!
   const id=b.dataset.id;if(armed!==id){armed=id;render();clearTimeout(out.t);out.t=setTimeout(()=>{armed=null;render()},4000);return}
   armed=null;const r=rows.find(x=>x.id===id);
   try{await db.collection('channels').doc(id).delete();toast(`«${r?r.name:id}» óshirildi`)}catch(err){toast('Óshirilmedi: PIN kod qáte bolıwı múmkin');render()}});
-$('addBtn').addEventListener('click',()=>{const f=$('form');f.hidden=!f.hidden;if(!f.hidden){if(cat!=="Barlıǵı"&&GROUPS.includes(cat))$('fGroup').value=cat;$('fName').focus()}});
-$('cancelBtn').addEventListener('click',()=>{$('form').reset();$('fMsg').textContent='';$('form').hidden=true});
-$('form').addEventListener('submit',async e=>{e.preventDefault();const msg=$('fMsg');msg.textContent='';
-  const name=$('fName').value.trim(),user=parseUser($('fUser').value);
-  if(!name){msg.textContent='Atın jazıń.';return}
-  if(!user){msg.textContent='Silteme durıs emes: @kanal yamasa t.me/kanal túrinde jazıń.';return}
-  const id=user.toLowerCase();if(rows.some(r=>r.id===id)){msg.textContent='Bul kanal dizimde bar.';return}
-  $('saveBtn').disabled=true;
-  try{await db.collection('channels').doc(id).set({name,user,kind:$('fKind').value,group:$('fGroup').value,members:$('fMem').value===''?null:Math.max(0,Math.round(+$('fMem').value)),ts:Date.now()});
-    $('form').reset();$('form').hidden=true;toast(`«${name}» qosıldı`)}
-  catch(err){msg.textContent=err&&err.code==='quota_exceeded'?'Saqlaw ornı tolıp qaldı.':'Saqlanbadı: PIN kod qáte bolıwı múmkin.'}
-  finally{$('saveBtn').disabled=false}});
 const SB_URL="https://rgqruifzceraivheepdv.supabase.co";
 const SB_KEY="sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS";
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
@@ -242,15 +214,7 @@ async function rpc(fn,args){const r=await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{m
   headers:{"apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`,"Content-Type":"application/json"},body:JSON.stringify(args||{})});
   const t=await r.text();if(!r.ok)throw new Error(t);return t?JSON.parse(t):null}
 async function load(){try{rows=(await rpc('tg_list'))||[];render()}catch(e){out.innerHTML='<p class="empty">Dizimdi júklew ámelge aspadı. Internet baylanısın tekseriń.</p>'}}
-function setEdit(on){canEdit=on;$('addBtn').hidden=!on;$('lockBtn').textContent=on?'🔓':'🔒';render()}
-$('lockBtn').addEventListener('click',()=>{if(canEdit){PIN=null;ls('tg_pin',null);setEdit(false);$('form').hidden=true;toast('Ózgertiw rejimi jabıldı');return}
-  $('pinForm').hidden=!$('pinForm').hidden;if(!$('pinForm').hidden)$('fPin').focus()});
-$('pinCancel').addEventListener('click',()=>{$('pinForm').hidden=true});
-$('pinForm').addEventListener('submit',e=>{e.preventDefault();PIN=$('fPin').value.trim();if(!PIN)return;ls('tg_pin',PIN);$('pinForm').reset();$('pinForm').hidden=true;setEdit(true);toast('Ózgertiw rejimi ashıldı')});
-db={collection:()=>({doc:id=>({
-  delete:()=>rpc('tg_delete',{p_pin:PIN,p_id:id}).then(load),
-  set:d=>rpc('tg_upsert',{p_pin:PIN,p_name:d.name,p_user:d.user,p_kind:d.kind,p_group:d.group,p_members:d.members}).then(load)})})};
-if(PIN)setEdit(true);
+
 load();
 </script>
 
