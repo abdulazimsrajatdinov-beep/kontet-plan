@@ -1,0 +1,255 @@
+<!doctype html><html lang="kaa"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Nókis Telegram kanalları</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: single deliberate dark-luxury look — ink-blue night, champagne-gold hairlines; hero with ornament, sticky gold chip bar, grouped gilded cards */
+:root{
+  --ink:#0b1020; --ink-2:#11182c; --card:#141c33; --card-hi:#1a2442;
+  --gold:#d9b76e; --gold-2:#f3dfa6; --gold-dim:#8c7646;
+  --text:#ece6d6; --muted:#a39d8c; --line:rgba(217,183,110,.22);
+  --f-display:"Cormorant Garamond","Times New Roman",serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--ink)}
+body{color:var(--text);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(217,183,110,.16), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(70,90,160,.25), transparent 60%),
+    var(--ink);
+  background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* hero */
+.hero{position:relative;text-align:center;padding:28px 0 30px}
+.orn{display:block;margin:0 auto 14px;color:var(--gold)}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--f-display);font-weight:500;font-size:clamp(40px,8vw,72px);line-height:1;margin:10px 0 12px;
+  letter-spacing:-.01em;text-wrap:balance;
+  background:linear-gradient(180deg,var(--gold-2) 0%,var(--gold) 55%,#b48d45 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 em{font-style:italic;font-weight:500}
+.lead{color:var(--muted);margin:0 auto;max-width:56ch}
+.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:10px 28px;margin-top:22px}
+.stat{display:flex;flex-direction:column;align-items:center}
+.stat b{font-family:var(--f-display);font-weight:600;font-size:34px;color:var(--gold-2);font-variant-numeric:tabular-nums;line-height:1}
+.stat span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.rule{height:1px;margin:30px auto 0;max-width:520px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+/* toolbar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:18px 0 6px;padding:12px 0;
+  background:linear-gradient(180deg,var(--ink) 70%,rgba(11,16,32,0));display:flex;flex-direction:column;gap:12px}
+.search{position:relative;display:block}
+.search input{width:100%;font:inherit;font-size:16px;padding:14px 16px 14px 46px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(20,28,51,.85);color:var(--text);outline:none;backdrop-filter:blur(8px)}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,183,110,.15)}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--gold)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:inherit;font-size:13px;font-weight:600;letter-spacing:.02em;border:1px solid var(--line);border-radius:999px;
+  padding:8px 14px;background:transparent;color:var(--text);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.chip:hover{border-color:var(--gold)}
+.chip[aria-pressed="true"]{background:linear-gradient(180deg,var(--gold-2),var(--gold));color:var(--ink);border-color:transparent}
+.count{font-variant-numeric:tabular-nums;opacity:.65;margin-left:6px}
+
+/* sections */
+section{margin-top:34px}
+.sh{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ico{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--gold);
+  border:1px solid var(--line);background:radial-gradient(circle at 30% 30%,rgba(217,183,110,.18),transparent 70%)}
+h2{font-family:var(--f-display);font-weight:600;font-size:28px;margin:0;line-height:1;color:var(--text)}
+.sh small{margin-left:auto;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.row{position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;min-width:0;
+  background:linear-gradient(180deg,var(--card-hi),var(--card));border:1px solid rgba(255,255,255,.05);
+  color:inherit;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s}
+.row:hover{transform:translateY(-2px);border-color:var(--line);box-shadow:0 10px 30px -12px rgba(217,183,110,.35)}
+.row:focus-visible,.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-display);font-weight:600;font-size:18px;color:var(--gold-2);
+  background:radial-gradient(circle at 35% 30%,#2a3660,#141c33);box-shadow:inset 0 0 0 1px var(--gold-dim)}
+.txt{min-width:0;display:flex;flex-direction:column;gap:2px}
+.name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user{color:var(--gold);font-size:13px}
+.kind{margin-left:auto;flex:none;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:4px 8px}
+.mem{margin-left:auto;flex:none;display:flex;flex-direction:column;align-items:flex-end;line-height:1.1}
+.mem b{font-family:var(--f-display);font-weight:600;font-size:20px;color:var(--text);font-variant-numeric:tabular-nums}
+.mem i{font-style:normal;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mem.hot b{color:var(--gold-2)}
+.go{flex:none;color:var(--gold-dim);transition:color .2s,transform .2s}
+.row:hover .go{color:var(--gold);transform:translateX(2px)}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+.tools{display:flex;gap:10px;align-items:center}
+.tools .search{flex:1;min-width:0}
+.btn{flex:none;font:inherit;font-weight:700;font-size:14px;border-radius:14px;padding:13px 18px;cursor:pointer;
+  border:1px solid transparent;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:var(--ink);white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn:focus-visible,.del:focus-visible,.field input:focus-visible,.field select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.item{position:relative;min-width:0}
+.item .row{padding-right:56px}
+.list:not(.editing) .row{padding-right:16px}
+.del{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);background:rgba(11,16,32,.6);color:var(--muted);cursor:pointer;
+  font:inherit;font-size:12px;font-weight:700;transition:color .2s,border-color .2s,background .2s,width .2s}
+.del:hover{color:#f2a08f;border-color:rgba(242,160,143,.5)}
+.del.confirm{width:auto;padding:0 12px;border-radius:999px;background:#5a2320;color:#ffd9d1;border-color:#a34b40}
+.editing .go{display:none}
+.panel{margin:4px 0 8px;padding:18px;border-radius:18px;border:1px solid var(--line);
+  background:linear-gradient(180deg,var(--card-hi),var(--card));display:grid;gap:12px}
+.panel h3{font-family:var(--f-display);font-weight:600;font-size:24px;margin:0;color:var(--gold-2)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select{font:inherit;font-size:15px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);
+  background:var(--ink-2);color:var(--text);outline:none;width:100%}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.msg{font-size:13px;color:#f2a08f}
+.note{font-size:13px;color:var(--muted);text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;
+  background:var(--gold);color:var(--ink);font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:0 10px 30px -10px #000}
+footer{margin-top:48px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.04em}
+footer .rule{margin:0 auto 18px}
+@media (max-width:480px){.kind{display:none}.stat b{font-size:28px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.row:hover{transform:none}}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <svg class="orn" width="120" height="22" viewBox="0 0 120 22" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <path d="M0 11h40M80 11h40"/><path d="M60 2l9 9-9 9-9-9z"/><path d="M60 7l4 4-4 4-4-4z" fill="currentColor"/>
+      <circle cx="46" cy="11" r="1.6" fill="currentColor"/><circle cx="74" cy="11" r="1.6" fill="currentColor"/>
+    </svg>
+    <div class="eyebrow">Nókis · Qaraqalpaqstan</div>
+    <h1>Telegram <em>kanalları</em></h1>
+    <p class="lead">Nókis hám Qaraqalpaqstanǵa tiyisli ashıq kanallar menen toparlar. Qatardı bassańız, Telegram da sol kanal ashıladı.</p>
+    <div class="stats" id="stats"></div>
+    <div class="rule"></div>
+  </header>
+
+  <div class="bar">
+    <div class="tools">
+    <label class="search" for="q">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Atı yamasa @silteme boyınsha izlew" autocomplete="off">
+    </label>
+    <button class="btn" id="addBtn" type="button" hidden>＋ Qosıw</button>
+    <button class="btn ghost" id="lockBtn" type="button" title="Ózgertiw rejimi">🔒</button>
+    </div>
+    <form class="panel" id="pinForm" hidden>
+      <h3>Ózgertiw rejimi</h3>
+      <label class="field" for="fPin"><span>PIN kod</span><input id="fPin" type="password" inputmode="numeric" autocomplete="off" maxlength="12"></label>
+      <div class="actions"><button class="btn" type="submit">Kiriw</button><button class="btn ghost" type="button" id="pinCancel">Biykar etiw</button></div>
+    </form>
+    <form class="panel" id="form" hidden>
+      <h3>Jańa kanal yamasa topar</h3>
+      <div class="grid2">
+        <label class="field" for="fName"><span>Atı</span><input id="fName" required maxlength="80" placeholder="mıs.: Nukus Elonlar"></label>
+        <label class="field" for="fUser"><span>Silteme</span><input id="fUser" required maxlength="120" placeholder="@kanal yamasa t.me/kanal"></label>
+        <label class="field" for="fKind"><span>Túri</span><select id="fKind"><option value="kanal">Kanal</option><option value="topar">Topar</option></select></label>
+        <label class="field" for="fGroup"><span>Bólim</span><select id="fGroup"></select></label>
+        <label class="field" for="fMem"><span>Aǵzalar sanı</span><input id="fMem" type="number" min="0" step="1" inputmode="numeric" placeholder="mıs.: 12500"></label>
+      </div>
+      <div class="actions"><button class="btn" type="submit" id="saveBtn">Saqlaw</button><button class="btn ghost" type="button" id="cancelBtn">Biykar etiw</button><span class="msg" id="fMsg"></span></div>
+    </form>
+    <div class="chips" id="chips" role="group" aria-label="Bólimler"></div>
+  </div>
+
+  <main id="out"><p class="empty">Dizim júklenip atır…</p></main>
+  <div class="toast" id="toast" hidden></div>
+
+  <footer><div class="rule"></div>Dizim Telegram dıń ulıwma qıdırıwı arqalı jıynaldı · 10-noyabr 2026</footer>
+</div>
+
+<script>
+const ICONS={
+ "Jańalıqlar":'<path d="M4 5h13v14H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v9a1 1 0 0 1-1 1h-2"/><path d="M7 9h7M7 13h7M7 16h4"/>',
+ "Mektepler hám bilim":'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+ "Daǵazalar hám bazar":'<path d="M3 10v4l11 5V5z"/><path d="M14 8a4 4 0 0 1 0 8"/><path d="M6 14l1 5h3l-1-4"/>',
+ "Jumıs":'<rect x="3" y="7" width="18" height="12" rx="2"/><path d="M9 7V5h6v2M3 12h18"/>',
+ "Avto hám taksi":'<path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v2H3z"/><circle cx="7.5" cy="13.5" r="1"/><circle cx="16.5" cy="13.5" r="1"/>',
+ "Basqa":'<circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/>'
+};
+const GROUPS=Object.keys(ICONS);
+let rows=[], cat="Barlıǵı", canEdit=false, db=null, armed=null;
+const $=id=>document.getElementById(id), chips=$('chips'), out=$('out'), q=$('q');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('fGroup').innerHTML=GROUPS.map(g=>`<option>${esc(g)}</option>`).join('');
+function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2200)}
+function grouped(){const m=new Map(GROUPS.map(g=>[g,[]]));for(const r of rows){const g=GROUPS.includes(r.group)?r.group:"Basqa";m.get(g).push(r)}
+  for(const l of m.values())l.sort((a,b)=>(b.members||0)-(a.members||0));return [...m].filter(([,l])=>l.length)}
+function stats(){const k=rows.filter(r=>r.kind==="kanal").length;
+  const tot=rows.reduce((s,r)=>s+(r.members||0),0);
+  $('stats').innerHTML=[[rows.length,"silteme"],[k,"kanal"],[rows.length-k,"topar"],[short(tot),"jámi aǵza"]]
+  .map(([n,l])=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('')}
+function chipsRender(){const gs=grouped();if(cat!=="Barlıǵı"&&!gs.some(([g])=>g===cat))cat="Barlıǵı";
+  chips.innerHTML=[["Barlıǵı",rows.length],...gs.map(([g,l])=>[g,l.length])].map(([n,c])=>
+  `<button class="chip" type="button" aria-pressed="${n===cat}" data-c="${esc(n)}">${esc(n)}<span class="count">${c}</span></button>`).join('')}
+function fmt(n){return typeof n==='number'?n.toLocaleString('ru-RU').replace(/\u00a0/g,' '):'—'}
+function short(n){return n>=1e6?(n/1e6).toFixed(1).replace('.',',')+' mln':n>=1e3?Math.round(n/1e3)+' mıń':String(n)}
+const big=r=>(r.members||0)>=10000;
+function initials(n){const w=String(n).replace(/[^\p{L}\p{N} ]/gu,' ').trim().split(/\s+/).filter(Boolean);return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase()}
+const arrow='<svg class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg>';
+function render(){
+  stats();chipsRender();
+  if(!rows.length){out.innerHTML=`<p class="empty">${db?'Dizim bos. «＋ Qosıw» túymesi arqalı birinshi kanaldı qosıń.':'Dizim bos.'}</p>`;return}
+  const t=q.value.trim().toLowerCase().replace(/^@/,'');let html='';
+  for(const [g,list] of grouped()){
+    if(cat!=="Barlıǵı"&&cat!==g)continue;
+    const items=list.filter(r=>!t||String(r.name).toLowerCase().includes(t)||String(r.user).toLowerCase().includes(t));
+    if(!items.length)continue;
+    html+=`<section><div class="sh"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[g]}</svg></span>
+      <h2>${esc(g)}</h2><small>${items.length} silteme</small></div><div class="list${canEdit?' editing':''}">`+
+      items.map(r=>`<div class="item"><a class="row" href="https://t.me/${encodeURIComponent(r.user)}" target="_blank" rel="noopener">
+        <span class="av" aria-hidden="true">${esc(initials(r.name))}</span>
+        <span class="txt"><span class="name">${esc(r.name)}</span><span class="user">@${esc(r.user)}</span></span>
+        <span class="mem${big(r)?' hot':''}" title="Aǵzalar sanı"><b>${fmt(r.members)}</b><i>${r.kind==='kanal'?'jazılıwshı':'aǵza'}</i></span>
+        ${arrow}</a>${canEdit?`<button class="del${armed===r.id?' confirm':''}" type="button" data-id="${esc(r.id)}" aria-label="${esc(r.name)} — óshiriw">${armed===r.id?'Óshiriw?':'✕'}</button>`:''}</div>`).join('')+`</div></section>`;
+  }
+  out.innerHTML=html||`<p class="empty">«${esc(q.value)}» boyınsha hesh nárse tabılmadı.</p>`;
+}
+function parseUser(v){v=v.trim().replace(/^https?:\/\//,'').replace(/^t\.me\//i,'').replace(/^telegram\.me\//i,'').replace(/^@/,'').split(/[/?#\s]/)[0];return /^[A-Za-z0-9_]{3,64}$/.test(v)?v:null}
+chips.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;render();});
+q.addEventListener('input',render);
+out.addEventListener('click',async e=>{const b=e.target.closest('.del');if(!b||!db)return;e.preventDefault();
+  const id=b.dataset.id;if(armed!==id){armed=id;render();clearTimeout(out.t);out.t=setTimeout(()=>{armed=null;render()},4000);return}
+  armed=null;const r=rows.find(x=>x.id===id);
+  try{await db.collection('channels').doc(id).delete();toast(`«${r?r.name:id}» óshirildi`)}catch(err){toast('Óshirilmedi: PIN kod qáte bolıwı múmkin');render()}});
+$('addBtn').addEventListener('click',()=>{const f=$('form');f.hidden=!f.hidden;if(!f.hidden){if(cat!=="Barlıǵı"&&GROUPS.includes(cat))$('fGroup').value=cat;$('fName').focus()}});
+$('cancelBtn').addEventListener('click',()=>{$('form').reset();$('fMsg').textContent='';$('form').hidden=true});
+$('form').addEventListener('submit',async e=>{e.preventDefault();const msg=$('fMsg');msg.textContent='';
+  const name=$('fName').value.trim(),user=parseUser($('fUser').value);
+  if(!name){msg.textContent='Atın jazıń.';return}
+  if(!user){msg.textContent='Silteme durıs emes: @kanal yamasa t.me/kanal túrinde jazıń.';return}
+  const id=user.toLowerCase();if(rows.some(r=>r.id===id)){msg.textContent='Bul kanal dizimde bar.';return}
+  $('saveBtn').disabled=true;
+  try{await db.collection('channels').doc(id).set({name,user,kind:$('fKind').value,group:$('fGroup').value,members:$('fMem').value===''?null:Math.max(0,Math.round(+$('fMem').value)),ts:Date.now()});
+    $('form').reset();$('form').hidden=true;toast(`«${name}» qosıldı`)}
+  catch(err){msg.textContent=err&&err.code==='quota_exceeded'?'Saqlaw ornı tolıp qaldı.':'Saqlanbadı: PIN kod qáte bolıwı múmkin.'}
+  finally{$('saveBtn').disabled=false}});
+const SB_URL="https://rgqruifzceraivheepdv.supabase.co";
+const SB_KEY="sb_publishable_gBRWWzLrDY4KDpgPtlk2sg_sTFOxECS";
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+let PIN=ls('tg_pin');
+async function rpc(fn,args){const r=await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{method:"POST",
+  headers:{"apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`,"Content-Type":"application/json"},body:JSON.stringify(args||{})});
+  const t=await r.text();if(!r.ok)throw new Error(t);return t?JSON.parse(t):null}
+async function load(){try{rows=(await rpc('tg_list'))||[];render()}catch(e){out.innerHTML='<p class="empty">Dizimdi júklew ámelge aspadı. Internet baylanısın tekseriń.</p>'}}
+function setEdit(on){canEdit=on;$('addBtn').hidden=!on;$('lockBtn').textContent=on?'🔓':'🔒';render()}
+$('lockBtn').addEventListener('click',()=>{if(canEdit){PIN=null;ls('tg_pin',null);setEdit(false);$('form').hidden=true;toast('Ózgertiw rejimi jabıldı');return}
+  $('pinForm').hidden=!$('pinForm').hidden;if(!$('pinForm').hidden)$('fPin').focus()});
+$('pinCancel').addEventListener('click',()=>{$('pinForm').hidden=true});
+$('pinForm').addEventListener('submit',e=>{e.preventDefault();PIN=$('fPin').value.trim();if(!PIN)return;ls('tg_pin',PIN);$('pinForm').reset();$('pinForm').hidden=true;setEdit(true);toast('Ózgertiw rejimi ashıldı')});
+db={collection:()=>({doc:id=>({
+  delete:()=>rpc('tg_delete',{p_pin:PIN,p_id:id}).then(load),
+  set:d=>rpc('tg_upsert',{p_pin:PIN,p_name:d.name,p_user:d.user,p_kind:d.kind,p_group:d.group,p_members:d.members}).then(load)})})};
+if(PIN)setEdit(true);
+load();
+</script>
+
+</body></html>
