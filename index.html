@@ -109,6 +109,7 @@ form{display:grid;gap:14px}
 .field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:11px 12px;font-size:16px}
 .field textarea{resize:vertical;min-height:70px}
 #f-script{min-height:150px}
+.idea .script{border-left:3px solid var(--accent);background:var(--soft)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .hint{font-size:12px;color:var(--muted)}
 .formbar{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;margin-top:4px}
@@ -278,6 +279,7 @@ body{background:
     <form id="form" autocomplete="off">
       <div class="field"><label for="f-title">Tema</label><input id="f-title" required placeholder="Mısalı: Oqıwshılardıń bir kúni"></div>
       <div class="field"><label for="f-hook">Húk (birinshi 3 sekund)</label><textarea id="f-hook" rows="2" placeholder="Kórermendi toqtatatuǵın birinshi gáp yamasa kadr"></textarea></div>
+      <div class="field"><label for="f-idea">💡 Ideya</label><textarea id="f-idea" rows="3" placeholder="Bul kontenttiń ideyası: ne ushın, kimge, varonkanıń qaysı basqıshı"></textarea></div>
       <div class="field"><label for="f-script">Senariy</label><textarea id="f-script" placeholder="1-kadr: …&#10;2-kadr: …&#10;Tekst: …&#10;Muzıka: …"></textarea><span class="hint">Hár kadrdı jańa qatarǵa jazıń — mobilografqa ańsat boladı.</span></div>
       <div class="row2">
         <div class="field"><label for="f-date">Túsiriw kúni</label><input id="f-date" type="date"></div>
@@ -395,6 +397,7 @@ function card(p){
       <h3>${esc(p.title)}</h3>
       ${p.hook?`<p class="hook">${esc(p.hook)}</p>`:""}
       ${isOpen?`<div class="detail">
+        ${p.idea?`<div class="idea"><div class="lbl">💡 Ideya</div><pre class="script">${esc(p.idea)}</pre></div>`:""}
         <div><div class="lbl">Senariy</div><pre class="script">${esc(p.script||"Senariy ele jazılmaǵan.")}</pre></div>
         ${p.notes?`<div><div class="lbl">Mobilografqa eskertpe</div><pre class="script">${esc(p.notes)}</pre></div>`:""}
         ${canWrite?`<div><div class="lbl">Statustı ózgertiw</div><div class="statusbar">${STATUSES.map(s=>`<button type="button" data-st="${s.id}" data-id="${p.id}" style="color:${s.c}" aria-pressed="${p.status===s.id}"><span class="dot" style="background:${s.c}"></span><span style="color:var(--ink)">${esc(s.name)}</span></button>`).join("")}</div></div>`:""}
@@ -409,7 +412,7 @@ function card(p){
   </article>`;
 }
 function postText(p){
-  return `🎬 ${p.title}\n📅 ${p.date?dayLabel(p.date)+" ("+weekday(p.date)+")":"waqıt belgilenbegen"}${p.time?", saat "+p.time:""} · ${p.format||"Reels"}\n\n⚡ HÚK:\n${p.hook||"-"}\n\n📝 SENARIY:\n${p.script||"-"}${p.notes?"\n\n📌 ESKERTPE:\n"+p.notes:""}`;
+  return `🎬 ${p.title}\n📅 ${p.date?dayLabel(p.date)+" ("+weekday(p.date)+")":"waqıt belgilenbegen"}${p.time?", saat "+p.time:""} · ${p.format||"Reels"}${p.idea?"\n\n💡 IDEYA:\n"+p.idea:""}\n\n⚡ HÚK:\n${p.hook||"-"}\n\n📝 SENARIY:\n${p.script||"-"}${p.notes?"\n\n📌 ESKERTPE:\n"+p.notes:""}`;
 }
 function tgLink(text){return "https://t.me/share/url?url="+encodeURIComponent(text)}
 function weekText(){
@@ -523,6 +526,7 @@ function drawPost(ctx,p,draw){
     y+=h+16;
   };
   sec("HÚK · BIRINSHI 3 SEKUND",p.hook);
+  sec("IDEYA",p.idea);
   sec("SENARIY",p.script||"Senariy ele jazılmaǵan.");
   sec("MOBILOGRAFQA ESKERTPE",p.notes);
   y+=20;
@@ -580,7 +584,7 @@ function planHtml(list,title){
     if(k!==last){body+=`<h2>${k?e(new Date(k+"T00:00").getDate()+" "+MONTHS[new Date(k+"T00:00").getMonth()]+" · "+weekday(k)):"Waqıtı belgilenbegen"}</h2>`;last=k}
     const st=S[p.status]||S.idea;
     body+=`<details class="c"><summary><div class="tg"><span class="f">${e(p.format||"Reels")}</span><span class="s" style="color:${ST_HEX[st.id]}">${e(st.name)}</span>${p.time?`<span class="t">${e(p.time)}</span>`:""}</div><h3>${e(p.title)}</h3>${p.hook?`<p class="h"><b>Húk · </b>${e(p.hook)}</p>`:""}<span class="m">Senariydi ashıw ▾</span></summary>`+
-      `<div class="l">Senariy</div><pre>${e(p.script||"Senariy ele jazılmaǵan.")}</pre>`+
+      (p.idea?`<div class="l">💡 Ideya</div><pre>${e(p.idea)}</pre>`:"")+`<div class="l">Senariy</div><pre>${e(p.script||"Senariy ele jazılmaǵan.")}</pre>`+
       (p.notes?`<div class="l">Mobilografqa eskertpe</div><pre>${e(p.notes)}</pre>`:"")+`</details>`;
   });
   if(!sorted.length)body="<p>Plan bos.</p>";
@@ -629,7 +633,7 @@ function fillSelects(){
 function openSheet(p){
   editing=p?p.id:null;
   $("sheet-title").textContent=p?"Kontentti ózgertiw":"Jańa kontent";
-  $("f-title").value=p?.title||""; $("f-hook").value=p?.hook||""; $("f-script").value=p?.script||"";
+  $("f-title").value=p?.title||""; $("f-hook").value=p?.hook||""; $("f-script").value=p?.script||""; $("f-idea").value=p?.idea||"";
   $("f-date").value=p?.date||todayKey(); $("f-time").value=p?.time||"";
   $("f-format").value=p?.format||"Reels"; $("f-status").value=p?.status||"idea"; $("f-notes").value=p?.notes||"";
   const del=$("del"); del.hidden=!p; del.textContent="Óshiriw"; del.dataset.arm="";
@@ -650,7 +654,7 @@ $("del").onclick=async()=>{
 $("form").addEventListener("submit",async e=>{
   e.preventDefault();
   const prev=posts.find(p=>p.id===editing);
-  const data={title:$("f-title").value.trim(),hook:$("f-hook").value.trim(),script:$("f-script").value,
+  const data={title:$("f-title").value.trim(),hook:$("f-hook").value.trim(),idea:$("f-idea").value.trim(),script:$("f-script").value,
     date:$("f-date").value,time:$("f-time").value,format:$("f-format").value,status:$("f-status").value,
     notes:$("f-notes").value.trim(),example:false,createdAt:prev?.createdAt||Date.now(),updatedAt:Date.now()};
   if(!data.title){$("f-title").focus();return}
