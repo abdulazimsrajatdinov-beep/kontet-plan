@@ -83,6 +83,7 @@ h2{font-family:var(--display);font-weight:500;font-size:18px;margin:34px 0 14px;
 .del svg{width:16px;height:16px}
 .card:hover .del,.del:focus-visible{opacity:1}
 .del:hover{color:var(--bad);border-color:rgba(255,107,107,.5);background:rgba(255,107,107,.08)}
+.del.armed{width:auto;padding:0 12px;opacity:1;color:#fff;background:var(--bad);border-color:var(--bad);font:600 13px/1 inherit}
 .card .row:last-of-type{padding-right:40px}
 
 /* buttons + dialog */
@@ -438,11 +439,17 @@ async function load(){
 
 $("list").addEventListener("click", async e => {
   const b = e.target.closest("[data-del]"); if (!b) return;
-  const d = DATA.find(x => x._id === b.dataset.del);
-  if (!d || !confirm(`@${d.h} dizimnen óshirilsin be?`)) return;
-  b.disabled = true;
-  try { await rpc("kp_delete", {p_id:d._id}); await load(); }
-  catch (_) { b.disabled = false; alert("Óshiriw múmkin bolmadı. Internetti tekseriń."); }
+  const d = DATA.find(x => x._id === b.dataset.del); if (!d) return;
+  // Brauzer «confirm» ayınasın bloklawı múmkin, sonlıqtan eki ret basıw arqalı tastıyıqlaymız
+  if (b.dataset.armed !== "1") {
+    document.querySelectorAll(".del.armed").forEach(x => { x.classList.remove("armed"); x.dataset.armed = ""; x.innerHTML = x.dataset.icon; });
+    b.dataset.icon = b.innerHTML; b.dataset.armed = "1"; b.classList.add("armed"); b.textContent = "Óshiriw?";
+    clearTimeout(b._t); b._t = setTimeout(() => { if (b.isConnected) { b.dataset.armed = ""; b.classList.remove("armed"); b.innerHTML = b.dataset.icon; } }, 4000);
+    return;
+  }
+  clearTimeout(b._t); b.disabled = true; b.textContent = "…";
+  try { await rpc("kp_delete", {p_id:d._id}); await load(); status(""); }
+  catch (_) { b.disabled = false; b.dataset.armed = ""; b.classList.remove("armed"); b.innerHTML = b.dataset.icon; status("Óshiriw múmkin bolmadı. Internetti tekseriń."); }
 });
 
 $("addbtn").addEventListener("click", () => { $("form").reset(); $("dlg").showModal(); $("f-h").focus(); });
